@@ -1,0 +1,448 @@
+<!-- S : header -->
+<!--
+<select class="nr__theme-select" style="position: fixed; top:0; z-index: 9999999; left:50%">
+	<option value="light">라이트모드</option>
+	<option value="night">나이트모드</option>
+	<option value="dark">다크모드</option>
+</select>
+-->
+
+<div class="nr__header-top">
+	<h1 class="nr__header-logo">
+		<a href="main.html" class="nr__header-logo-link">
+			<span class="sr_only">기상청 날씨알리미</span>
+		</a>
+	</h1>
+	<div class="nr__header-actions">
+		<a href="https://www.youtube.com/@kma_weather" target="_blank" rel="noopener noreferrer" class="nr__header-btn"
+			aria-label="기상청 유튜브">
+			<i class="icon-mask-youtube" aria-hidden="true"></i>
+		</a>
+		<button type="button" class="nr__header-btn nr__header-btn--refresh" aria-label="새로고침" onclick="location.reload();">
+			<i class="icon-mask-refresh" aria-hidden="true"></i>
+		</button>
+		<button type="button" class="nr__header-btn nr__header-btn--menu" aria-label="전체 메뉴">
+			<i class="icon-mask-allmenu" aria-hidden="true"></i>
+		</button>
+	</div>
+</div>
+<nav class="nr__header-nav" aria-label="메인 메뉴">
+	<ul class="nr__header-gnb">
+		<li class="nr__header-gnb-item is-active">
+			<a href="#weather" class="nr__header-gnb-link">날씨</a>
+		</li>
+		<li class="nr__header-gnb-item">
+			<a href="#alert" class="nr__header-gnb-link">알림</a>
+		</li>
+		<li class="nr__header-gnb-item">
+			<a href="#numerical-model" class="nr__header-gnb-link">수치모델</a>
+		</li>
+		<li class="nr__header-gnb-item">
+			<a href="#observation" class="nr__header-gnb-link">관측</a>
+		</li>
+		<li class="nr__header-gnb-item">
+			<a href="#forecast" class="nr__header-gnb-link">예보</a>
+		</li>
+	</ul>
+</nav>
+
+
+<!-- S : 전체 메뉴 (All Menu Full-screen UI Dialog) -->
+<div class="ui-dialog nr__allmenu is-full" id="nr-allmenu" data-dialog="allmenu-dialog" data-ps="right" data-motion="slide-right" role="dialog" aria-modal="true" aria-label="전체 메뉴" aria-hidden="true">
+	<div class="ui-dialog--wrap" data-dialog-item="wrap" tabindex="-1">
+		<!-- S : 전체메뉴 헤더 (상태바 아래) -->
+		<div class="ui-dialog--header nr__allmenu-header">
+			<div class="nr__allmenu-header-left">
+				<button type="button" class="nr__allmenu-btn nr__allmenu-btn--user" aria-label="마이페이지">
+					<i class="icon-mask-my" aria-hidden="true"></i>
+				</button>
+			</div>
+			<div class="nr__allmenu-header-actions">
+				<button type="button" class="nr__allmenu-btn nr__allmenu-btn--setting" aria-label="설정">
+					<i class="icon-mask-setting" aria-hidden="true"></i>
+				</button>
+				<button type="button" class="nr__allmenu-btn nr__allmenu-btn--close" data-dialog-button="close" aria-label="전체 메뉴 닫기">
+					<i class="icon-mask-close" aria-hidden="true"></i>
+				</button>
+			</div>
+		</div>
+		<!-- E : 전체메뉴 헤더 -->
+
+		<!-- S : 전체메뉴 본문 스크롤 영역 -->
+		<div class="ui-dialog--main nr__allmenu-body" data-dialog-item="main">
+		<!-- S : 화면스타일 선택 섹션 -->
+			<section class="nr__allmenu-style-section">
+				<div class="nr__allmenu-section-title">
+					<strong class="text-16" data-text-color="theme1" data-weight="700">화면스타일 선택</strong>
+					<button type="button" class="nr__help-btn" aria-label="화면스타일 도움말">
+						<i class="icon-aspect-help-theme" data-size="24" aria-hidden="true"></i>
+					</button>
+				</div>
+				<div class="nr__allmenu-style-cards form-fake-group-flex" data-form-style="round-icon-box">
+					<div class="form-fake-button">
+						<input type="radio" class="form-fake-input" id="allmenu_style_1" name="allmenu_style_" value="dash" checked="">
+						<label for="allmenu_style_1" class="form-fake-label">
+							<i class="icon-mask-style1" aria-hidden="true"></i>
+							대시보드형
+						</label>
+					</div>
+					<div class="form-fake-button">
+						<input type="radio" class="form-fake-input" id="allmenu_style_2" name="allmenu_style_" value="info">
+						<label for="allmenu_style_2" class="form-fake-label">
+							<i class="icon-mask-style2" aria-hidden="true"></i>
+							정보집약형
+						</label>
+					</div>
+					<div class="form-fake-button">
+						<input type="radio" class="form-fake-input" id="allmenu_style_3" name="allmenu_style_" value="map">
+						<label for="allmenu_style_3" class="form-fake-label">
+							<i class="icon-mask-style3" aria-hidden="true"></i>
+							지도형
+						</label>
+					</div>
+				</div>
+			</section>
+			<!-- E : 화면스타일 선택 섹션 -->
+
+			<!-- S : 서비스 카테고리 메뉴 목록 섹션 -->
+			<section class="nr__allmenu-category-section">
+				<ul class="nr__allmenu-category-list">
+					<!-- 1. 전국 -->
+					<li class="nr__allmenu-category-item">
+						<div class="nr__allmenu-cat-head">
+							<span class="nr__allmenu-cat-icon">
+								<i class="icon-mask-menu1" aria-hidden="true"></i>
+							</span>
+							<strong class="nr__allmenu-cat-name">전국</strong>
+						</div>
+						<div class="nr__allmenu-sub-wrap">
+							<a href="#" class="nr__allmenu-sub-link">주요도시</a>
+							<a href="#" class="nr__allmenu-sub-link">지역별 상세관측</a>
+							<a href="#" class="nr__allmenu-sub-link">과거관측</a>
+						</div>
+					</li>
+
+					<!-- 2. 예보 -->
+					<li class="nr__allmenu-category-item">
+						<div class="nr__allmenu-cat-head">
+							<span class="nr__allmenu-cat-icon">
+								<i class="icon-mask-menu2" aria-hidden="true"></i>
+							</span>
+							<strong class="nr__allmenu-cat-name">예보</strong>
+						</div>
+						<div class="nr__allmenu-sub-wrap">
+							<a href="#" class="nr__allmenu-sub-link">단기예보</a>
+							<a href="#" class="nr__allmenu-sub-link">중기예보</a>
+						</div>
+					</li>
+
+					<!-- 3. 영상 -->
+					<li class="nr__allmenu-category-item">
+						<div class="nr__allmenu-cat-head">
+							<span class="nr__allmenu-cat-icon">
+								<i class="icon-mask-menu3" aria-hidden="true"></i>
+							</span>
+							<strong class="nr__allmenu-cat-name">영상</strong>
+						</div>
+						<div class="nr__allmenu-sub-wrap">
+							<a href="#" class="nr__allmenu-sub-link">날씨지도</a>
+							<a href="#" class="nr__allmenu-sub-link">분석일기도</a>
+							<a href="#" class="nr__allmenu-sub-link">위성</a>
+							<a href="#" class="nr__allmenu-sub-link">낙뢰</a>
+						</div>
+					</li>
+
+					<!-- 4. 바다 -->
+					<li class="nr__allmenu-category-item">
+						<div class="nr__allmenu-cat-head">
+							<span class="nr__allmenu-cat-icon">
+								<i class="icon-mask-menu4" aria-hidden="true"></i>
+							</span>
+							<strong class="nr__allmenu-cat-name">바다</strong>
+						</div>
+						<div class="nr__allmenu-sub-wrap">
+							<a href="#" class="nr__allmenu-sub-link">일일예보</a>
+							<a href="#" class="nr__allmenu-sub-link">중기예보</a>
+							<a href="#" class="nr__allmenu-sub-link">너울 예측</a>
+							<a href="#" class="nr__allmenu-sub-link">이안류 예측</a>
+						</div>
+					</li>
+
+					<!-- 5. 항공 -->
+					<li class="nr__allmenu-category-item">
+						<div class="nr__allmenu-cat-head">
+							<span class="nr__allmenu-cat-icon">
+								<i class="icon-mask-menu5" aria-hidden="true"></i>
+							</span>
+							<strong class="nr__allmenu-cat-name">항공</strong>
+						</div>
+						<div class="nr__allmenu-sub-wrap">
+							<a href="#" class="nr__allmenu-sub-link">공항날씨</a>
+							<a href="#" class="nr__allmenu-sub-link">실시간 운항정보</a>
+						</div>
+					</li>
+
+					<!-- 6. 지진 -->
+					<li class="nr__allmenu-category-item">
+						<div class="nr__allmenu-cat-head">
+							<span class="nr__allmenu-cat-icon">
+								<i class="icon-mask-menu6" aria-hidden="true"></i>
+							</span>
+							<strong class="nr__allmenu-cat-name">지진</strong>
+						</div>
+						<div class="nr__allmenu-sub-wrap">
+							<a href="#" class="nr__allmenu-sub-link">실시간 지진감시</a>
+							<a href="#" class="nr__allmenu-sub-link">최근 지진</a>
+							<a href="#" class="nr__allmenu-sub-link">지진해일 조회</a>
+							<a href="#" class="nr__allmenu-sub-link">화산 조회</a>
+						</div>
+					</li>
+
+					<!-- 7. 태풍 -->
+					<li class="nr__allmenu-category-item">
+						<div class="nr__allmenu-cat-head">
+							<span class="nr__allmenu-cat-icon">
+								<i class="icon-mask-menu7" aria-hidden="true"></i>
+							</span>
+							<strong class="nr__allmenu-cat-name">태풍</strong>
+						</div>
+						<div class="nr__allmenu-sub-wrap">
+							<a href="#" class="nr__allmenu-sub-link">태풍 통보문</a>
+							<a href="#" class="nr__allmenu-sub-link">열대감시</a>
+						</div>
+					</li>
+
+					<!-- 8. 산악 -->
+					<li class="nr__allmenu-category-item">
+						<div class="nr__allmenu-cat-head">
+							<span class="nr__allmenu-cat-icon">
+								<i class="icon-mask-menu8" aria-hidden="true"></i>
+							</span>
+							<strong class="nr__allmenu-cat-name">산악</strong>
+						</div>
+						<div class="nr__allmenu-sub-wrap">
+							<a href="#" class="nr__allmenu-sub-link">산악날씨</a>
+						</div>
+					</li>
+
+					<!-- 9. 제보 -->
+					<li class="nr__allmenu-category-item">
+						<div class="nr__allmenu-cat-head">
+							<span class="nr__allmenu-cat-icon">
+								<i class="icon-mask-menu9" aria-hidden="true"></i>
+							</span>
+							<strong class="nr__allmenu-cat-name">제보</strong>
+						</div>
+						<div class="nr__allmenu-sub-wrap">
+							<a href="#" class="nr__allmenu-sub-link">제보 조회</a>
+							<a href="#" class="nr__allmenu-sub-link">제보 등록</a>
+							<a href="#" class="nr__allmenu-sub-link">나의 제보</a>
+						</div>
+					</li>
+				</ul>
+			</section>
+			<!-- E : 서비스 카테고리 메뉴 목록 섹션 -->
+
+			<!-- S : 하단 정책 · 정보 섹션 -->
+			<section class="nr__allmenu-bottom-section">
+				<div class="nr__allmenu-bottom-title">
+					<span class="nr__allmenu-cat-icon">
+								<i class="icon-mask-menu10" aria-hidden="true"></i>
+							</span>
+					<strong class="nr__allmenu-cat-name">정책 · 정보</strong>
+				</div>
+
+				<!-- 바로가기 화살표 링크 -->
+				<ul class="nr__allmenu-arrow-nav">
+					<li class="nr__allmenu-arrow-item">
+						<a href="#" class="nr__allmenu-arrow-link">
+							<span class="nr__allmenu-arrow-text">제안 · 건의</span>
+							<i class="icon-mask-arrow" aria-hidden="true"></i>
+						</a>
+					</li>
+					<li class="nr__allmenu-arrow-item">
+						<a href="#" class="nr__allmenu-arrow-link">
+							<span class="nr__allmenu-arrow-text">공지사항</span>
+							<i class="icon-mask-arrow" aria-hidden="true"></i>
+						</a>
+					</li>
+					<li class="nr__allmenu-arrow-item">
+						<a href="#" class="nr__allmenu-arrow-link">
+							<span class="nr__allmenu-arrow-text">이용안내</span>
+							<i class="icon-mask-arrow" aria-hidden="true"></i>
+						</a>
+					</li>
+					<li class="nr__allmenu-arrow-item">
+						<div class="nr__allmenu-arrow-link">
+							<span class="nr__allmenu-arrow-text">정책 · 정보</span>
+						</div>
+						<ul class="nr__allmenu-meta-list">
+							<li><a href="#" class="nr__allmenu-meta-link">개인정보처리방침</a></li>
+							<li><a href="#" class="nr__allmenu-meta-link">위치정보 수집 안내</a></li>
+							<li><a href="#" class="nr__allmenu-meta-link">저작권 보호 및 정책</a></li>
+							<li><a href="#" class="nr__allmenu-meta-link">접근권한 안내</a></li>
+							<li><a href="#" class="nr__allmenu-meta-link">앱 버전 정보</a></li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<!-- E : 하단 정책 · 정보 섹션 -->
+		</div>
+		<!-- E : 전체메뉴 본문 스크롤 영역 -->
+	</div>
+</div>
+<!-- E : 전체 메뉴 (All Menu Full-screen) -->
+
+<!-- S : Setting Dialog (설정 화면전체 다이얼로그) -->
+<div class="ui-dialog nr__setting-dialog is-full" data-dialog="setting-dialog" data-ps="bottom" aria-hidden="true" role="dialog" aria-labelledby="setting-dialog-title">
+	<div class="ui-dialog--wrap" data-dialog-item="wrap" tabindex="-1">
+		<!-- S : 헤더 -->
+		<div class="ui-dialog--header nr__setting-header">
+			<button type="button" class="nr__setting-btn-home" aria-label="홈으로 이동">
+				<i class="icon-mask-home" aria-hidden="true"></i>
+			</button>
+			<h2 id="setting-dialog-title" class="ui-dialog--header-title nr__setting-title">설정</h2>
+			<button type="button" class="nr__setting-btn-close" data-dialog-button="close" aria-label="설정 닫기">
+				<i class="icon-mask-close" aria-hidden="true"></i>
+			</button>
+		</div>
+		<!-- E : 헤더 -->
+
+		<!-- S : 본문 -->
+		<div class="ui-dialog--main nr__setting-main" data-dialog-item="main">
+			<ul class="nr__allmenu-arrow-nav">
+				<li class="nr__allmenu-arrow-item">
+					<a href="#" class="nr__allmenu-arrow-link">
+						<div class="nr__allmenu-arrow-link-group">
+							<i class="icon-mask-alarm" aria-hidden="true"></i>
+							<span class="nr__allmenu-arrow-text">알림설정</span>
+						</div>
+						<i class="icon-mask-arrow" aria-hidden="true"></i>
+					</a>
+				</li>
+				<li class="nr__allmenu-arrow-item">
+					<a href="#" class="nr__allmenu-arrow-link">
+						<div class="nr__allmenu-arrow-link-group">
+							<i class="icon-mask-place" aria-hidden="true"></i>
+							<span class="nr__allmenu-arrow-text">관심지역 설정</span>
+						</div>
+						<i class="icon-mask-arrow" aria-hidden="true"></i>
+					</a>
+				</li>
+			</ul>
+			<hr />
+			<ul class="nr__setting-list">
+				<!-- 3. 예보 표출 -->
+				<li class="nr__setting-item">
+					<span class="nr__setting-label">예보 표출</span>
+					<div class="form-element-switch" data-size="30">
+						<input type="checkbox" id="setting_sw_1" checked>
+						<label for="setting_sw_1" data-label-on="시간별" data-label-off="일별">
+							<span class="txt-checked">시간별</span>
+							<span class="txt-uncheck">일별</span>
+						</label>
+					</div>
+				</li>
+
+				<!-- 4. 첫화면 표출 -->
+				<li class="nr__setting-item">
+					<span class="nr__setting-label">첫화면 표출</span>
+					<div class="form-element-switch" data-size="30">
+						<input type="checkbox" id="setting_sw_2" checked>
+						<label for="setting_sw_2" data-label-on="현재" data-label-off="예보">
+							<span class="txt-checked">현재</span>
+							<span class="txt-uncheck">예보</span>
+						</label>
+					</div>
+				</li>
+
+				<!-- 5. 영상 재생 -->
+				<li class="nr__setting-item">
+					<span class="nr__setting-label">영상 재생</span>
+					<div class="form-element-switch" data-size="30">
+						<input type="checkbox" id="setting_sw_3" checked>
+						<label for="setting_sw_3" data-label-on="자동" data-label-off="수동">
+							<span class="txt-checked">자동</span>
+							<span class="txt-uncheck">수동</span>
+						</label>
+					</div>
+				</li>
+
+				<!-- 6. 풍속 단위 설정 -->
+				<li class="nr__setting-item">
+					<span class="nr__setting-label">풍속 단위 설정</span>
+					<div class="form-element-switch" data-size="30">
+						<input type="checkbox" id="setting_sw_4" checked>
+						<label for="setting_sw_4" data-label-on="m/s" data-label-off="km/h">
+							<span class="txt-checked">m/s</span>
+							<span class="txt-uncheck">km/h</span>
+						</label>
+					</div>
+				</li>
+
+				<!-- 7. 제보메뉴활성화 -->
+				<li class="nr__setting-item">
+					<span class="nr__setting-label">제보메뉴활성화</span>
+					<div class="form-element-switch" data-size="30">
+						<input type="checkbox" id="setting_sw_5" checked>
+						<label for="setting_sw_5" data-label-on="ON" data-label-off="OFF">
+							<span class="txt-checked">ON</span>
+							<span class="txt-uncheck">OFF</span>
+						</label>
+					</div>
+				</li>
+
+				<!-- 8. 알림 메뉴 활성화 -->
+				<li class="nr__setting-item">
+					<span class="nr__setting-label">알림 메뉴 활성화</span>
+					<div class="form-element-switch" data-size="30">
+						<input type="checkbox" id="setting_sw_6" checked>
+						<label for="setting_sw_6" data-label-on="ON" data-label-off="OFF">
+							<span class="txt-checked">ON</span>
+							<span class="txt-uncheck">OFF</span>
+						</label>
+					</div>
+				</li>
+
+				<!-- 9. 언어설정 -->
+				<li class="nr__setting-item">
+					<span class="nr__setting-label">언어설정</span>
+					<div class="form-element-switch" data-size="30">
+						<input type="checkbox" id="setting_sw_7" checked>
+						<label for="setting_sw_7" data-label-on="한국어" data-label-off="ENG">
+							<span class="txt-checked">한국어</span>
+							<span class="txt-uncheck">ENG</span>
+						</label>
+					</div>
+				</li>
+
+				<!-- 10. 큰 글자 모드 -->
+				<li class="nr__setting-item">
+					<span class="nr__setting-label">큰 글자 모드</span>
+					<div class="form-element-switch" data-size="30">
+						<input type="checkbox" id="setting_sw_8" checked>
+						<label for="setting_sw_8" data-label-on="ON" data-label-off="OFF">
+							<span class="txt-checked">ON</span>
+							<span class="txt-uncheck">OFF</span>
+						</label>
+					</div>
+				</li>
+
+				<!-- 11. 테마사용 -->
+				<li class="nr__setting-item">
+					<span class="nr__setting-label">테마사용</span>
+					<div class="form-element-switch" data-size="30">
+						<input type="checkbox" id="setting_sw_9" checked>
+						<label for="setting_sw_9" data-label-on="라이트" data-label-off="다크">
+							<span class="txt-checked">라이트</span>
+							<span class="txt-uncheck">다크</span>
+						</label>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<!-- E : 본문 -->
+	</div>
+</div>
+<!-- E : Setting Dialog -->
+<!-- E : header -->

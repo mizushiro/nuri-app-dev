@@ -1,0 +1,1267 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="description" content="누리앱(Nuri-App) 2026 아코디언 UI 컴포넌트 디자인 시스템 가이드 - WAI-ARIA, 단일/다중 열림, URL 파라미터, 키보드 탐색 및 JS API" />
+  <title>아코디언 컴포넌트 가이드 | 누리앱(Nuri-App) 디자인 시스템</title>
+
+  <!-- 기본 스타일 (ui.base.css: pretendard, ui.common, component 등) -->
+  <link rel="stylesheet" href="../resources/css-2026/ui.base.css">
+  <link rel="stylesheet" href="../resources/css-2026/component.css">
+  <link rel="stylesheet" href="../resources/css-2026/component_style.css">
+
+  <style>
+    /* ==========================================================================
+       Accordion Guide Custom Tokens & Design System
+       ========================================================================== */
+    :root {
+      --fg-font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      --fg-primary: #0475F4;
+      --fg-primary-hover: #0360ca;
+      --fg-primary-light: rgba(4, 117, 244, 0.12);
+      --fg-accent: #2978ED;
+      --fg-success: #10B981;
+      --fg-warning: #F59E0B;
+      --fg-danger: #EF4444;
+
+      /* Dark Theme (Default) */
+      --fg-bg-page: #0F131D;
+      --fg-bg-surface: #171C28;
+      --fg-bg-surface-elevated: #202737;
+      --fg-bg-surface-subtle: #273043;
+      --fg-border: rgba(255, 255, 255, 0.08);
+      --fg-border-strong: rgba(255, 255, 255, 0.16);
+      --fg-text-primary: #F3F4F6;
+      --fg-text-secondary: #9CA3AF;
+      --fg-text-muted: #6B7280;
+      --fg-preview-bg: #121620;
+      --fg-card-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      --fg-code-bg: #0B0E17;
+      --fg-glass-bg: rgba(23, 28, 40, 0.85);
+      --fg-glass-border: rgba(255, 255, 255, 0.1);
+    }
+
+    body.light-theme {
+      --fg-bg-page: #F4F6FB;
+      --fg-bg-surface: #FFFFFF;
+      --fg-bg-surface-elevated: #FFFFFF;
+      --fg-bg-surface-subtle: #EEF2F8;
+      --fg-border: #E2E8F0;
+      --fg-border-strong: #CBD5E1;
+      --fg-text-primary: #0F172A;
+      --fg-text-secondary: #475569;
+      --fg-text-muted: #94A3B8;
+      --fg-preview-bg: #F8FAFC;
+      --fg-card-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+      --fg-code-bg: #1E293B;
+      --fg-glass-bg: rgba(255, 255, 255, 0.9);
+      --fg-glass-border: rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 62.5%; /* 1rem = 10px */
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--fg-font-sans);
+      background-color: var(--fg-bg-page);
+      color: var(--fg-text-primary);
+      min-height: 100vh;
+      line-height: 1.5;
+      font-size: 1.4rem;
+      transition: background-color 0.25s ease, color 0.25s ease;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .fg-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2.4rem 8rem;
+    }
+
+    /* Header */
+    .fg-header {
+      padding: 4rem 0 2.8rem;
+      border-bottom: 1px solid var(--fg-border);
+      margin-bottom: 3.2rem;
+    }
+
+    .fg-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .fg-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.4rem 1rem;
+      background: var(--fg-primary-light);
+      color: var(--fg-primary);
+      border-radius: 9999px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+
+    .fg-badge::before {
+      content: '';
+      width: 0.7rem;
+      height: 0.7rem;
+      border-radius: 50%;
+      background: var(--fg-primary);
+      box-shadow: 0 0 10px var(--fg-primary);
+    }
+
+    .fg-title {
+      font-size: 3.2rem;
+      font-weight: 800;
+      color: var(--fg-text-primary);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.8rem;
+    }
+
+    .fg-desc {
+      font-size: 1.5rem;
+      color: var(--fg-text-secondary);
+      max-width: 820px;
+      line-height: 1.6;
+    }
+
+    .fg-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .fg-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      padding: 0.9rem 1.6rem;
+      border-radius: 0.8rem;
+      font-size: 1.35rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid var(--fg-border);
+      background: var(--fg-bg-surface-elevated);
+      color: var(--fg-text-primary);
+      text-decoration: none;
+      user-select: none;
+    }
+
+    .fg-btn:hover {
+      background: var(--fg-bg-surface-subtle);
+      border-color: var(--fg-border-strong);
+      transform: translateY(-1px);
+    }
+
+    .fg-btn--primary {
+      background: var(--fg-primary);
+      border-color: var(--fg-primary);
+      color: #fff;
+    }
+
+    .fg-btn--primary:hover {
+      background: var(--fg-primary-hover);
+      color: #fff;
+    }
+
+    /* Quick Nav */
+    .fg-quick-nav {
+      display: flex;
+      gap: 0.8rem;
+      overflow-x: auto;
+      padding: 0.6rem 0 1.6rem;
+      margin-bottom: 3.2rem;
+      scrollbar-width: none;
+    }
+    .fg-quick-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .fg-quick-link {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.7rem 1.4rem;
+      background: var(--fg-bg-surface);
+      border: 1px solid var(--fg-border);
+      border-radius: 2rem;
+      color: var(--fg-text-secondary);
+      font-size: 1.3rem;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .fg-quick-link:hover {
+      background: var(--fg-primary-light);
+      color: var(--fg-primary);
+      border-color: var(--fg-primary);
+    }
+
+    /* Section Layout */
+    .fg-section {
+      margin-bottom: 5.6rem;
+      scroll-margin-top: 2rem;
+    }
+
+    .fg-section-head {
+      margin-bottom: 2rem;
+    }
+
+    .fg-section-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--fg-text-primary);
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .fg-section-tag {
+      font-size: 1.2rem;
+      font-weight: 600;
+      font-family: monospace;
+      padding: 0.2rem 0.8rem;
+      border-radius: 0.4rem;
+      background: var(--fg-primary-light);
+      color: var(--fg-primary);
+    }
+
+    .fg-section-desc {
+      font-size: 1.45rem;
+      color: var(--fg-text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Component Card */
+    .fg-card {
+      background: var(--fg-bg-surface);
+      border: 1px solid var(--fg-border);
+      border-radius: 1.4rem;
+      overflow: hidden;
+      box-shadow: var(--fg-card-shadow);
+      margin-bottom: 2.4rem;
+    }
+
+    .fg-card-header {
+      padding: 1.6rem 2.4rem;
+      border-bottom: 1px solid var(--fg-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.6rem;
+      flex-wrap: wrap;
+      background: var(--fg-bg-surface-elevated);
+    }
+
+    .fg-card-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--fg-text-primary);
+    }
+
+    .fg-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .fg-chip {
+      font-size: 1.2rem;
+      font-weight: 600;
+      font-family: monospace;
+      padding: 0.3rem 0.8rem;
+      border-radius: 0.4rem;
+      background: var(--fg-bg-surface-subtle);
+      border: 1px solid var(--fg-border);
+      color: var(--fg-text-secondary);
+    }
+
+    /* Live Preview Area */
+    .fg-preview {
+      padding: 3.2rem 2.4rem;
+      background: var(--fg-preview-bg);
+      border-bottom: 1px solid var(--fg-border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 20rem;
+      position: relative;
+    }
+
+    /* Code Block Area */
+    .fg-code-block {
+      background: var(--fg-code-bg);
+      position: relative;
+    }
+
+    .fg-code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .fg-code-lang {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #94A3B8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-family: monospace;
+    }
+
+    .fg-copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.4rem 1rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #E2E8F0;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 0.6rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .fg-copy-btn:hover {
+      background: var(--fg-primary);
+      border-color: var(--fg-primary);
+      color: #fff;
+    }
+
+    .fg-copy-btn.is-copied {
+      background: var(--fg-success);
+      border-color: var(--fg-success);
+      color: #fff;
+    }
+
+    pre.fg-code {
+      margin: 0;
+      padding: 1.8rem 2rem;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 1.3rem;
+      line-height: 1.6;
+      color: #E2E8F0;
+    }
+
+    /* Table Specification */
+    .fg-table-wrap {
+      overflow-x: auto;
+      margin-top: 1.6rem;
+    }
+
+    .fg-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 1.35rem;
+      text-align: left;
+    }
+
+    .fg-table th {
+      background: var(--fg-bg-surface-elevated);
+      color: var(--fg-text-secondary);
+      font-weight: 700;
+      padding: 1.2rem 1.6rem;
+      border-bottom: 1px solid var(--fg-border);
+      white-space: nowrap;
+    }
+
+    .fg-table td {
+      padding: 1.2rem 1.6rem;
+      border-bottom: 1px solid var(--fg-border);
+      color: var(--fg-text-primary);
+    }
+
+    .fg-table code {
+      font-family: monospace;
+      font-size: 1.25rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 0.4rem;
+      background: var(--fg-primary-light);
+      color: var(--fg-primary);
+    }
+
+    /* Interactive Log Console */
+    .fg-console {
+      background: #0B0E17;
+      border-radius: 0.8rem;
+      padding: 1.4rem 1.6rem;
+      font-family: monospace;
+      font-size: 1.25rem;
+      color: #10B981;
+      height: 14rem;
+      overflow-y: auto;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 1.6rem;
+      width: 100%;
+    }
+
+    .fg-console-item {
+      margin-bottom: 0.4rem;
+      word-break: break-all;
+    }
+
+    .fg-console-item .time {
+      color: #94A3B8;
+      margin-right: 0.8rem;
+    }
+
+    /* Accordion Custom Guide Styling */
+    .nr__accordion-wrap,
+    .accordion-wrap,
+    [data-accordion] {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .nr__accordion-item,
+    .accordion-item,
+    [data-accordion-item] {
+      background: var(--fg-bg-surface);
+      border: 1px solid var(--fg-border-strong);
+      border-radius: 1rem;
+      overflow: hidden;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .nr__accordion-item:focus-within,
+    [data-accordion-item]:focus-within {
+      border-color: var(--fg-primary);
+    }
+
+    .nr__accordion-btn,
+    .accordion-btn,
+    [data-accordion-button] {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.6rem;
+      padding: 1.6rem 2rem;
+      background: transparent;
+      border: none;
+      color: var(--fg-text-primary);
+      font-size: 1.5rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+      outline: none;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nr__accordion-btn:hover,
+    [data-accordion-button]:hover {
+      background: var(--fg-bg-surface-elevated);
+      color: var(--fg-primary);
+    }
+
+    .nr__accordion-btn.active,
+    .nr__accordion-btn[aria-expanded="true"],
+    [data-accordion-button][aria-expanded="true"] {
+      background: var(--fg-primary-light);
+      color: var(--fg-primary);
+    }
+
+    .nr__accordion-btn .arrow-icon,
+    [data-accordion-button] .arrow-icon {
+      width: 1.8rem;
+      height: 1.8rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-shrink: 0;
+    }
+
+    .nr__accordion-btn[aria-expanded="true"] .arrow-icon,
+    [data-accordion-button][aria-expanded="true"] .arrow-icon {
+      transform: rotate(180deg);
+    }
+
+    .nr__accordion-body,
+    .accordion-body,
+    [data-accordion-body] {
+      padding: 2rem;
+      border-top: 1px solid var(--fg-border);
+      background: var(--fg-bg-surface-subtle);
+      color: var(--fg-text-secondary);
+      font-size: 1.4rem;
+      line-height: 1.65;
+    }
+  </style>
+</head>
+
+<body class="light-theme">
+
+  <div class="fg-container">
+
+    <!-- S : Header -->
+    <header class="fg-header">
+      <div class="fg-header-top">
+        <div class="fg-header-title-wrap">
+          <span class="fg-badge">Component Guide 2026</span>
+          <h1 class="fg-title">Accordion UI Component Guide</h1>
+          <p class="fg-desc">
+            <code>resources/js-2026/component/ui-accordion.js</code> 기반의 올인원 아코디언 컴포넌트 명세서 및 인터랙티브 테스트 가이드입니다.<br>
+            <code>ui-dropdown.js</code>와 동일하게 <strong>자동 실행 함수(<code>initAllAccordions</code>)</strong>와 <strong>개별 실행 함수(<code>initAccordion</code>)</strong>를 일원화 지원하며,
+            WAI-ARIA 웹접근성, 단일/다중 열림 제어(singleOpen), 키보드 방향키 탐색, URL 파라미터 자동 확장 및 라이프사이클 관리(destroy, update)를 제공합니다.
+          </p>
+        </div>
+        <div class="fg-header-actions">
+          <!-- ./inc/guide-header-actions.html 공통 영역 비동기 로드 -->
+        </div>
+      </div>
+    </header>
+    <!-- E : Header -->
+
+    <!-- S : Quick Navigation -->
+    <nav class="fg-quick-nav" aria-label="섹션 빠른 이동">
+      <a href="#sec-single" class="fg-quick-link">01. 단일 열림 모드 (Single Open)</a>
+      <a href="#sec-multi" class="fg-quick-link">02. 다중 열림 모드 (Multi Open)</a>
+      <a href="#sec-default" class="fg-quick-link">03. 초기 열림 & URL 파라미터</a>
+      <a href="#sec-legacy" class="fg-quick-link">04. 클래스 기반 하위 호환</a>
+      <a href="#sec-aria" class="fg-quick-link">05. WAI-ARIA & 키보드 탐색</a>
+      <a href="#sec-playground" class="fg-quick-link">06. JS API & 플레이그라운드</a>
+      <a href="#sec-spec" class="fg-quick-link">07. API 명세서 & 데이터 속성</a>
+    </nav>
+    <!-- E : Quick Navigation -->
+
+    <!-- ==========================================================================
+         Section 01: Single Open Mode
+         ========================================================================== -->
+    <section class="fg-section" id="sec-single">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          <span>01. 단일 열림 모드 (Single Open Mode)</span>
+          <span class="fg-section-tag">singleOpen: true (기본값)</span>
+        </h2>
+        <p class="fg-section-desc">
+          한 번에 오직 하나의 아코디언 항목만 열릴 수 있습니다. 다른 항목을 클릭하면 기존에 열려있던 항목이 부드럽게 닫힙니다.
+        </p>
+      </div>
+
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <div class="fg-card-title">기본 단일 열림 아코디언</div>
+          <div class="fg-card-meta">
+            <span class="fg-chip">[data-accordion]</span>
+            <span class="fg-chip">[data-accordion-item]</span>
+            <span class="fg-chip">[data-accordion-button]</span>
+            <span class="fg-chip">[data-accordion-body]</span>
+          </div>
+        </div>
+
+        <div class="fg-preview">
+          <div class="nr__accordion-wrap" data-accordion="acco-single-demo">
+            <!-- Item 1 -->
+            <div class="nr__accordion-item" data-accordion-item="acco-single-demo">
+              <button type="button" class="nr__accordion-btn" data-accordion-button="acco-single-demo">
+                <span data-accordion-title="acco-single-demo">🌦️ 실시간 호우 특보 발령 시 대피 요령</span>
+                <span class="arrow-icon" aria-hidden="true">▼</span>
+              </button>
+              <div class="nr__accordion-body" data-accordion-body="acco-single-demo">
+                호우 경보 발령 시 하천변, 지하차도, 산사태 위험 지역의 출입을 금지하고 최신 기상 특보 방송을 청취하며 안전한 고지대로 대피하십시오.
+              </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="nr__accordion-item" data-accordion-item="acco-single-demo">
+              <button type="button" class="nr__accordion-btn" data-accordion-button="acco-single-demo">
+                <span data-accordion-title="acco-single-demo">❄️ 대설 주의보 및 강설 시 대중교통 이용 안내</span>
+                <span class="arrow-icon" aria-hidden="true">▼</span>
+              </button>
+              <div class="nr__accordion-body" data-accordion-body="acco-single-demo">
+                자가용 운행을 자제하고 지하철 및 시내버스 등 대중교통을 이용해 주시기 바라며, 내 집 앞 눈 치우기에 적극 동참해 주세요.
+              </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="nr__accordion-item" data-accordion-item="acco-single-demo">
+              <button type="button" class="nr__accordion-btn" data-accordion-button="acco-single-demo">
+                <span data-accordion-title="acco-single-demo">🌊 강풍 및 풍랑 주의보 해안가 통제 기준</span>
+                <span class="arrow-icon" aria-hidden="true">▼</span>
+              </button>
+              <div class="nr__accordion-body" data-accordion-body="acco-single-demo">
+                해안가 갯바위 및 방파제 낚시객은 즉시 철수해야 하며, 항포구 선박은 결박 상태를 점검하여 풍랑 피해를 예방하십시오.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fg-code-block">
+          <div class="fg-code-header">
+            <span class="fg-code-lang">HTML 마크업 (data-accordion 표준)</span>
+            <button type="button" class="fg-copy-btn">코드 복사</button>
+          </div>
+          <pre class="fg-code"><code>&lt;!-- [data-accordion] 단일 열림 기본 아코디언 마크업 --&gt;
+&lt;div class="nr__accordion-wrap" data-accordion="acco-faq"&gt;
+  &lt;div class="nr__accordion-item" data-accordion-item="acco-faq"&gt;
+    &lt;button type="button" class="nr__accordion-btn" data-accordion-button="acco-faq"&gt;
+      &lt;span data-accordion-title="acco-faq"&gt;질문 제목 1&lt;/span&gt;
+      &lt;span class="arrow-icon" aria-hidden="true"&gt;▼&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;div class="nr__accordion-body" data-accordion-body="acco-faq"&gt;
+      답변 내용 1
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type="module"&gt;
+  import { initAllAccordions } from '../resources/js-2026/component/ui-accordion.js';
+  // 페이지 내 모든 아코디언 자동 초기화
+  initAllAccordions();
+&lt;/script&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Section 02: Multi Open Mode
+         ========================================================================== -->
+    <section class="fg-section" id="sec-multi">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          <span>02. 다중 열림 모드 (Multi Open Mode)</span>
+          <span class="fg-section-tag">data-single-open="false" | singleOpen: false</span>
+        </h2>
+        <p class="fg-section-desc">
+          <code>data-single-open="false"</code> 속성을 지정하면 여러 항목을 동시에 열거나 펼쳐둔 상태로 유지할 수 있습니다.
+        </p>
+      </div>
+
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <div class="fg-card-title">다중 열림 지원 아코디언</div>
+          <div class="fg-card-meta">
+            <span class="fg-chip">data-single-open="false"</span>
+            <span class="fg-chip">독립 토글</span>
+          </div>
+        </div>
+
+        <div class="fg-preview">
+          <div class="nr__accordion-wrap" data-accordion="acco-multi-demo" data-single-open="false">
+            <!-- Item 1 -->
+            <div class="nr__accordion-item" data-accordion-item="acco-multi-demo">
+              <button type="button" class="nr__accordion-btn" data-accordion-button="acco-multi-demo">
+                <span data-accordion-title="acco-multi-demo">📌 항목 A: 전국 기상 레이더 영상 설정</span>
+                <span class="arrow-icon" aria-hidden="true">▼</span>
+              </button>
+              <div class="nr__accordion-body" data-accordion-body="acco-multi-demo">
+                레이더 강수 관측 및 합성 영상 데이터의 업데이트 주기는 5분 단위입니다.
+              </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="nr__accordion-item" data-accordion-item="acco-multi-demo">
+              <button type="button" class="nr__accordion-btn" data-accordion-button="acco-multi-demo">
+                <span data-accordion-title="acco-multi-demo">📌 항목 B: 위성 및 낙뢰 관측 옵션</span>
+                <span class="arrow-icon" aria-hidden="true">▼</span>
+              </button>
+              <div class="nr__accordion-body" data-accordion-body="acco-multi-demo">
+                천리안 2A호 위성의 적외선, 가시광선, 수증기 영상을 실시간으로 수집합니다.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fg-code-block">
+          <div class="fg-code-header">
+            <span class="fg-code-lang">HTML & JS</span>
+            <button type="button" class="fg-copy-btn">코드 복사</button>
+          </div>
+          <pre class="fg-code"><code>&lt;!-- data-single-open="false" 속성으로 다중 열림 지정 --&gt;
+&lt;div class="nr__accordion-wrap" data-accordion="my-multi" data-single-open="false"&gt;
+  ...
+&lt;/div&gt;
+
+&lt;script type="module"&gt;
+  import { initAccordion } from '../resources/js-2026/component/ui-accordion.js';
+
+  // JS 옵션으로 다중 열림 설정 시:
+  initAccordion('#my-multi', {
+    singleOpen: false
+  });
+&lt;/script&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Section 03: Default Expanded & URL Parameter
+         ========================================================================== -->
+    <section class="fg-section" id="sec-default">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          <span>03. 초기 열림 및 URL 파라미터 연동</span>
+          <span class="fg-section-tag">data-expanded="0" | ?acco=btn_id</span>
+        </h2>
+        <p class="fg-section-desc">
+          <code>data-expanded="0"</code> 속성이나 JS 옵션(<code>expanded: 0</code>)으로 특정 인덱스/ID 항목을 초기 오픈 상태로 지정할 수 있으며,
+          URL Query String에 <code>?acco=버튼ID</code>가 포함되면 해당 항목이 자동으로 확장됩니다.
+        </p>
+      </div>
+
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <div class="fg-card-title">첫 번째 항목(0번) 기본 열림 시연</div>
+          <div class="fg-card-meta">
+            <span class="fg-chip">data-expanded="0"</span>
+            <span class="fg-chip">?acco=... URL 파라미터 지원</span>
+          </div>
+        </div>
+
+        <div class="fg-preview">
+          <div class="nr__accordion-wrap" data-accordion="acco-expanded-demo" data-expanded="0">
+            <!-- Item 1 (Default Open) -->
+            <div class="nr__accordion-item" data-accordion-item="acco-expanded-demo">
+              <button type="button" class="nr__accordion-btn" data-accordion-button="acco-expanded-demo">
+                <span data-accordion-title="acco-expanded-demo">⭐️ [초기 열림] 1번 주요 통보 사항</span>
+                <span class="arrow-icon" aria-hidden="true">▼</span>
+              </button>
+              <div class="nr__accordion-body" data-accordion-body="acco-expanded-demo">
+                이 항목은 <code>data-expanded="0"</code> 설정에 의해 로딩 시 자동으로 열려 있는 상태로 렌더링됩니다.
+              </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="nr__accordion-item" data-accordion-item="acco-expanded-demo">
+              <button type="button" class="nr__accordion-btn" data-accordion-button="acco-expanded-demo">
+                <span data-accordion-title="acco-expanded-demo">2번 보조 설명 사항</span>
+                <span class="arrow-icon" aria-hidden="true">▼</span>
+              </button>
+              <div class="nr__accordion-body" data-accordion-body="acco-expanded-demo">
+                두 번째 항목입니다.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fg-code-block">
+          <div class="fg-code-header">
+            <span class="fg-code-lang">HTML & JS</span>
+            <button type="button" class="fg-copy-btn">코드 복사</button>
+          </div>
+          <pre class="fg-code"><code>&lt;!-- data-expanded="0" 으로 0번째 인덱스 자동 열림 --&gt;
+&lt;div class="nr__accordion-wrap" data-accordion="my-default" data-expanded="0"&gt;
+  ...
+&lt;/div&gt;
+
+&lt;!-- URL 직접 접근 링크 예시 --&gt;
+&lt;a href="guide-accordion.html?acco=my-default-btn-1"&gt;특정 아코디언 다이렉트 링크&lt;/a&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Section 04: Legacy Class Compatibility
+         ========================================================================== -->
+    <section class="fg-section" id="sec-legacy">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          <span>04. 클래스 기반 마크업 하위 호환</span>
+          <span class="fg-section-tag">.nr__accordion-wrap | .accordion-wrap</span>
+        </h2>
+        <p class="fg-section-desc">
+          기존 프로젝트 코드베이스의 <code>.nr__accordion-wrap</code>, <code>.accordion-wrap</code>, <code>.accordion-item</code>, <code>.accordion-btn</code> 클래스 마크업을 변경 없이 그대로 동작하도록 하위 호환을 보장합니다.
+        </p>
+      </div>
+
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <div class="fg-card-title">클래스 기반 기존 마크업 호환 시연</div>
+          <div class="fg-card-meta">
+            <span class="fg-chip">.nr__accordion-wrap</span>
+            <span class="fg-chip">.nr__accordion-item</span>
+            <span class="fg-chip">.nr__accordion-btn</span>
+          </div>
+        </div>
+
+        <div class="fg-preview">
+          <div class="nr__accordion-wrap" id="legacy-acco-example">
+            <div class="nr__accordion-item">
+              <button type="button" class="nr__accordion-btn">
+                <span>클래스 기반 하위 호환 타이틀 1</span>
+                <span class="arrow-icon" aria-hidden="true">▼</span>
+              </button>
+              <div class="nr__accordion-body">
+                클래스 요소 탐색을 통해 data-* 속성이 없어도 자동 감지되어 ARIA 속성과 이벤트를 할당합니다.
+              </div>
+            </div>
+            <div class="nr__accordion-item">
+              <button type="button" class="nr__accordion-btn">
+                <span>클래스 기반 하위 호환 타이틀 2</span>
+                <span class="arrow-icon" aria-hidden="true">▼</span>
+              </button>
+              <div class="nr__accordion-body">
+                두 번째 기존 클래스 아코디언 내용입니다.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fg-code-block">
+          <div class="fg-code-header">
+            <span class="fg-code-lang">HTML 마크업</span>
+            <button type="button" class="fg-copy-btn">코드 복사</button>
+          </div>
+          <pre class="fg-code"><code>&lt;!-- 기존 클래스 방식 마크업도 initAllAccordions()로 자동 초기화됩니다 --&gt;
+&lt;div class="nr__accordion-wrap"&gt;
+  &lt;div class="nr__accordion-item"&gt;
+    &lt;button type="button" class="nr__accordion-btn"&gt;
+      &lt;span&gt;타이틀 1&lt;/span&gt;
+      &lt;span class="arrow-icon"&gt;▼&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;div class="nr__accordion-body"&gt;내용 1&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Section 05: WAI-ARIA & Keyboard Navigation
+         ========================================================================== -->
+    <section class="fg-section" id="sec-aria">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          <span>05. WAI-ARIA 웹접근성 & 키보드 내비게이션</span>
+          <span class="fg-section-tag">ArrowNavigator | Keydown Focus Loop</span>
+        </h2>
+        <p class="fg-section-desc">
+          모든 아코디언 항목은 <code>aria-expanded</code>, <code>aria-controls</code>, <code>role="region"</code>, <code>aria-labelledby</code> 속성이 자동 할당됩니다.<br>
+          아코디언 버튼에 포커스 후 키보드 <strong>방향키(↑, ↓)</strong>, <strong>Home</strong>, <strong>End</strong> 키로 자유롭게 다른 버튼으로 포커스를 이동할 수 있습니다.
+        </p>
+      </div>
+
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <div class="fg-card-title">키보드 방향키 포커스 이동 시연 (버튼 클릭 후 ↑ / ↓ 테스트)</div>
+          <div class="fg-card-meta">
+            <span class="fg-chip">ArrowUp / ArrowDown</span>
+            <span class="fg-chip">Home / End 키</span>
+            <span class="fg-chip">aria-expanded</span>
+          </div>
+        </div>
+
+        <div class="fg-preview">
+          <div class="nr__accordion-wrap" data-accordion="acco-keynav-demo">
+            <div class="nr__accordion-item" data-accordion-item="acco-keynav-demo">
+              <button type="button" class="nr__accordion-btn" data-accordion-button="acco-keynav-demo">
+                <span data-accordion-title="acco-keynav-demo">⌨️ 1. 포커스 후 아래 방향키(↓)를 눌러보세요</span>
+                <span class="arrow-icon" aria-hidden="true">▼</span>
+              </button>
+              <div class="nr__accordion-body" data-accordion-body="acco-keynav-demo">
+                Focus가 형성된 상태에서 키보드 탐색이 원활하게 동작합니다.
+              </div>
+            </div>
+
+            <div class="nr__accordion-item" data-accordion-item="acco-keynav-demo">
+              <button type="button" class="nr__accordion-btn" data-accordion-button="acco-keynav-demo">
+                <span data-accordion-title="acco-keynav-demo">⌨️ 2. 두 번째 키보드 탐색 대상</span>
+                <span class="arrow-icon" aria-hidden="true">▼</span>
+              </button>
+              <div class="nr__accordion-body" data-accordion-body="acco-keynav-demo">
+                Home 키 누를 시 첫 번째, End 키 누를 시 마지막 항목으로 이동합니다.
+              </div>
+            </div>
+
+            <div class="nr__accordion-item" data-accordion-item="acco-keynav-demo">
+              <button type="button" class="nr__accordion-btn" data-accordion-button="acco-keynav-demo">
+                <span data-accordion-title="acco-keynav-demo">⌨️ 3. 세 번째 키보드 탐색 대상</span>
+                <span class="arrow-icon" aria-hidden="true">▼</span>
+              </button>
+              <div class="nr__accordion-body" data-accordion-body="acco-keynav-demo">
+                WAI-ARIA 1.2 아코디언 디자인 패턴을 엄격히 준수합니다.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Section 06: JS API Playground & Live Console
+         ========================================================================== -->
+    <section class="fg-section" id="sec-playground">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          <span>06. JavaScript API 제어 & 인터랙티브 플레이그라운드</span>
+          <span class="fg-section-tag">show / hide / openAll / closeAll / destroy</span>
+        </h2>
+        <p class="fg-section-desc">
+          JS 반환 인스턴스 메서드를 이용하여 외부 코드로 특정 항목을 열거나 닫을 수 있으며, 콜백 함수(<code>onOpen</code>, <code>onClose</code>, <code>onToggle</code>) 이벤트를 콘솔 창에서 확인할 수 있습니다.
+        </p>
+      </div>
+
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <div class="fg-card-title">인터랙티브 API 컨트롤 패널</div>
+          <div class="fg-card-meta">
+            <span class="fg-chip">.show(target)</span>
+            <span class="fg-chip">.hide(target)</span>
+            <span class="fg-chip">.openAll()</span>
+            <span class="fg-chip">.closeAll()</span>
+            <span class="fg-chip">.destroy()</span>
+          </div>
+        </div>
+
+        <div class="fg-preview" style="flex-direction: column; gap: 2.4rem;">
+          <!-- Target Accordion -->
+          <div class="nr__accordion-wrap" id="pg-acco" data-accordion="pg-acco" data-single-open="false">
+            <div class="nr__accordion-item" data-accordion-item="pg-acco">
+              <button type="button" class="nr__accordion-btn" id="pg-btn-0" data-accordion-button="pg-acco">
+                <span data-accordion-title="pg-acco">🎯 0번 항목 (인덱스 0)</span>
+                <span class="arrow-icon" aria-hidden="true">▼</span>
+              </button>
+              <div class="nr__accordion-body" data-accordion-body="pg-acco">
+                플레이그라운드 0번 내용입니다.
+              </div>
+            </div>
+
+            <div class="nr__accordion-item" data-accordion-item="pg-acco">
+              <button type="button" class="nr__accordion-btn" id="pg-btn-1" data-accordion-button="pg-acco">
+                <span data-accordion-title="pg-acco">🎯 1번 항목 (인덱스 1)</span>
+                <span class="arrow-icon" aria-hidden="true">▼</span>
+              </button>
+              <div class="nr__accordion-body" data-accordion-body="pg-acco">
+                플레이그라운드 1번 내용입니다.
+              </div>
+            </div>
+
+            <div class="nr__accordion-item" data-accordion-item="pg-acco">
+              <button type="button" class="nr__accordion-btn" id="pg-btn-2" data-accordion-button="pg-acco">
+                <span data-accordion-title="pg-acco">🎯 2번 항목 (인덱스 2)</span>
+                <span class="arrow-icon" aria-hidden="true">▼</span>
+              </button>
+              <div class="nr__accordion-body" data-accordion-body="pg-acco">
+                플레이그라운드 2번 내용입니다.
+              </div>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center;">
+            <button type="button" class="fg-btn" id="btn-pg-show-0">.show(0) [0번 열기]</button>
+            <button type="button" class="fg-btn" id="btn-pg-hide-0">.hide(0) [0번 닫기]</button>
+            <button type="button" class="fg-btn" id="btn-pg-toggle-1">.toggle(1) [1번 토글]</button>
+            <button type="button" class="fg-btn" id="btn-pg-open-all">.openAll() [전체 열기]</button>
+            <button type="button" class="fg-btn" id="btn-pg-close-all">.closeAll() [전체 닫기]</button>
+            <button type="button" class="fg-btn" id="btn-pg-destroy" style="color: var(--fg-danger); border-color: rgba(239,68,68,0.3);">.destroy() [해제]</button>
+            <button type="button" class="fg-btn" id="btn-pg-reinit">재초기화 (Re-Init)</button>
+          </div>
+
+          <!-- Live Log Console -->
+          <div class="fg-console" id="pg-console">
+            <div class="fg-console-item"><span class="time">[시스템]</span> 아코디언 API 플레이그라운드가 준비되었습니다. 버튼을 클릭해보세요.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Section 07: API Specifications Table
+         ========================================================================== -->
+    <section class="fg-section" id="sec-spec">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          <span>07. API 명세서 및 데이터 속성 규격</span>
+          <span class="fg-section-tag">Developer Reference</span>
+        </h2>
+        <p class="fg-section-desc">
+          아코디언 컴포넌트 개발 시 사용할 수 있는 내보내기 함수, 인스턴스 메서드, 전달 옵션 및 마크업 데이터 속성 테이블입니다.
+        </p>
+      </div>
+
+      <div class="fg-card" style="padding: 2.4rem;">
+        <h3 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 1.2rem;">1. 모듈 내보내기 함수 (Export Functions)</h3>
+        <div class="fg-table-wrap" style="margin-bottom: 3.2rem;">
+          <table class="fg-table">
+            <thead>
+              <tr>
+                <th>함수명</th>
+                <th>매개변수</th>
+                <th>반환값</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>initAllAccordions(root)</code></td>
+                <td><code>root=document</code></td>
+                <td><code>Array&lt;Instance&gt;</code></td>
+                <td>페이지 내 모든 아코디언 컨테이너를 자동 탐색하여 초기화합니다.</td>
+              </tr>
+              <tr>
+                <td><code>initAccordion(target, options)</code></td>
+                <td><code>(Selector|Element|Object, Object)</code></td>
+                <td><code>Instance|null</code></td>
+                <td>단일 아코디언 요소를 지정하여 옵션과 함께 초기화하고 제어 인스턴스를 반환합니다.</td>
+              </tr>
+              <tr>
+                <td><code>new Accordion(options)</code></td>
+                <td><code>Object</code></td>
+                <td><code>Accordion Class</code></td>
+                <td>기존 Dropdown / Accordion 클래스 어댑터 구조로 객체 생성 후 <code>.init()</code> 호출이 가능합니다.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 1.2rem;">2. 인스턴스 메서드 (Instance Methods)</h3>
+        <div class="fg-table-wrap" style="margin-bottom: 3.2rem;">
+          <table class="fg-table">
+            <thead>
+              <tr>
+                <th>메서드명</th>
+                <th>인자값</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>instance.show(target, callback)</code></td>
+                <td><code>target</code>: Index(Number) | ID(String) | Button(Element)</td>
+                <td>지정한 아코디언 항목을 슬라이드 다운 애니메이션과 함께 엽니다.</td>
+              </tr>
+              <tr>
+                <td><code>instance.hide(target, callback)</code></td>
+                <td><code>target</code>: Index(Number) | ID(String) | Button(Element)</td>
+                <td>지정한 아코디언 항목을 슬라이드 업 애니메이션으로 닫습니다.</td>
+              </tr>
+              <tr>
+                <td><code>instance.toggle(target, callback)</code></td>
+                <td><code>target</code>: Index(Number) | ID(String) | Button(Element)</td>
+                <td>열려있으면 닫고, 닫혀있으면 엽니다.</td>
+              </tr>
+              <tr>
+                <td><code>instance.openAll()</code></td>
+                <td>없음</td>
+                <td>아코디언 내 모든 항목을 엽니다.</td>
+              </tr>
+              <tr>
+                <td><code>instance.closeAll()</code></td>
+                <td>없음</td>
+                <td>아코디언 내 모든 항목을 닫습니다.</td>
+              </tr>
+              <tr>
+                <td><code>instance.update()</code></td>
+                <td>없음</td>
+                <td>동적으로 HTML 항목이 추가/삭제된 후 최신 DOM 상태로 재초기화합니다.</td>
+              </tr>
+              <tr>
+                <td><code>instance.destroy()</code></td>
+                <td>없음</td>
+                <td>등록된 모든 이벤트 리스너와 키보드 내비게이션 및 메모리를 해제합니다.</td>
+              </tr>
+              <tr>
+                <td><code>instance.isOpen(target)</code></td>
+                <td><code>target</code>: Index | ID | Element</td>
+                <td>해당 항목이 열려 있는지 여부(Boolean)를 반환합니다.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 1.2rem;">3. 데이터 속성 규격 ([data-accordion*] Attributes)</h3>
+        <div class="fg-table-wrap">
+          <table class="fg-table">
+            <thead>
+              <tr>
+                <th>데이터 속성</th>
+                <th>적용 대상</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>data-accordion="[id]"</code></td>
+                <td>컨테이너 요소</td>
+                <td>아코디언 컴포넌트 범위를 지정하며 고유 식별자 ID를 등록합니다.</td>
+              </tr>
+              <tr>
+                <td><code>data-single-open="true|false"</code></td>
+                <td>컨테이너 요소</td>
+                <td>단일 열림(true) 또는 다중 열림(false) 모드를 지정합니다.</td>
+              </tr>
+              <tr>
+                <td><code>data-expanded="[index|id]"</code></td>
+                <td>컨테이너 요소</td>
+                <td>페이지 로드 시 초기 오픈 상태로 열어둘 항목을 지정합니다.</td>
+              </tr>
+              <tr>
+                <td><code>data-accordion-item="[id]"</code></td>
+                <td>아이템 감싸는 요소</td>
+                <td>아코디언의 개별 아이템 블록을 지정합니다.</td>
+              </tr>
+              <tr>
+                <td><code>data-accordion-button="[id]"</code></td>
+                <td>트리거 버튼</td>
+                <td>아코디언 열기/닫기 클릭 및 포커스 대상 버튼입니다.</td>
+              </tr>
+              <tr>
+                <td><code>data-accordion-title="[id]"</code></td>
+                <td>타이틀 텍스트</td>
+                <td>버튼 접근성 라벨(aria-label) 설정 시 참조되는 텍스트 영역입니다.</td>
+              </tr>
+              <tr>
+                <td><code>data-accordion-body="[id]"</code></td>
+                <td>콘텐츠 패널</td>
+                <td>슬라이드 토글 대상이 되는 본문 영역입니다.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="fg-toast" id="fg-toast">코드가 클립보드에 복사되었습니다.</div>
+
+  <!-- JavaScript Module Initialization -->
+  <script type="module">
+    import { initAllAccordions, initAccordion } from '../resources/js-2026/component/ui-accordion.js';
+    import { initGuideHeaderActions } from '../resources/js-2026/utils/utils.js';
+
+    // 0. 공통 헤더 네비게이션 버튼 비동기 로드 및 테마/링크 동기화
+    initGuideHeaderActions();
+
+    // 1. 페이지 내 모든 [data-accordion] 일괄 자동 초기화
+    initAllAccordions();
+
+    // 2. 테마 토글 (Dark / Light 모드)
+    const btnThemeToggle = document.getElementById('btn-theme-toggle');
+    const themeText = document.getElementById('theme-btn-text');
+
+    btnThemeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('light-theme');
+      const isLight = document.body.classList.contains('light-theme');
+      themeText.textContent = isLight ? '🌙 나이트모드 전환' : '☀️ 라이트모드 전환';
+    });
+
+    // 3. 코드 복사 버튼 이벤트
+    const copyBtns = document.querySelectorAll('.fg-copy-btn');
+    const toast = document.getElementById('fg-toast');
+    let toastTimer = null;
+
+    copyBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const codeBlock = btn.closest('.fg-code-block')?.querySelector('code');
+        if (!codeBlock) return;
+
+        const text = codeBlock.textContent;
+        navigator.clipboard.writeText(text).then(() => {
+          btn.classList.add('is-copied');
+          btn.textContent = '복사 완료!';
+          
+          toast.classList.add('show');
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(() => {
+            toast.classList.remove('show');
+            btn.classList.remove('is-copied');
+            btn.textContent = '코드 복사';
+          }, 2000);
+        });
+      });
+    });
+
+    // 4. API 플레이그라운드 & 실시간 콘솔 로깅
+    const pgConsole = document.getElementById('pg-console');
+    const logConsole = (msg) => {
+      const timeStr = new Date().toLocaleTimeString();
+      const div = document.createElement('div');
+      div.className = 'fg-console-item';
+      div.innerHTML = `<span class="time">[${timeStr}]</span> ${msg}`;
+      pgConsole.appendChild(div);
+      pgConsole.scrollTop = pgConsole.scrollHeight;
+    };
+
+    let pgInst = initAccordion('#pg-acco', {
+      singleOpen: false,
+      onOpen: (btn, body) => logConsole(`🟢 onOpen 콜백: "${btn.textContent.trim().split('\n')[0]}" 열림`),
+      onClose: (btn, body) => logConsole(`🔴 onClose 콜백: "${btn.textContent.trim().split('\n')[0]}" 닫힘`),
+      onToggle: (btn, body, isOpen) => logConsole(`🔄 onToggle 콜백: 상태 = ${isOpen ? '열림' : '닫힘'}`)
+    });
+
+    document.getElementById('btn-pg-show-0').addEventListener('click', () => {
+      logConsole('⚙️ .show(0) 호출');
+      pgInst?.show(0);
+    });
+
+    document.getElementById('btn-pg-hide-0').addEventListener('click', () => {
+      logConsole('⚙️ .hide(0) 호출');
+      pgInst?.hide(0);
+    });
+
+    document.getElementById('btn-pg-toggle-1').addEventListener('click', () => {
+      logConsole('⚙️ .toggle(1) 호출');
+      pgInst?.toggle(1);
+    });
+
+    document.getElementById('btn-pg-open-all').addEventListener('click', () => {
+      logConsole('⚙️ .openAll() 호출');
+      pgInst?.openAll();
+    });
+
+    document.getElementById('btn-pg-close-all').addEventListener('click', () => {
+      logConsole('⚙️ .closeAll() 호출');
+      pgInst?.closeAll();
+    });
+
+    document.getElementById('btn-pg-destroy').addEventListener('click', () => {
+      logConsole('❌ .destroy() 호출 (이벤트 해제)');
+      pgInst?.destroy();
+      pgInst = null;
+    });
+
+    document.getElementById('btn-pg-reinit').addEventListener('click', () => {
+      logConsole('🔄 initAccordion() 재초기화');
+      pgInst = initAccordion('#pg-acco', {
+        singleOpen: false,
+        onOpen: (btn, body) => logConsole(`🟢 onOpen 콜백: "${btn.textContent.trim().split('\n')[0]}" 열림`),
+        onClose: (btn, body) => logConsole(`🔴 onClose 콜백: "${btn.textContent.trim().split('\n')[0]}" 닫힘`),
+        onToggle: (btn, body, isOpen) => logConsole(`🔄 onToggle 콜백: 상태 = ${isOpen ? '열림' : '닫힘'}`)
+      });
+    });
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,1620 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="description" content="누리앱(Nuri-App) 2026 드롭다운 및 툴팁 UI 컴포넌트 디자인 시스템 가이드 - WAI-ARIA, Auto-Flip, 너비 동기화, 비동기 로드 및 JS API" />
+  <title>드롭다운 & 툴팁 컴포넌트 가이드 | 누리앱(Nuri-App) 디자인 시스템</title>
+
+  <!-- 기본 스타일 (ui.base.css: pretendard, ui.common, component 등) -->
+  <link rel="stylesheet" href="../resources/css-2026/ui.base.css">
+  <link rel="stylesheet" href="../resources/css-2026/component.css">
+  <link rel="stylesheet" href="../resources/css-2026/component_style.css">
+
+  <style>
+    /* ==========================================================================
+       Dropdown Guide Custom Tokens & Design System
+       ========================================================================== */
+    :root {
+      --fg-font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      --fg-primary: #0475F4;
+      --fg-primary-hover: #0360ca;
+      --fg-primary-light: rgba(4, 117, 244, 0.12);
+      --fg-accent: #2978ED;
+      --fg-success: #10B981;
+      --fg-warning: #F59E0B;
+      --fg-danger: #EF4444;
+
+      /* Dark Theme (Default) */
+      --fg-bg-page: #0F131D;
+      --fg-bg-surface: #171C28;
+      --fg-bg-surface-elevated: #202737;
+      --fg-bg-surface-subtle: #273043;
+      --fg-border: rgba(255, 255, 255, 0.08);
+      --fg-border-strong: rgba(255, 255, 255, 0.16);
+      --fg-text-primary: #F3F4F6;
+      --fg-text-secondary: #9CA3AF;
+      --fg-text-muted: #6B7280;
+      --fg-preview-bg: #121620;
+      --fg-card-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      --fg-code-bg: #0B0E17;
+      --fg-glass-bg: rgba(23, 28, 40, 0.85);
+      --fg-glass-border: rgba(255, 255, 255, 0.1);
+    }
+
+    body.light-theme {
+      --fg-bg-page: #F4F6FB;
+      --fg-bg-surface: #FFFFFF;
+      --fg-bg-surface-elevated: #FFFFFF;
+      --fg-bg-surface-subtle: #EEF2F8;
+      --fg-border: #E2E8F0;
+      --fg-border-strong: #CBD5E1;
+      --fg-text-primary: #0F172A;
+      --fg-text-secondary: #475569;
+      --fg-text-muted: #94A3B8;
+      --fg-preview-bg: #F8FAFC;
+      --fg-card-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+      --fg-code-bg: #1E293B;
+      --fg-glass-bg: rgba(255, 255, 255, 0.9);
+      --fg-glass-border: rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 62.5%; /* 1rem = 10px */
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--fg-font-sans);
+      background-color: var(--fg-bg-page);
+      color: var(--fg-text-primary);
+      min-height: 100vh;
+      line-height: 1.5;
+      font-size: 1.4rem;
+      transition: background-color 0.25s ease, color 0.25s ease;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .fg-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2.4rem 8rem;
+    }
+
+    /* Header */
+    .fg-header {
+      padding: 4rem 0 2.8rem;
+      border-bottom: 1px solid var(--fg-border);
+      margin-bottom: 3.2rem;
+    }
+
+    .fg-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .fg-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.4rem 1rem;
+      background: var(--fg-primary-light);
+      color: var(--fg-primary);
+      border-radius: 9999px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+
+    .fg-badge::before {
+      content: '';
+      width: 0.7rem;
+      height: 0.7rem;
+      border-radius: 50%;
+      background: var(--fg-primary);
+      box-shadow: 0 0 10px var(--fg-primary);
+    }
+
+    .fg-title {
+      font-size: 3.2rem;
+      font-weight: 800;
+      color: var(--fg-text-primary);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.8rem;
+    }
+
+    .fg-desc {
+      font-size: 1.5rem;
+      color: var(--fg-text-secondary);
+      max-width: 820px;
+      line-height: 1.6;
+    }
+
+    .fg-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .fg-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      padding: 0.9rem 1.6rem;
+      border-radius: 0.8rem;
+      font-size: 1.35rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid var(--fg-border);
+      background: var(--fg-bg-surface-elevated);
+      color: var(--fg-text-primary);
+      text-decoration: none;
+      user-select: none;
+    }
+
+    .fg-btn:hover {
+      background: var(--fg-bg-surface-subtle);
+      border-color: var(--fg-border-strong);
+      transform: translateY(-1px);
+    }
+
+    .fg-btn--primary {
+      background: var(--fg-primary);
+      border-color: var(--fg-primary);
+      color: #fff;
+    }
+
+    .fg-btn--primary:hover {
+      background: var(--fg-primary-hover);
+      color: #fff;
+    }
+
+    /* Quick Nav */
+    .fg-quick-nav {
+      display: flex;
+      gap: 0.8rem;
+      overflow-x: auto;
+      padding: 0.6rem 0 1.6rem;
+      margin-bottom: 3.2rem;
+      scrollbar-width: none;
+    }
+    .fg-quick-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .fg-quick-link {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.7rem 1.4rem;
+      background: var(--fg-bg-surface);
+      border: 1px solid var(--fg-border);
+      border-radius: 2rem;
+      color: var(--fg-text-secondary);
+      font-size: 1.3rem;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .fg-quick-link:hover {
+      background: var(--fg-primary-light);
+      color: var(--fg-primary);
+      border-color: var(--fg-primary);
+    }
+
+    /* Section Layout */
+    .fg-section {
+      margin-bottom: 5.6rem;
+      scroll-margin-top: 2rem;
+    }
+
+    .fg-section-head {
+      margin-bottom: 2rem;
+    }
+
+    .fg-section-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--fg-text-primary);
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .fg-section-tag {
+      font-size: 1.2rem;
+      font-weight: 600;
+      font-family: monospace;
+      padding: 0.2rem 0.8rem;
+      border-radius: 0.4rem;
+      background: var(--fg-primary-light);
+      color: var(--fg-primary);
+    }
+
+    .fg-section-desc {
+      font-size: 1.45rem;
+      color: var(--fg-text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Component Card */
+    .fg-card {
+      background: var(--fg-bg-surface);
+      border: 1px solid var(--fg-border);
+      border-radius: 1.4rem;
+      overflow: hidden;
+      box-shadow: var(--fg-card-shadow);
+      margin-bottom: 2.4rem;
+    }
+
+    .fg-card-header {
+      padding: 1.6rem 2.4rem;
+      border-bottom: 1px solid var(--fg-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.6rem;
+      flex-wrap: wrap;
+      background: var(--fg-bg-surface-elevated);
+    }
+
+    .fg-card-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--fg-text-primary);
+    }
+
+    .fg-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .fg-chip {
+      font-size: 1.2rem;
+      font-weight: 600;
+      font-family: monospace;
+      padding: 0.3rem 0.8rem;
+      border-radius: 0.4rem;
+      background: var(--fg-bg-surface-subtle);
+      border: 1px solid var(--fg-border);
+      color: var(--fg-text-secondary);
+    }
+
+    /* Live Preview Area */
+    .fg-preview {
+      padding: 3.2rem 2.4rem;
+      background: var(--fg-preview-bg);
+      border-bottom: 1px solid var(--fg-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 20rem;
+      position: relative;
+    }
+
+    .fg-preview-grid {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2.4rem;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    /* Code Block Area */
+    .fg-code-block {
+      background: var(--fg-code-bg);
+      position: relative;
+    }
+
+    .fg-code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .fg-code-lang {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #94A3B8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-family: monospace;
+    }
+
+    .fg-copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.4rem 1rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #E2E8F0;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 0.6rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .fg-copy-btn:hover {
+      background: var(--fg-primary);
+      border-color: var(--fg-primary);
+      color: #fff;
+    }
+
+    .fg-copy-btn.is-copied {
+      background: var(--fg-success);
+      border-color: var(--fg-success);
+      color: #fff;
+    }
+
+    pre.fg-code {
+      margin: 0;
+      padding: 1.8rem 2rem;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 1.3rem;
+      line-height: 1.6;
+      color: #E2E8F0;
+    }
+
+    /* Table Specification */
+    .fg-table-wrap {
+      overflow-x: auto;
+      margin-top: 1.6rem;
+    }
+
+    .fg-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 1.35rem;
+      text-align: left;
+    }
+
+    .fg-table th {
+      background: var(--fg-bg-surface-elevated);
+      color: var(--fg-text-secondary);
+      font-weight: 700;
+      padding: 1.2rem 1.6rem;
+      border-bottom: 1px solid var(--fg-border);
+      white-space: nowrap;
+    }
+
+    .fg-table td {
+      padding: 1.2rem 1.6rem;
+      border-bottom: 1px solid var(--fg-border);
+      color: var(--fg-text-primary);
+    }
+
+    .fg-table code {
+      font-family: monospace;
+      font-size: 1.25rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 0.4rem;
+      background: var(--fg-primary-light);
+      color: var(--fg-primary);
+    }
+
+    /* Toast Notification */
+    .fg-toast {
+      position: fixed;
+      bottom: 3.2rem;
+      right: 3.2rem;
+      background: #10B981;
+      color: #fff;
+      padding: 1.2rem 2.4rem;
+      border-radius: 1rem;
+      font-size: 1.4rem;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      z-index: 99999;
+      pointer-events: none;
+    }
+
+    .fg-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ==========================================================================
+       UI Component: [data-dropdown] Standard & .nr__drop-* Compatibility
+       ========================================================================== */
+    [data-dropdown],
+    .nr__drop-wrap {
+      position: relative;
+      display: inline-block;
+    }
+
+    /* Trigger Button */
+    [data-dropdown-button],
+    .nr__drop-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 1.6rem;
+      font-size: 1.4rem;
+      font-weight: 600;
+      border-radius: 0.8rem;
+      border: 1px solid var(--fg-border-strong);
+      background: var(--fg-bg-surface);
+      color: var(--fg-text-primary);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+      outline: none;
+    }
+
+    [data-dropdown-button]:hover,
+    .nr__drop-btn:hover {
+      border-color: var(--fg-primary);
+      background: var(--fg-bg-surface-elevated);
+    }
+
+    [data-dropdown-button]:focus-visible,
+    .nr__drop-btn:focus-visible {
+      box-shadow: 0 0 0 3px var(--fg-primary-light);
+      border-color: var(--fg-primary);
+    }
+
+    [data-dropdown-button].active,
+    [data-dropdown-button][data-state="open"],
+    .nr__drop-btn.active {
+      border-color: var(--fg-primary);
+      background: var(--fg-primary-light);
+      color: var(--fg-primary);
+    }
+
+    [data-dropdown-button] .arrow-icon,
+    .nr__drop-btn .arrow-icon {
+      display: inline-block;
+      width: 0.8rem;
+      height: 0.8rem;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(45deg) translateY(-2px);
+      transition: transform 0.25s ease;
+    }
+
+    [data-dropdown-button].active .arrow-icon,
+    [data-dropdown-button][data-state="open"] .arrow-icon,
+    .nr__drop-btn.active .arrow-icon {
+      transform: rotate(-135deg) translateY(-2px);
+    }
+
+    /* Dropdown Menu / Panel */
+    [data-dropdown-panel],
+    .nr__drop-menu {
+      display: none;
+      position: absolute;
+      z-index: 1000;
+      min-width: 18rem;
+      background: var(--fg-glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--fg-glass-border);
+      border-radius: 1.2rem;
+      box-shadow: var(--fg-card-shadow);
+      padding: 0.8rem;
+      animation: dropMenuFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes dropMenuFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-6px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* In-wrapper Positioning */
+    [data-dropdown][data-ps="br"] > [data-dropdown-panel],
+    [data-dropdown-panel][data-ps="br"],
+    .nr__drop-wrap[data-ps="br"] > .nr__drop-menu,
+    .nr__drop-menu[data-ps="br"] {
+      top: calc(100% + 0.8rem);
+      right: 0;
+      left: auto;
+    }
+
+    [data-dropdown][data-ps="bl"] > [data-dropdown-panel],
+    [data-dropdown-panel][data-ps="bl"],
+    .nr__drop-wrap[data-ps="bl"] > .nr__drop-menu,
+    .nr__drop-menu[data-ps="bl"] {
+      top: calc(100% + 0.8rem);
+      left: 0;
+      right: auto;
+    }
+
+    [data-dropdown][data-ps="tr"] > [data-dropdown-panel],
+    [data-dropdown-panel][data-ps="tr"],
+    .nr__drop-wrap[data-ps="tr"] > .nr__drop-menu,
+    .nr__drop-menu[data-ps="tr"] {
+      bottom: calc(100% + 0.8rem);
+      right: 0;
+      top: auto;
+    }
+
+    [data-dropdown][data-ps="tl"] > [data-dropdown-panel],
+    [data-dropdown-panel][data-ps="tl"],
+    .nr__drop-wrap[data-ps="tl"] > .nr__drop-menu,
+    .nr__drop-menu[data-ps="tl"] {
+      bottom: calc(100% + 0.8rem);
+      left: 0;
+      top: auto;
+    }
+
+    /* Dropdown Items */
+    [data-dropdown-list],
+    .nr__drop-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    [data-dropdown-item],
+    .nr__item-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0.9rem 1.2rem;
+      border-radius: 0.6rem;
+      border: none;
+      background: transparent;
+      color: var(--fg-text-primary);
+      font-size: 1.35rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: left;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      outline: none;
+    }
+
+    [data-dropdown-item]:hover,
+    [data-dropdown-item]:focus-visible,
+    .nr__item-link:hover,
+    .nr__item-link:focus-visible {
+      background: var(--fg-primary-light);
+      color: var(--fg-primary);
+    }
+
+    [data-dropdown-item].active,
+    [data-dropdown-item][data-selected="true"],
+    .nr__item-link.active {
+      background: var(--fg-primary);
+      color: #fff;
+      font-weight: 700;
+    }
+
+    [data-dropdown-item] .sr-only,
+    .nr__item-link .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    /* Tooltip Bubble Style */
+    [data-dropdown-panel][role="tooltip"],
+    .nr__drop-menu[role="tooltip"] {
+      padding: 1.2rem 1.6rem;
+      font-size: 1.3rem;
+      line-height: 1.5;
+      max-width: 28rem;
+    }
+
+    /* Interactive Log Console in Sec 8 */
+    .fg-console {
+      background: #0B0E17;
+      border-radius: 0.8rem;
+      padding: 1.4rem 1.6rem;
+      font-family: monospace;
+      font-size: 1.25rem;
+      color: #10B981;
+      height: 12rem;
+      overflow-y: auto;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 1.6rem;
+      width: 100%;
+    }
+
+    .fg-console-item {
+      margin-bottom: 0.4rem;
+      word-break: break-all;
+    }
+
+    .fg-console-item .time {
+      color: #94A3B8;
+      margin-right: 0.8rem;
+    }
+  </style>
+</head>
+
+<body class="light-theme">
+
+  <div class="fg-container">
+
+    <!-- S : Header -->
+    <header class="fg-header">
+      <div class="fg-header-top">
+        <div class="fg-header-title-wrap">
+          <span class="fg-badge">Component Guide 2026</span>
+          <h1 class="fg-title">Dropdown & Tooltip UI Component Guide</h1>
+          <p class="fg-desc">
+            <code>resources/js-2026/component/ui-dropdown.js</code>로 일원화된 올인원 드롭다운 & 툴팁 컴포넌트의 명세서 및 인터랙티브 테스트 프리뷰입니다.
+            스타일 클래스에 종속되지 않는 <strong>헤드리스(Headless) 속성 기반 표준(<code>[data-dropdown]</code>)</strong>을 채택하여 어디서나 충돌 없이 유연하게 확장되며,
+            WAI-ARIA 웹접근성, 상하 자동 반전(Auto-Flip), 트리거 버튼 너비 동기화(matchWidth), 비동기 HTML 주입(loadContent), 기존 <code>.nr__drop-*</code> 클래스 하위 호환 및 JS API 제어를 완벽 지원합니다.
+          </p>
+        </div>
+        <div class="fg-header-actions">
+          <!-- ./inc/guide-header-actions.html 공통 영역 비동기 로드 -->
+        </div>
+      </div>
+    </header>
+    <!-- E : Header -->
+
+    <!-- S : Quick Navigation -->
+    <nav class="fg-quick-nav" aria-label="섹션 빠른 이동">
+      <a href="#sec-basic" class="fg-quick-link">01. 기본형 & 방향 배치</a>
+      <a href="#sec-autoflip" class="fg-quick-link">02. 상하 자동 반전 (Auto-Flip)</a>
+      <a href="#sec-select" class="fg-quick-link">03. 셀렉트박스 모드 (matchWidth)</a>
+      <a href="#sec-tooltip" class="fg-quick-link">04. 툴팁 & 호버 모드</a>
+      <a href="#sec-legacy" class="fg-quick-link">05. 기존 [data-dropdown] 호환</a>
+      <a href="#sec-async" class="fg-quick-link">06. 비동기 템플릿 로딩</a>
+      <a href="#sec-notice" class="fg-quick-link">07. 방재속보/전국특보 토글</a>
+      <a href="#sec-api" class="fg-quick-link">08. JS API & 명세서</a>
+    </nav>
+    <!-- E : Quick Navigation -->
+
+    <!-- ==========================================================================
+         Section 01: Basic Dropdown & Direction Positioning
+         ========================================================================== -->
+    <section class="fg-section" id="sec-basic">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          <span>01. 기본형 드롭다운 및 방향 제어</span>
+          <span class="fg-section-tag">data-position="bottom-left | bottom-right | top-left | top-right"</span>
+        </h2>
+        <p class="fg-section-desc">
+          버튼 클릭 시 메뉴가 토글되며, 바깥 영역 클릭 또는 <code>ESC</code> 키 입력 시 자동으로 닫힙니다.
+          <code>data-position</code> 속성으로 12가지 방향(상/하/좌/우)을 자유롭게 지정할 수 있습니다.
+        </p>
+      </div>
+
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <div class="fg-card-title">기본 드롭다운 (우측 정렬 & 좌측 정렬 비교)</div>
+          <div class="fg-card-meta">
+            <span class="fg-chip">[data-dropdown]</span>
+            <span class="fg-chip">[data-dropdown-button]</span>
+            <span class="fg-chip">[data-dropdown-panel]</span>
+            <span class="fg-chip">[data-dropdown-item]</span>
+          </div>
+        </div>
+
+        <div class="fg-preview">
+          <div class="fg-preview-grid">
+            <!-- 1. Bottom Right -->
+            <div class="nr__drop-wrap" data-dropdown="menu-basic-br" data-position="bottom-right">
+              <button type="button" class="nr__drop-btn" data-dropdown-button="menu-basic-br" aria-controls="menu-basic-br">
+                <span>기상 레이어 선택 (우측)</span>
+                <i class="arrow-icon" aria-hidden="true"></i>
+              </button>
+              <div class="nr__drop-menu" id="menu-basic-br" data-dropdown-panel="menu-basic-br">
+                <ul class="nr__drop-list" data-dropdown-list role="menu">
+                  <li><button type="button" class="nr__item-link active" data-dropdown-item>레이더 강수 관측</button></li>
+                  <li><button type="button" class="nr__item-link" data-dropdown-item>낙뢰 발생 현황</button></li>
+                  <li><button type="button" class="nr__item-link" data-dropdown-item>적설량 분포도</button></li>
+                  <li><button type="button" class="nr__item-link" data-dropdown-item>기온 및 체감온도</button></li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- 2. Bottom Left -->
+            <div class="nr__drop-wrap" data-dropdown="menu-basic-bl" data-position="bottom-left">
+              <button type="button" class="nr__drop-btn" data-dropdown-button="menu-basic-bl" aria-controls="menu-basic-bl">
+                <span>지역 예보 구역 (좌측)</span>
+                <i class="arrow-icon" aria-hidden="true"></i>
+              </button>
+              <div class="nr__drop-menu" id="menu-basic-bl" data-dropdown-panel="menu-basic-bl">
+                <ul class="nr__drop-list" data-dropdown-list role="menu">
+                  <li><button type="button" class="nr__item-link active" data-dropdown-item>서울특별시 (종로구)</button></li>
+                  <li><button type="button" class="nr__item-link" data-dropdown-item>경기도 (수원시)</button></li>
+                  <li><button type="button" class="nr__item-link" data-dropdown-item>인천광역시 (연수구)</button></li>
+                  <li><button type="button" class="nr__item-link" data-dropdown-item>강원특별자치도 (강릉시)</button></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fg-code-block">
+          <div class="fg-code-header">
+            <span class="fg-code-lang">HTML 마크업 (data-dropdown 표준)</span>
+            <button type="button" class="fg-copy-btn">코드 복사</button>
+          </div>
+          <pre class="fg-code"><code>&lt;!-- [data-dropdown] 기반 우측 정렬 기본 드롭다운 --&gt;
+&lt;div class="nr__drop-wrap" data-dropdown="my-drop-menu" data-position="bottom-right"&gt;
+  &lt;button type="button" class="nr__drop-btn" data-dropdown-button="my-drop-menu" aria-controls="my-drop-menu"&gt;
+    &lt;span&gt;기상 레이어 선택&lt;/span&gt;
+    &lt;i class="arrow-icon" aria-hidden="true"&gt;&lt;/i&gt;
+  &lt;/button&gt;
+  &lt;div class="nr__drop-menu" id="my-drop-menu" data-dropdown-panel="my-drop-menu"&gt;
+    &lt;ul class="nr__drop-list" data-dropdown-list role="menu"&gt;
+      &lt;li&gt;&lt;button type="button" class="nr__item-link active" data-dropdown-item&gt;레이더 강수 관측&lt;/button&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;button type="button" class="nr__item-link" data-dropdown-item&gt;낙뢰 발생 현황&lt;/button&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type="module"&gt;
+  import { initAllDropdowns } from '../resources/js-2026/component/ui-dropdown.js';
+  // [data-dropdown] 요소 자동 감지 및 일괄 초기화
+  initAllDropdowns();
+&lt;/script&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Section 02: Auto-Flip Collision Detection
+         ========================================================================== -->
+    <section class="fg-section" id="sec-autoflip">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          <span>02. 뷰포트 감지 상하 자동 반전 (Auto-Flip)</span>
+          <span class="fg-section-tag">autoFlip: true | data-auto-flip="true"</span>
+        </h2>
+        <p class="fg-section-desc">
+          화면 하단(바닥) 근처에서 드롭다운을 열 때, 아래 공간이 메뉴 높이보다 좁으면 <strong>자동으로 위쪽(top-*)으로 방향을 뒤집어</strong> 잘림 현상을 방지합니다.
+        </p>
+      </div>
+
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <div class="fg-card-title">스크롤 경계 자동 반전 시연</div>
+          <div class="fg-card-meta">
+            <span class="fg-chip">뷰포트/스크롤 감지</span>
+            <span class="fg-chip">상하 위치 자동 스왑</span>
+          </div>
+        </div>
+
+        <div class="fg-preview" style="flex-direction: column; align-items: stretch;">
+          <div style="background: var(--fg-bg-surface); padding: 1.4rem; border-radius: 1rem; border: 1px dashed var(--fg-border); margin-bottom: 1.6rem; text-align: center;">
+            <p style="font-size: 1.3rem; color: var(--fg-text-secondary);">
+              👇 아래 버튼은 <code>data-position="bottom-right"</code>로 설정되어 있지만, 뷰포트 하단과 닿을 때 자동으로 위쪽으로 뒤집힙니다!
+            </p>
+          </div>
+
+          <div style="display: flex; justify-content: center; padding-top: 4rem;">
+            <div class="nr__drop-wrap" data-dropdown="menu-autoflip-demo" data-position="bottom-right">
+              <button type="button" class="nr__drop-btn" data-dropdown-button="menu-autoflip-demo" aria-controls="menu-autoflip-demo">
+                <span>🔄 자동 상하 반전 테스트 클릭</span>
+                <i class="arrow-icon" aria-hidden="true"></i>
+              </button>
+              <div class="nr__drop-menu" id="menu-autoflip-demo" data-dropdown-panel="menu-autoflip-demo" style="min-width: 24rem;">
+                <div style="padding: 0.6rem 0.8rem 0.8rem; border-bottom: 1px solid var(--fg-border); margin-bottom: 0.6rem; font-size: 1.2rem; color: var(--fg-primary); font-weight: 700;">
+                  ✨ Auto-Flip 기능 작동 중
+                </div>
+                <ul class="nr__drop-list" data-dropdown-list role="menu">
+                  <li><button type="button" class="nr__item-link" data-dropdown-item>옵션 A: 전국 실시간 특보</button></li>
+                  <li><button type="button" class="nr__item-link" data-dropdown-item>옵션 B: 대기질 미세먼지</button></li>
+                  <li><button type="button" class="nr__item-link" data-dropdown-item>옵션 C: 자외선 지수 안내</button></li>
+                  <li><button type="button" class="nr__item-link" data-dropdown-item>옵션 D: 주간 중기 예보</button></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fg-code-block">
+          <div class="fg-code-header">
+            <span class="fg-code-lang">JavaScript 옵션 설정</span>
+            <button type="button" class="fg-copy-btn">코드 복사</button>
+          </div>
+          <pre class="fg-code"><code>// Auto-Flip은 기본값으로 true가 활성화되어 있습니다.
+initDropdown('#my-trigger', {
+  autoFlip: true,     // 화면 하단 공간 부족 시 자동으로 top-* 변환
+  position: 'bottom-right'
+});
+
+// 필요 시 비활성화하려면 HTML 속성 또는 옵션을 지정합니다:
+// HTML: &lt;button data-auto-flip="false" ...&gt;
+// JS: initDropdown(el, { autoFlip: false });</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Section 03: Select Box Mode (Match Width & Sync Label)
+         ========================================================================== -->
+    <section class="fg-section" id="sec-select">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          <span>03. 커스텀 셀렉트박스 모드</span>
+          <span class="fg-section-tag">data-match-width="true" | [data-dropdown-text]</span>
+        </h2>
+        <p class="fg-section-desc">
+          일반 드롭다운을 <strong>커스텀 셀렉트 UI</strong>처럼 활용할 수 있습니다.
+          옵션을 선택하면 버튼 내 <code>[data-dropdown-text]</code> 텍스트가 갱신되고, 메뉴의 가로 폭이 버튼과 완벽히 일치됩니다.
+        </p>
+      </div>
+
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <div class="fg-card-title">너비 맞춤 셀렉트 드롭다운</div>
+          <div class="fg-card-meta">
+            <span class="fg-chip">matchWidth: true</span>
+            <span class="fg-chip">라벨 동기화</span>
+            <span class="fg-chip">onSelect 콜백</span>
+          </div>
+        </div>
+
+        <div class="fg-preview">
+          <div style="width: 100%; max-width: 32rem;">
+            <div class="nr__drop-wrap" data-dropdown="select-box-demo" data-position="bottom-left" style="width: 100%;">
+              <button type="button" class="nr__drop-btn" data-dropdown-button="select-box-demo" aria-controls="select-box-demo" data-match-width="true" style="width: 100%;">
+                <span data-dropdown-text="select-box-demo">단기 예보 (3일간)</span>
+                <i class="arrow-icon" aria-hidden="true"></i>
+              </button>
+              <div class="nr__drop-menu" id="select-box-demo" data-dropdown-panel="select-box-demo">
+                <ul class="nr__drop-list" data-dropdown-list role="menu">
+                  <li><button type="button" class="nr__item-link active" data-dropdown-item data-value="short">단기 예보 (3일간)</button></li>
+                  <li><button type="button" class="nr__item-link" data-dropdown-item data-value="mid">중기 예보 (10일간)</button></li>
+                  <li><button type="button" class="nr__item-link" data-dropdown-item data-value="long">1개월 날씨 전망</button></li>
+                  <li><button type="button" class="nr__item-link" data-dropdown-item data-value="seasonal">3개월 기후 전망</button></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fg-code-block">
+          <div class="fg-code-header">
+            <span class="fg-code-lang">HTML & JS</span>
+            <button type="button" class="fg-copy-btn">코드 복사</button>
+          </div>
+          <pre class="fg-code"><code>&lt;!-- [data-dropdown] 기반 셀렉트박스 마크업 --&gt;
+&lt;div class="nr__drop-wrap" data-dropdown="my-select" style="width: 100%; max-width: 32rem;"&gt;
+  &lt;button type="button" class="nr__drop-btn" data-dropdown-button="my-select" aria-controls="my-select" data-match-width="true" style="width: 100%;"&gt;
+    &lt;span data-dropdown-text="my-select"&gt;단기 예보 (3일간)&lt;/span&gt;
+    &lt;i class="arrow-icon" aria-hidden="true"&gt;&lt;/i&gt;
+  &lt;/button&gt;
+  &lt;div class="nr__drop-menu" id="my-select" data-dropdown-panel="my-select"&gt;
+    &lt;ul class="nr__drop-list" data-dropdown-list role="menu"&gt;
+      &lt;li&gt;&lt;button type="button" class="nr__item-link active" data-dropdown-item data-value="short"&gt;단기 예보 (3일간)&lt;/button&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;button type="button" class="nr__item-link" data-dropdown-item data-value="mid"&gt;중기 예보 (10일간)&lt;/button&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type="module"&gt;
+  import { initDropdown } from '../resources/js-2026/component/ui-dropdown.js';
+
+  initDropdown('#my-select', {
+    matchWidth: true,
+    onSelect: (val, itemEl) => {
+      console.log('선택된 예보 구분:', val);
+    }
+  });
+&lt;/script&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Section 04: Tooltip & Hover Mode
+         ========================================================================== -->
+    <section class="fg-section" id="sec-tooltip">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          <span>04. 툴팁 및 호버(Hover) 모드</span>
+          <span class="fg-section-tag">data-tooltip="true" | role="tooltip"</span>
+        </h2>
+        <p class="fg-section-desc">
+          마우스 호버 시 자연스러운 지연 시간(<code>hoverDelay: 150ms</code>)을 두고 툴팁이 나타나며,
+          키보드 사용자에게는 <code>Focus / Blur</code> 이벤트로 동일하게 안내되어 완벽한 웹 접근성을 보장합니다.
+        </p>
+      </div>
+
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <div class="fg-card-title">접근성 지원 호버 툴팁</div>
+          <div class="fg-card-meta">
+            <span class="fg-chip">role="tooltip"</span>
+            <span class="fg-chip">마우스 호버 & 키보드 포커스</span>
+          </div>
+        </div>
+
+        <div class="fg-preview">
+          <div class="fg-preview-grid">
+            <div class="nr__drop-wrap" data-dropdown="tooltip-demo-1" data-position="top-right">
+              <button type="button" class="nr__drop-btn" data-dropdown-button="tooltip-demo-1" aria-controls="tooltip-demo-1" data-tooltip="true">
+                <span>체감온도 산출 기준 안내</span>
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 1.8rem; height: 1.8rem; border-radius: 50%; background: var(--fg-primary); color: #fff; font-size: 1.1rem; font-weight: 700;">?</span>
+              </button>
+              <div class="nr__drop-menu" id="tooltip-demo-1" data-dropdown-panel="tooltip-demo-1" role="tooltip">
+                <strong style="display: block; margin-bottom: 0.4rem; color: var(--fg-primary); font-size: 1.3rem;">체감온도 (Wind Chill)</strong>
+                외기에 노출된 피부가 바람과 기온의 영향으로 실제로 느끼는 온도로, 풍속 1.3m/s 이상일 때 산출됩니다.
+              </div>
+            </div>
+
+            <div class="nr__drop-wrap" data-dropdown="tooltip-demo-2" data-position="bottom-left">
+              <button type="button" class="nr__drop-btn" data-dropdown-button="tooltip-demo-2" aria-controls="tooltip-demo-2" data-tooltip="true">
+                <span>미세먼지 예보 등급</span>
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 1.8rem; height: 1.8rem; border-radius: 50%; background: var(--fg-success); color: #fff; font-size: 1.1rem; font-weight: 700;">i</span>
+              </button>
+              <div class="nr__drop-menu" id="tooltip-demo-2" data-dropdown-panel="tooltip-demo-2" role="tooltip">
+                <strong style="display: block; margin-bottom: 0.4rem; color: var(--fg-success); font-size: 1.3rem;">대기질 등급 안내</strong>
+                좋음(0~30), 보통(31~80), 나쁨(81~150), 매우나쁨(151 이상) 4단계로 구분 고시됩니다.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fg-code-block">
+          <div class="fg-code-header">
+            <span class="fg-code-lang">HTML 마크업 (data-dropdown 표준)</span>
+            <button type="button" class="fg-copy-btn">코드 복사</button>
+          </div>
+          <pre class="fg-code"><code>&lt;!-- data-tooltip="true" 속성 부여 시 호버/포커스 툴팁 모드 활성화 --&gt;
+&lt;div class="nr__drop-wrap" data-dropdown="tip-wind" data-position="top-right"&gt;
+  &lt;button type="button" class="nr__drop-btn" data-dropdown-button="tip-wind" aria-controls="tip-wind" data-tooltip="true"&gt;
+    &lt;span&gt;체감온도 산출 기준&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;div class="nr__drop-menu" id="tip-wind" data-dropdown-panel="tip-wind" role="tooltip"&gt;
+    &lt;strong&gt;체감온도 안내&lt;/strong&gt;
+    외기에 노출된 피부가 느끼는 온도로 풍속과 습도를 고려해 산출합니다.
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Section 05: Legacy [data-dropdown] Compatibility
+         ========================================================================== -->
+    <section class="fg-section" id="sec-legacy">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          <span>05. 기존 [data-dropdown] 마크업 호환</span>
+          <span class="fg-section-tag">component.css 100% 매칭</span>
+        </h2>
+        <p class="fg-section-desc">
+          기존 퍼블리싱 스타일인 <code>component.css</code>의 <code>[data-dropdown]</code>, <code>[data-dropdown-button]</code>, <code>[data-dropdown-panel][data-ps]</code> 마크업을
+          수정 없이 그대로 사용할 수 있도록 하위 호환 매핑을 완벽 지원합니다.
+        </p>
+      </div>
+
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <div class="fg-card-title">[data-dropdown] 클래스 없는 속성 기반 제어</div>
+          <div class="fg-card-meta">
+            <span class="fg-chip">[data-dropdown="id"]</span>
+            <span class="fg-chip">[data-dropdown-button]</span>
+            <span class="fg-chip">[data-dropdown-panel]</span>
+          </div>
+        </div>
+
+        <div class="fg-preview">
+          <!-- Legacy Markup from component.css -->
+          <div data-dropdown="legacy-weather-layer">
+            <button type="button" class="fg-btn" data-dropdown-button="legacy-weather-layer" aria-controls="legacy-weather-layer">
+              <span data-dropdown-text="legacy-weather-layer">레이어 옵션 ([data-dropdown])</span>
+              <span style="font-size: 1.1rem; opacity: 0.7;">▼</span>
+            </button>
+            <div data-dropdown-panel="legacy-weather-layer" data-ps="bl" style="display: none; position: absolute; z-index: 1000; background: var(--fg-glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--fg-border-strong); border-radius: 1rem; padding: 1rem; box-shadow: var(--fg-card-shadow); min-width: 20rem; margin-top: 0.8rem;">
+              <div data-dropdown-section="legacy-weather-layer">
+                <ul class="nr__drop-list" data-dropdown-list role="menu">
+                  <li><button type="button" class="nr__item-link active" data-dropdown-item>전국 기상 위성 합성</button></li>
+                  <li><button type="button" class="nr__item-link" data-dropdown-item>초단기 강수 예측 영상</button></li>
+                  <li><button type="button" class="nr__item-link" data-dropdown-item>황사/연무 유입 경로</button></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fg-code-block">
+          <div class="fg-code-header">
+            <span class="fg-code-lang">레거시 마크업 호환 문법</span>
+            <button type="button" class="fg-copy-btn">코드 복사</button>
+          </div>
+          <pre class="fg-code"><code>&lt;!-- 기존 component.css 방식의 [data-dropdown] 구조도 동일하게 자동 초기화됩니다 --&gt;
+&lt;div data-dropdown="my-layer"&gt;
+  &lt;button type="button" data-dropdown-button="my-layer"&gt;
+    &lt;span data-dropdown-text="my-layer"&gt;레이어 선택&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;div data-dropdown-panel="my-layer" data-ps="bl"&gt;
+    &lt;div data-dropdown-section="my-layer"&gt;
+      &lt;ul data-dropdown-list role="menu"&gt;
+        &lt;li&gt;&lt;button type="button" class="nr__item-link" data-dropdown-item&gt;전국 기상 위성&lt;/button&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Section 06: Async Content Loading
+         ========================================================================== -->
+    <section class="fg-section" id="sec-async">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          <span>06. 비동기 템플릿 로딩 (loadContent / src)</span>
+          <span class="fg-section-tag">data-src="./inc/..." | loadContent</span>
+        </h2>
+        <p class="fg-section-desc">
+          초기 HTML에 레이어 내용을 포함하지 않고, 필요할 때 외부 HTML 파일(<code>./inc/*.html</code>)을 비동기(AJAX)로 패널에 주입하여 첫 화면 로딩 속도를 최적화합니다.
+        </p>
+      </div>
+
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <div class="fg-card-title">외부 HTML 파일 비동기 삽입 데모</div>
+          <div class="fg-card-meta">
+            <span class="fg-chip">data-src</span>
+            <span class="fg-chip">동적 바인딩 자동 갱신</span>
+          </div>
+        </div>
+
+        <div class="fg-preview">
+          <div class="nr__drop-wrap" data-dropdown="menu-async-demo" data-position="bottom-right">
+            <button type="button" class="nr__drop-btn" data-dropdown-button="menu-async-demo" aria-controls="menu-async-demo" data-src="./inc/dropdown-async-sample.html">
+              <span>⚡ 비동기 패널 불러오기 (Click)</span>
+              <i class="arrow-icon" aria-hidden="true"></i>
+            </button>
+            <div class="nr__drop-menu" id="menu-async-demo" data-dropdown-panel="menu-async-demo" data-size-w="26rem">
+              <!-- 외부 HTML 조각이 이곳에 동적으로 주입됩니다 -->
+            </div>
+          </div>
+        </div>
+
+        <div class="fg-code-block">
+          <div class="fg-code-header">
+            <span class="fg-code-lang">HTML & JS</span>
+            <button type="button" class="fg-copy-btn">코드 복사</button>
+          </div>
+          <pre class="fg-code"><code>&lt;!-- [data-dropdown] 기반 비동기 템플릿 로딩 --&gt;
+&lt;div class="nr__drop-wrap" data-dropdown="my-async-menu" data-position="bottom-right"&gt;
+  &lt;button type="button" class="nr__drop-btn" data-dropdown-button="my-async-menu" aria-controls="my-async-menu" data-src="./inc/dropdown-async-sample.html"&gt;
+    &lt;span&gt;비동기 데이터 패널&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;div class="nr__drop-menu" id="my-async-menu" data-dropdown-panel="my-async-menu"&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type="module"&gt;
+  import { initDropdown } from '../resources/js-2026/component/ui-dropdown.js';
+
+  initDropdown('#my-async-menu', {
+    src: './inc/dropdown-async-sample.html',
+    srcCallback: () => {
+      console.log('외부 템플릿 로드 완료!');
+    }
+  });
+&lt;/script&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Section 07: Notice / Special Report Dropdown
+         ========================================================================== -->
+    <section class="fg-section" id="sec-notice">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          <span>07. 메인 방재속보 / 전국특보 토글 패널</span>
+          <span class="fg-section-tag">initNoticeDropdown | 당일 자정 쿠키 만료</span>
+        </h2>
+        <p class="fg-section-desc">
+          상단 방재속보 및 전국특보 버튼을 상호 배타적으로 열고 닫으며, <strong>'오늘 하루 열지 않기'</strong> 체크박스 선택 시 당일 23:59:59까지 유효한 쿠키와 로컬스토리지를 설정하여 팝업 노출을 제어합니다.
+        </p>
+      </div>
+
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <div class="fg-card-title">방재속보 / 전국특보 제어 시스템</div>
+          <div class="fg-card-meta">
+            <span class="fg-chip">쿠키 만료: 당일 자정</span>
+            <span class="fg-chip">window.noticeDropdown</span>
+          </div>
+        </div>
+
+        <div class="fg-preview" style="flex-direction: column; gap: 2rem;">
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <button type="button" class="fg-btn fg-btn--primary" onclick="if(window.openNotice) window.openNotice(0);">
+              <span>🚨 0번 방재속보 열기</span>
+            </button>
+            <button type="button" class="fg-btn" onclick="if(window.openNotice) window.openNotice(1);">
+              <span>📢 1번 전국특보 열기</span>
+            </button>
+            <button type="button" class="fg-btn" onclick="if(window.closeNotice) window.closeNotice();">
+              <span>✕ 전체 닫기</span>
+            </button>
+            <button type="button" class="fg-btn" onclick="if(window.clearNoticeTodayCookie) { window.clearNoticeTodayCookie(); alert('오늘 안 보기 쿠키가 초기화되었습니다.'); }">
+              <span>🔄 오늘 안보기 쿠키 초기화</span>
+            </button>
+          </div>
+          <p style="font-size: 1.3rem; color: var(--fg-text-muted);">
+            * 메인 화면(main.html) 상단 헤더에 탑재되어 있으며 전역 객체 <code>window.noticeDropdown</code>으로 어디서든 제어 가능합니다.
+          </p>
+        </div>
+
+        <div class="fg-code-block">
+          <div class="fg-code-header">
+            <span class="fg-code-lang">JavaScript API</span>
+            <button type="button" class="fg-copy-btn">코드 복사</button>
+          </div>
+          <pre class="fg-code"><code>import { initNoticeDropdown } from '../resources/js-2026/component/ui-dropdown.js';
+
+const notice = initNoticeDropdown({
+  defaultOpen: 0 // 최초 방문 시 0번(방재속보) 기본 열림 (오늘 안보기 쿠키 유효 시 자동 닫힘)
+});
+
+// 전역 호출 지원
+window.openNotice('disaster'); // 0번 방재속보 열기
+window.openNotice('special');  // 1번 전국특보 열기
+window.closeNotice();         // 패널 닫기</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Section 08: JavaScript API & Method Playground
+         ========================================================================== -->
+    <section class="fg-section" id="sec-api">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          <span>08. JavaScript 인스턴스 메서드 & API 플레이그라운드</span>
+          <span class="fg-section-tag">API Methods & Live Console</span>
+        </h2>
+        <p class="fg-section-desc">
+          <code>initDropdown()</code> 반환 인스턴스를 통해 코드로 열기/닫기/토글/위치변경/이벤트해제(destroy)를 직접 제어하고 콘솔 로그로 확인할 수 있습니다.
+        </p>
+      </div>
+
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <div class="fg-card-title">인터랙티브 API 테스트 패널</div>
+          <div class="fg-card-meta">
+            <span class="fg-chip">.open()</span>
+            <span class="fg-chip">.close()</span>
+            <span class="fg-chip">.toggle()</span>
+            <span class="fg-chip">.destroy()</span>
+          </div>
+        </div>
+
+        <div class="fg-preview" style="flex-direction: column; gap: 2.4rem;">
+          <!-- Playground Target -->
+          <div class="nr__drop-wrap" id="playground-wrap" data-dropdown="playground-menu" data-position="bottom-right">
+            <button type="button" class="nr__drop-btn" id="playground-btn" data-dropdown-button="playground-menu" aria-controls="playground-menu">
+              <span>🎯 API 테스트 대상 드롭다운</span>
+              <i class="arrow-icon" aria-hidden="true"></i>
+            </button>
+            <div class="nr__drop-menu" id="playground-menu" data-dropdown-panel="playground-menu">
+              <ul class="nr__drop-list" data-dropdown-list role="menu">
+                <li><button type="button" class="nr__item-link" data-dropdown-item data-view="sat">기상위성 영상</button></li>
+                <li><button type="button" class="nr__item-link" data-dropdown-item data-view="radar">레이더 합성영상</button></li>
+                <li><button type="button" class="nr__item-link" data-dropdown-item data-view="lightning">낙뢰 관측망</button></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Controller Buttons -->
+          <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center;">
+            <button type="button" class="fg-btn" id="pg-btn-open">.open() 열기</button>
+            <button type="button" class="fg-btn" id="pg-btn-close">.close() 닫기</button>
+            <button type="button" class="fg-btn" id="pg-btn-toggle">.toggle() 토글</button>
+            <button type="button" class="fg-btn" id="pg-btn-pos-tl">.setPosition('top-left')</button>
+            <button type="button" class="fg-btn" id="pg-btn-pos-br">.setPosition('bottom-right')</button>
+            <button type="button" class="fg-btn" id="pg-btn-destroy" style="color: var(--fg-danger); border-color: rgba(239,68,68,0.3);">.destroy() 인스턴스 해제</button>
+            <button type="button" class="fg-btn" id="pg-btn-reinit">재초기화 (Re-Init)</button>
+          </div>
+
+          <!-- Console Screen -->
+          <div class="fg-console" id="pg-console">
+            <div class="fg-console-item"><span class="time">[시스템]</span> API 플레이그라운드가 준비되었습니다. 상단 버튼을 클릭해보세요.</div>
+          </div>
+        </div>
+
+        <!-- API Reference Table -->
+        <div style="padding: 2.4rem;">
+          <h3 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 1.2rem;">데이터 속성 규격 ([data-dropdown*] Attributes)</h3>
+          <p style="font-size: 1.35rem; color: var(--fg-text-secondary); margin-bottom: 1.2rem;">
+            클래스명 의존도를 제거하고 동작과 상태를 선언적으로 연결하는 표준 데이터 속성입니다.
+          </p>
+          <div class="fg-table-wrap" style="margin-bottom: 3.2rem;">
+            <table class="fg-table">
+              <thead>
+                <tr>
+                  <th>데이터 속성</th>
+                  <th>대상 요소</th>
+                  <th>필수 여부</th>
+                  <th>설명</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>data-dropdown="[id]"</code></td>
+                  <td>컨테이너 (Wrapper)</td>
+                  <td>선택</td>
+                  <td>드롭다운 컴포넌트의 유효 범위(Scope)를 정의하며 고유 ID를 부여합니다.</td>
+                </tr>
+                <tr>
+                  <td><code>data-dropdown-button="[id]"</code></td>
+                  <td>트리거 버튼</td>
+                  <td>권장</td>
+                  <td>드롭다운을 열고 닫는 토글 버튼입니다. aria-controls와 동일하게 패널 ID와 매핑됩니다.</td>
+                </tr>
+                <tr>
+                  <td><code>data-dropdown-panel="[id]"</code></td>
+                  <td>메뉴/패널 레이어</td>
+                  <td>권장</td>
+                  <td>드롭다운 팝업 콘텐츠 레이어입니다.</td>
+                </tr>
+                <tr>
+                  <td><code>data-dropdown-item</code></td>
+                  <td>항목 버튼/링크</td>
+                  <td>권장</td>
+                  <td>드롭다운 내부 선택 가능한 아이템에 부여하며, 활성화 시 <code>data-selected="true"</code>가 자동 동기화됩니다.</td>
+                </tr>
+                <tr>
+                  <td><code>data-dropdown-close</code></td>
+                  <td>내부 닫기 버튼</td>
+                  <td>선택</td>
+                  <td>패널 내부에 위치하는 닫기 버튼에 부여 시 클릭 이벤트가 자동으로 바인딩됩니다.</td>
+                </tr>
+                <tr>
+                  <td><code>data-dropdown-text="[id]"</code></td>
+                  <td>라벨 텍스트 요소</td>
+                  <td>선택</td>
+                  <td>선택된 아이템의 텍스트로 자동 갱신되는 라벨 요소입니다.</td>
+                </tr>
+                <tr>
+                  <td><code>data-state="open | closed"</code></td>
+                  <td>버튼 / 패널 / 래퍼</td>
+                  <td>자동 부여</td>
+                  <td>현재 열림/닫힘 상태를 엔진에서 실시간 업데이트하며, CSS 선택자로 직관적 스타일링이 가능합니다.</td>
+                </tr>
+                <tr>
+                  <td><code>data-position="bottom-right | ..."</code></td>
+                  <td>래퍼 또는 패널</td>
+                  <td>선택</td>
+                  <td>12가지 방향(bl, bc, br, tl, tc, tr, lt, lc, lb, rt, rc, rb) 위치를 설정합니다.</td>
+                </tr>
+                <tr>
+                  <td><code>data-match-width="true"</code></td>
+                  <td>버튼 또는 패널</td>
+                  <td>선택</td>
+                  <td>버튼 너비와 메뉴 패널 너비를 1:1로 일치시킵니다. (셀렉트박스 모드)</td>
+                </tr>
+                <tr>
+                  <td><code>data-auto-flip="true | false"</code></td>
+                  <td>버튼 또는 패널</td>
+                  <td>선택</td>
+                  <td>화면 상/하 경계 도달 시 자동 반전 활성화 여부를 제어합니다 (기본값: true).</td>
+                </tr>
+                <tr>
+                  <td><code>data-src="./path.html"</code></td>
+                  <td>버튼 또는 패널</td>
+                  <td>선택</td>
+                  <td>비동기로 주입할 외부 HTML 파일 조각의 경로를 지정합니다.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 1.2rem;">옵션 (Options) 명세서</h3>
+          <div class="fg-table-wrap">
+            <table class="fg-table">
+              <thead>
+                <tr>
+                  <th>옵션명</th>
+                  <th>타입</th>
+                  <th>기본값</th>
+                  <th>설명</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>position</code></td>
+                  <td>String</td>
+                  <td>'bottom-right'</td>
+                  <td>드롭다운 열림 방향 (bottom-left, bottom-right, top-left, top-right 등)</td>
+                </tr>
+                <tr>
+                  <td><code>ps</code></td>
+                  <td>String</td>
+                  <td>null</td>
+                  <td>component.css 단축 위치 약어 (bl, br, tl, tr, rt, lt 등). position과 자동 동기화</td>
+                </tr>
+                <tr>
+                  <td><code>autoFlip</code></td>
+                  <td>Boolean</td>
+                  <td>true</td>
+                  <td>뷰포트 하단/상단 공간 부족 시 반대 방향으로 자동 반전 여부</td>
+                </tr>
+                <tr>
+                  <td><code>matchWidth</code></td>
+                  <td>Boolean</td>
+                  <td>false</td>
+                  <td>트리거 버튼과 드롭다운 레이어의 가로 폭(width)을 1:1로 일치시킬지 여부</td>
+                </tr>
+                <tr>
+                  <td><code>isTooltip</code></td>
+                  <td>Boolean</td>
+                  <td>false</td>
+                  <td>호버(Hover) 및 포커스(Focus) 툴팁 모드 활성화</td>
+                </tr>
+                <tr>
+                  <td><code>hoverDelay</code></td>
+                  <td>Number</td>
+                  <td>150</td>
+                  <td>툴팁 모드 마우스 진입/이탈 지연 시간(ms)</td>
+                </tr>
+                <tr>
+                  <td><code>src</code></td>
+                  <td>String</td>
+                  <td>null</td>
+                  <td>비동기로 패널에 주입할 외부 HTML 파일 경로 (loadContent 연동)</td>
+                </tr>
+                <tr>
+                  <td><code>onSelect</code></td>
+                  <td>Function</td>
+                  <td>null</td>
+                  <td>아이템 클릭 선택 시 호출되는 콜백 (value, itemElement)</td>
+                </tr>
+                <tr>
+                  <td><code>onOpen / onClose</code></td>
+                  <td>Function</td>
+                  <td>null</td>
+                  <td>패널이 열리거나 닫힐 때 호출되는 이벤트 콜백 (instance)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 style="font-size: 1.8rem; font-weight: 700; margin-top: 3.2rem; margin-bottom: 1.2rem;">인스턴스 메서드 (Instance Methods)</h3>
+          <div class="fg-table-wrap">
+            <table class="fg-table">
+              <thead>
+                <tr>
+                  <th>메서드</th>
+                  <th>파라미터</th>
+                  <th>설명</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>open(shouldFocus = true)</code></td>
+                  <td>shouldFocus: boolean</td>
+                  <td>드롭다운을 열고 첫 번째 아이템으로 포커스를 이동합니다.</td>
+                </tr>
+                <tr>
+                  <td><code>close(restoreFocus = true)</code></td>
+                  <td>restoreFocus: boolean</td>
+                  <td>드롭다운을 닫고 원래 열었던 트리거 버튼으로 포커스를 복원합니다.</td>
+                </tr>
+                <tr>
+                  <td><code>toggle()</code></td>
+                  <td>-</td>
+                  <td>현재 상태를 반전하여 열거나 닫습니다.</td>
+                </tr>
+                <tr>
+                  <td><code>setPosition(positionString)</code></td>
+                  <td>pos: string</td>
+                  <td>드롭다운 위치 및 data-ps를 동적으로 변경합니다.</td>
+                </tr>
+                <tr>
+                  <td><code>destroy()</code></td>
+                  <td>-</td>
+                  <td>등록된 모든 이벤트 리스너(클릭, 키보드, 윈도우 스크롤/리사이즈) 및 인스턴스를 해제합니다.</td>
+                </tr>
+                <tr>
+                  <td><code>selectItem(itemElement)</code></td>
+                  <td>item: HTMLElement</td>
+                  <td>특정 아이템을 프로그래밍 방식으로 선택 상태로 설정하고 닫습니다.</td>
+                </tr>
+                <tr>
+                  <td><code>isOpen()</code></td>
+                  <td>-</td>
+                  <td>현재 열려있는지 여부(Boolean)를 반환합니다.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="fg-toast" id="fg-toast">코드가 클립보드에 복사되었습니다.</div>
+
+  <!-- ==========================================================================
+       Interactive Scripts
+       ========================================================================== -->
+  <script type="module">
+    import { initDropdown, initAllDropdowns, Dropdown } from '../resources/js-2026/component/ui-dropdown.js';
+    import { initGuideHeaderActions } from '../resources/js-2026/utils/utils.js';
+
+    // 0. 공통 헤더 네비게이션 액션 로드
+    initGuideHeaderActions();
+
+    // 1. 전체 드롭다운 일괄 자동 초기화
+    initAllDropdowns();
+
+    // 2. 테마 스위치 제어 (Dark / Light Theme)
+    const themeBtn = document.getElementById('btn-theme-toggle');
+    const themeBtnText = document.getElementById('theme-btn-text');
+
+    const savedTheme = localStorage.getItem('nr_guide_theme') || 'light';
+    setTheme(savedTheme);
+
+    function setTheme(theme) {
+      if (theme === 'dark') {
+        document.body.classList.remove('light-theme');
+        document.body.classList.add('dark-theme');
+        if (themeBtnText) themeBtnText.textContent = '☀️ 라이트모드 전환';
+      } else {
+        document.body.classList.remove('dark-theme');
+        document.body.classList.add('light-theme');
+        if (themeBtnText) themeBtnText.textContent = '🌙 나이트모드 전환';
+      }
+      localStorage.setItem('nr_guide_theme', theme);
+    }
+
+    themeBtn?.addEventListener('click', () => {
+      const isDark = document.body.classList.contains('dark-theme');
+      setTheme(isDark ? 'light' : 'dark');
+    });
+
+    // 3. 코드 복사 버튼
+    const toast = document.getElementById('fg-toast');
+    function showToast(msg) {
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    document.querySelectorAll('.fg-copy-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const code = btn.closest('.fg-code-block').querySelector('pre.fg-code').textContent;
+        navigator.clipboard.writeText(code).then(() => {
+          btn.textContent = '✓ 복사됨';
+          btn.classList.add('is-copied');
+          showToast('코드가 클립보드에 복사되었습니다.');
+          setTimeout(() => {
+            btn.textContent = '코드 복사';
+            btn.classList.remove('is-copied');
+          }, 2000);
+        });
+      });
+    });
+
+    // 4. API 플레이그라운드 제어
+    const consoleEl = document.getElementById('pg-console');
+    function log(msg) {
+      if (!consoleEl) return;
+      const now = new Date().toTimeString().split(' ')[0];
+      const div = document.createElement('div');
+      div.className = 'fg-console-item';
+      div.innerHTML = `<span class="time">[${now}]</span> ${msg}`;
+      consoleEl.appendChild(div);
+      consoleEl.scrollTop = consoleEl.scrollHeight;
+    }
+
+    let pgInstance = null;
+
+    function initPlayground() {
+      pgInstance = initDropdown('#playground-btn', {
+        position: 'bottom-right',
+        onOpen: () => log('👉 [이벤트] 드롭다운이 열렸습니다. (onOpen)'),
+        onClose: () => log('👈 [이벤트] 드롭다운이 닫혔습니다. (onClose)'),
+        onSelect: (val) => log(`🎯 [이벤트] 아이템이 선택되었습니다: ${val} (onSelect)`),
+      });
+      log('드롭다운 인스턴스가 생성되었습니다.');
+    }
+
+    initPlayground();
+
+    document.getElementById('pg-btn-open')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!pgInstance) return log('⚠️ 먼저 재초기화를 진행해주세요.');
+      pgInstance.open();
+      log('▶ pgInstance.open() 실행 완료');
+    });
+
+    document.getElementById('pg-btn-close')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!pgInstance) return log('⚠️ 먼저 재초기화를 진행해주세요.');
+      pgInstance.close();
+      log('⏹ pgInstance.close() 실행 완료');
+    });
+
+    document.getElementById('pg-btn-toggle')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!pgInstance) return log('⚠️ 먼저 재초기화를 진행해주세요.');
+      pgInstance.toggle();
+      log(`🔀 pgInstance.toggle() 실행 완료 (상태: ${pgInstance.isOpen() ? '열림' : '닫힘'})`);
+    });
+
+    document.getElementById('pg-btn-pos-tl')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!pgInstance) return log('⚠️ 먼저 재초기화를 진행해주세요.');
+      pgInstance.setPosition('top-left');
+      log('위치가 "top-left"로 변경되었습니다.');
+    });
+
+    document.getElementById('pg-btn-pos-br')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!pgInstance) return log('⚠️ 먼저 재초기화를 진행해주세요.');
+      pgInstance.setPosition('bottom-right');
+      log('위치가 "bottom-right"로 변경되었습니다.');
+    });
+
+    document.getElementById('pg-btn-destroy')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!pgInstance) return log('⚠️ 이미 해제되었거나 인스턴스가 없습니다.');
+      pgInstance.destroy();
+      pgInstance = null;
+      log('🧹 destroy() 호출: 이벤트 리스너 및 메모리가 완전히 정리되었습니다.');
+    });
+
+    document.getElementById('pg-btn-reinit')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (pgInstance) {
+        pgInstance.destroy();
+      }
+      initPlayground();
+    });
+  </script>
+</body>
+
+</html>

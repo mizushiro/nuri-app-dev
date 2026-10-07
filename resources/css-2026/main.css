@@ -1,0 +1,278 @@
+@charset "utf-8";
+body[data-theme][data-display="dash"] {
+  main > [data-diaplay-item="dash"] {gap:2.4rem;display:flex;flex-direction:column;}
+  .nr__main-summary-sticky {position:sticky;display:flex;flex-direction:column;justify-content:flex-end;z-index:50;min-height:55.6rem;top:-37.8rem;border-radius:1.6rem;}
+  .nr__main-summary-area {padding-bottom:0.6rem;}
+}
+body.is-simple.light-theme .nr__main-summary-sticky > .nr__main-summary-area {background-color:rgba(4,117,244,.8);}
+body.is-simple.dark-theme .nr__main-summary-sticky > .nr__main-summary-area,
+body.is-simple.night-theme .nr__main-summary-sticky > .nr__main-summary-area {background-color:rgba(0,0,0,.5)}
+
+body[data-theme][data-display="dash"].is-simple {
+  .nr__main-summary-sticky > .nr__main-summary-area {backdrop-filter: blur(1rem);padding:.7rem 1.2rem .5rem}
+  .nr__summary-top,
+  .nr__main-summary-area .nr__summary-grid,
+  .nr__main-summary-area .nr__summary-card--alert{display:none;}
+  .icon-aspect-location-w {width:1.8rem}
+  .text-16.nr__loc-name {font-size:1.4rem}
+  .nr__summary-circle-btn {width:2.2rem;height:2.2rem}
+  .nr__summary-circle-btn i[data-size="22"] {width:1.8rem;}
+  .nr__summary-circle-btn i[data-size="16"] {width:1.2rem;}
+  .nr__summary-card--main {display:grid;grid-template-columns:repeat(2, 1fr);gap:0.2rem 0;background-color:transparent;padding:0;}
+  .nr__summary-card-head {grid-column:span 2;padding: 0;justify-content: center;gap:1rem;border:0;margin-bottom:.2rem}
+  .nr__summary-temp .text-68 {font-size:3.2rem;}
+  .nr__summary-temp .text-34 {font-size:1.6rem;font-weight:500}
+  .nr__summary-weather {margin:0;justify-content: flex-end;padding-right:2rem}
+  .nr__summary-weather > i {width:3.6rem;}
+  .nr__summary-feel {flex-direction:column;align-items:flex-start;font-size:1.4rem;padding-left:2rem;border-left:1px solid #FFFFFF33;font-weight:500;}
+  .nr__summary-slash {display:none;}
+  .nr__summary-swiper .swiper {padding-bottom:1.6rem}
+}
+body[data-theme][data-display="map"] {
+    background-color:#fff !important;
+    background-image:none !important;
+
+    .nr__header-logo-link {background-image:url(../images-2026/common/logo-dark.svg);}
+    .icon-mask-youtube {background-color:#EE2328}
+    .icon-mask-refresh {background-color:#19213D}
+    .icon-mask-allmenu {background-color:#19213D}
+    .nr__header{min-height:5.4rem;}
+    .nr__header-btn--menu{border-color:#E9EDF9;}
+    [data-diaplay-item="map"]{display:flex;position:relative;height:100%;}
+    .nr__footer,
+    [data-diaplay-item="dash"],
+    .nr__header-nav{display:none;}
+    .ui-main-wrap{display:grid;grid-template-rows:auto 1fr;height:100dvh}
+}
+body[data-theme][data-display="info"] {
+    height:100vh;
+    height:100dvh;
+    overflow:hidden;
+
+    .nr__main-section-box:not([data-diaplay-item="info-only"]),
+    .nr__main-summary-area .nr__summary-grid,
+    .nr__main-summary-area .nr__summary-card--alert,
+    .nr__footer{display:none;}
+    [data-diaplay-item="info-only"] {display:block;}
+    .nr__summary-card--main {display:grid;grid-template-columns:repeat(2, 1fr);gap:2.1rem 0;padding-bottom:2rem;}
+    .nr__summary-card-head {grid-column:span 2;}
+    .nr__summary-temp .text-68 {font-size:3.2rem;}
+    .nr__summary-temp .text-34 {font-size:1.6rem;}
+    .nr__summary-weather{margin:0;}
+    .nr__summary-weather > i {width:3.6rem;}
+    .nr__summary-feel {flex-direction:column;align-items:flex-start;font-size:1.4rem;padding-left:5vw;border-left:1px solid #FFFFFF33;font-weight:500;}
+    .nr__summary-slash{display:none;}
+    .ui-main-wrap{display:grid;grid-template-rows:auto 1fr;height:100dvh;overflow:hidden;}
+    main {display:flex;flex-direction:column;height:100%;min-height:0;overflow:hidden;}
+    [data-diaplay-item="dash"] {display:flex;flex-direction:column;height:100%;min-height:0;overflow:hidden;}
+    .nr__main-summary-area {flex-shrink:0;}
+    .nr__main-section-group{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:calc(2rem + env(safe-area-inset-bottom));border-radius:1.6rem;padding-left:0;padding-right:0;margin:0 1.5rem;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none;}
+}
+
+[data-diaplay-item="map"] iframe {border:0;width:100%;height:100%;}
+
+[data-diaplay-item="info-only"],
+[data-diaplay-item="map"]{display:none;}
+[data-theme="true"] {background-color:var(--body-theme)}
+
+body[data-bg] {background-position:50% calc(-4.6rem + env(safe-area-inset-top));background-size:100% auto;background-repeat:no-repeat}
+[data-bg="light-01"] {background-image:url(../images-2026/weather/bg-light-01.jpg);}
+[data-bg="night-01"],
+body.night-theme,
+.night-theme {background-image:url(../images-2026/weather/bg-night-01.jpg) !important;}
+body.dark-theme,
+.dark-theme {background-image:none !important;}
+
+/* S :메인 요약 영역 (상단 날씨) */
+.nr__main-summary-area {display:flex;flex-direction:column;gap:1.2rem;padding:1rem 1.5rem 3rem;}
+
+.nr__summary-swiper .nr__main-summary-area {padding:0;}
+.nr__summary-swiper .swiper{padding-bottom:2.3rem;}
+.nr__summary-swiper .swiper-pagination {bottom:0 !important;top:auto !important}
+.nr__summary-swiper .swiper-pagination-bullet {background-color:#fff !important;opacity:.5;}
+.nr__summary-swiper .swiper-pagination-bullet-active {background-color:#fff !important;opacity:1;}
+
+.nr__summary-top {display:flex;align-items:center;justify-content:space-between;min-height:3.6rem}
+.nr__summary-time {color:#fff;opacity:.9}
+.nr__summary-alert-btns {display:flex;align-items:center;gap:.4rem}
+.nr__summary-alert-btn {display:inline-flex;align-items:center;gap:.4rem;height:3.2rem;padding:0 1.2rem;border-radius:99rem;background-color:var(--bg-theme16);color:#fff;border:none;cursor:pointer;text-decoration:none;}
+
+.nr__summary-card {border-radius:1.6rem;background-color:var(--bg-theme16);color:#fff}
+.nr__summary-card--main {padding-bottom:4.2rem}
+.nr__summary-card-head {display:flex;align-items:center;justify-content:space-between;padding:.8rem 1rem;border-bottom:1px solid rgba(255,255,255,.1)}
+.nr__summary-location {display:flex;align-items:center;gap:.6rem}
+.nr__summary-actions {display:flex;align-items:center;gap:.6rem}
+.nr__summary-circle-btn {display:inline-flex;align-items:center;justify-content:center;width:3rem;height:3rem;border-radius:50%;background-color:rgba(255,255,255,.2);border:none;cursor:pointer;color:#fff}
+.nr__summary-circle-btn:hover {background-color:rgba(255,255,255,.25)}
+
+.nr__summary-weather {display:flex;align-items:center;justify-content:center;gap:1rem;margin:4rem 0 1.2rem;}
+.nr__summary-temp {display:flex;align-items:flex-start;gap:.2rem}
+.nr__summary-feel {display:flex;align-items:center;justify-content:center;gap:.6rem;font-weight:500}
+.nr__summary-slash {opacity:.6;font-weight:300}
+
+.nr__summary-grid {display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:1.2rem}
+.nr__summary-card--sub {display:flex;flex-direction:column;justify-content:space-between;min-height:10rem;padding:1rem 1rem 1.4rem 1.4rem}
+.nr__summary-sub-head {display:flex;align-items:center;justify-content:space-between;gap:.4rem}
+.nr__summary-icon-circle {display:flex;align-items:center;align-self:flex-start;justify-content:center;width:2.8rem;height:2.8rem;border-radius:50%;background-color:#fff;flex-shrink:0}
+.nr__summary-sub-val {display:flex;align-items:baseline;gap:.3rem}
+.nr__summary-sub-val--wind {flex-direction:column;align-items:flex-start;gap:.2rem}
+.nr__summary-wind-dir {display:inline-flex;align-items:center;gap:.3rem;}
+.nr__summary-wind-dir .nr__summary-arrow {font-size:.8rem}
+.nr__summary-wind-speed {display:flex;align-items:baseline;gap:.3rem}
+
+.nr__summary-card--alert {padding:1.4rem 1.5rem 2rem}
+.nr__summary-alert-head {display:flex;align-items:center;gap:.6rem;margin-bottom:1rem}
+.nr__summary-alert-msg {line-height:1.45;font-weight:500;opacity:.95}
+/* E :메인 요약 영역 (상단 날씨) */
+
+.nr__main-section-group {display:flex;flex-direction:column;gap:1.5rem;padding:0 1.5rem calc(7.6rem + env(safe-area-inset-bottom, 0px));}
+.nr__main-section-box {border-radius:1.6rem;background-color:var(--bg-theme1);scroll-margin-top:calc(9.7rem + 1.2rem);}
+.nr__main-section-header {display:flex;gap:.8rem;align-items:center;min-height:4.5rem;padding:.4rem 1rem .2rem 1.5rem;border-bottom:1px solid var(--border-theme1)}
+.nr__daily-forecast {display:flex;flex-direction:column;gap:.8rem}
+.nr__daily-forecast-head {display:grid;grid-template-columns:4.8rem auto 6.8rem;align-items:center}
+.nr__daily-forecast-list {display:flex;flex-direction:column;gap:1.4rem}
+.nr__daily-forecast-item {display:grid;grid-template-columns:4.8rem auto 6.8rem;align-items:center}
+.nr__daily-forecast-date {display:flex;align-items:center;gap:.4rem;justify-self:start}
+.nr__daily-forecast-weather {display:flex;align-items:center;justify-content:center}
+.nr__daily-forecast-weather-am {display:flex;align-items:center;justify-content:flex-end;gap:.6rem}
+.nr__daily-forecast-weather-pm {display:flex;align-items:center;justify-content:flex-start;gap:.6rem}
+.nr__daily-forecast-head .nr__daily-forecast-weather {gap:.6rem}
+.nr__daily-forecast-icon {width:3.2rem;height:3.2rem}
+.nr__daily-forecast-slash {display:inline-flex;align-items:center;justify-content:center;width:1.2rem;color:var(--bg-theme14);font-size:1.3rem;font-weight:300}
+.nr__daily-forecast-slash--blank {visibility:hidden}
+.nr__daily-forecast-temp {display:flex;align-items:center;justify-content:center;gap:.4rem}
+.nr__help-btn {display:inline-flex;align-items:center;justify-content:center}
+.nr__sun-moon {display:flex;flex-direction:column}
+.nr__sun-moon-sun {display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:2.4rem}
+.nr__sun-moon-sun .nr__sun-moon-item {display:flex;align-items:center;justify-content:center;gap:.8rem}
+.nr__sun-moon-info {display:flex;flex-direction:column;gap:.2rem}
+.nr__sun-moon-divider {height:1px;width:100%;background-color:var(--border-theme11);margin:3rem 0}
+.nr__sun-moon-moon {display:flex;gap:1.2rem;justify-content:space-between}
+.nr__sun-moon-moon .nr__sun-moon-item {display:flex;flex-direction:column;align-items:center;text-align:center;width:6.8rem}
+.nr__sun-moon-moon .nr__sun-moon-item:nth-child(2) {width:auto;flex:1}
+.nr__uv-index {width:100%}
+.nr__uv-index-list {display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:.6rem}
+.nr__uv-index-item {display:flex;flex-direction:column;align-items:center;justify-content:space-between;min-height:10.6rem;padding:1.6rem .5rem .5rem;border:1px solid var(--border-theme12);border-radius:.8rem;background-color:var(--bg-theme7)}
+.nr__uv-index-info {display:flex;flex-direction:column;align-items:center;gap:.4rem;text-align:center;white-space:nowrap}
+.nr__uv-index-badge {display:flex;align-items:center;justify-content:center;width:100%;height:3.4rem;border-radius:.4rem;font-size:1.4rem;font-weight:600}
+.nr__uv-index-badge[data-level="low"] {background-color:#E5E5E5;color:#000}
+.nr__uv-index-badge[data-level="normal"] {background-color:#FAD98F;color:#000}
+.nr__uv-index-badge[data-level="high"] {background-color:#FD8D3C;color:#000}
+.nr__uv-index-badge[data-level="very-high"] {background-color:#C30000;color:#fff}
+.nr__pollen-filter {margin-bottom:1.5rem}
+.nr__pollen-filter[data-form-style="round-box-list"] .form-fake-label {padding:0 1.6rem;border:1px solid transparent;background-color:var(--bg-theme3);color:var(--text-theme2);font-weight:500;font-size:1.4rem}
+.nr__pollen-filter[data-form-style="round-box-list"] .form-fake-input:checked + .form-fake-label {background-color:var(--bg-theme15);color:var(--text-theme1);border-color:var(--border-theme13);font-weight:700}
+.nr__air-quality {display:flex;flex-direction:column}
+.nr__air-quality-list {display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:1.2rem}
+.nr__air-quality-item {display:flex;flex-direction:column;align-items:center;text-align:center}
+.nr__air-quality-gauge {position:relative;width:100%;max-width:9.6rem;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center}
+.nr__air-quality-svg {width:100%;height:100%}
+.nr__air-quality-val {position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.nr__air-quality-status {font-size:1.6rem;font-weight:700;margin-top:.8rem;margin-bottom:.4rem}
+.nr__air-quality-item .nr__air-quality-dot {fill:#fff}
+.nr__air-quality-item[data-level="good"] .nr__air-quality-track {stroke:#1787FF1A}
+.nr__air-quality-item[data-level="good"] .nr__air-quality-bar {stroke:url(#air-bar-good)}
+.nr__air-quality-item[data-level="good"] .nr__air-quality-dot {stroke:var(--air-good-start)}
+.nr__air-quality-item[data-level="good"] .nr__air-quality-status {color:#1787FF}
+.nr__air-quality-item[data-level="bad"] .nr__air-quality-track {stroke:#E87E211F}
+.nr__air-quality-item[data-level="bad"] .nr__air-quality-bar {stroke:url(#air-bar-bad)}
+.nr__air-quality-item[data-level="bad"] .nr__air-quality-dot {stroke:var(--air-bad-start)}
+.nr__air-quality-item[data-level="bad"] .nr__air-quality-status {color:#E87E21}
+.nr__content-type {margin-left:auto}
+.nr__content-type[data-form-style="round-box"] {background-color:var(--bg-theme5);padding:.2rem}
+.nr__content-type[data-form-style="round-box"] .form-fake-label {min-width:5.8rem;color:var(--text-theme2);font-size:1.2rem;font-weight:600;padding:0 1.2rem}
+.nr__content-type[data-form-style="round-box"] .form-fake-input:checked + .form-fake-label {color:var(--text-theme1);font-weight:700;background-color:var(--bg-theme4)}
+
+/* S :영상 (레이더) */
+.nr__radar-content {display:flex;flex-direction:column;}
+.nr__radar-sub-header {display:flex;align-items:center;justify-content:space-between;}
+.nr__radar-meta {display:flex;align-items:center;gap:.4rem;}
+.nr__radar-refresh-btn {display:inline-flex;align-items:center;justify-content:center;width:1.6rem;height:1.6rem;padding:0;border:none;background:transparent;cursor:pointer;color:var(--text-theme2);}
+.nr__radar-refresh-btn:active i {transform:rotate(180deg);transition:transform .3s ease;}
+
+/* 지도 뷰어 컨테이너 */
+.nr__radar-viewer {position:relative;border-radius:.6rem;overflow:hidden;background-color:#E9EDF2;aspect-ratio:340/326;width:100%;margin-top:.8rem}
+.nr__radar-map-box {width:100%;height:100%;}
+.nr__radar-map-img {width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+
+/* 지도 위 플로팅 컨트롤 */
+.nr__radar-map-player {position:absolute;bottom:6.8rem;left:50%;transform:translateX(-50%);display:flex;gap:3.2rem;z-index:10;}
+.nr__radar-player-btn {display:inline-flex;align-items:center;justify-content:center;background:transparent;border:none;padding:0;cursor:pointer;transition:transform .15s ease, opacity .15s ease;}
+.nr__radar-player-btn:active {transform:scale(.92);opacity:.85;}
+.nr__radar-map-controls {position:absolute;bottom:6.2rem;right:1rem;z-index:10;display:flex;flex-direction:column;gap:.8rem;}
+.nr__radar-map-btn {display:inline-flex;align-items:center;justify-content:center;width:3.8rem;height:3.8rem;border-radius:.4rem;background-color:#fff;border:none;box-shadow:0 .2rem .2rem 0 #0000001A;cursor:pointer;transition:background-color .15s ease, transform .1s ease;}
+.nr__radar-map-btn:active {background-color:#F5F6F8;transform:scale(.96);}
+.nr__radar-map-zoom {display:flex;flex-direction:column;align-items:center;border-radius:.4rem;background-color:#fff;box-shadow:0 .2rem .2rem 0 #0000001A;overflow:hidden;}
+.nr__radar-map-zoom .nr__radar-map-btn {width:3.8rem;height:3.8rem;border-radius:0;box-shadow:none}
+.nr__radar-map-zoom-divider {width:100%;height:1px;background-color:#E8E8E8}
+
+/* 하단 타임라인 & 범례 바 */
+.nr__radar-bottom {position:absolute;bottom:0;left:0;right:0;z-index:10}
+.nr__radar-timeline {width:100%;background-color:rgba(0,0,0,.75);padding:.7rem 1rem}
+.nr__radar-timeline-track {width:100%;height:.2rem;background-color:#000;overflow:hidden;cursor:pointer;}
+.nr__radar-timeline-fill {display:block;height:100%;background-color:#0475F4;transition:width .25s ease-out;}
+
+.nr__radar-legend {width:100%;padding:0 1rem 1.6rem 5.5rem;background-color:rgba(0,0,0,.9);position:relative}
+.nr__legend-gauge-group {display:flex}
+.nr__legend-gauge-item {flex:1;display:flex;flex-direction:column;gap:.6rem;align-items:center}
+.nr__legend-gauge-color {height:.6rem;width:100%}
+.nr__legend-gauge-num {font-size:1.1rem;font-weight:700;color:#fff}
+.nr__radar-scales {display:flex;justify-content:space-between;align-items:center;color:#fff;font-size:1.1rem;font-weight:700;}
+.nr__legend-unit {color:#fff;font-size:1.1rem;font-weight:700;position:absolute;top:1.2rem;left:0;width:5.5rem;text-align:center}
+
+.nr__radar-actions {display:flex;justify-content:flex-end;margin-top:.8rem}
+.nr__radar-link-btn {display:inline-flex;align-items:center;justify-content:center;height:3.4rem;padding:0 1.6rem;border-radius:.4rem;border:1px solid var(--border-theme18);background-color:var(--bg-theme7);color:var(--text-theme1);font-size:1.4rem;font-weight:700;cursor:pointer;text-decoration:none;transition:all .2s ease;}
+.nr__radar-link-btn:active {transform:scale(.97);}
+/* E :영상 (레이더) */
+
+/* S :footer */
+.nr__footer {position:fixed;bottom:0;left:0;right:0;z-index:90;background-color:var(--bg-theme17);border-top:1px solid var(--border-theme15);box-shadow:0 -.2rem 1rem 0 #00000008;;user-select:none;transition:background-color .2s ease, border-color .2s ease;padding-bottom:env(safe-area-inset-bottom);}
+.nr__footer-nav {width:100%}
+.nr__footer-list {display:flex}
+.nr__footer-item {flex:1;display:flex;justify-content:center}
+.nr__footer-btn {display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:.2rem;width:100%;min-height:6rem;padding:.9rem .2rem;background:transparent;border:none;cursor:pointer;color:var(--text-theme1);transition:color .2s ease, transform .15s ease}
+.nr__footer-btn:active {transform:scale(.95)}
+.nr__footer-text {font-size:1rem;line-height:1.2;font-weight:400;letter-spacing:-0.02em;color:inherit;transition:color .2s ease, font-weight .2s ease}
+
+/* 활성(active) 상태 */
+.nr__footer-btn.is-active,
+.nr__footer-item.is-active .nr__footer-btn {color:#0475F4}
+.nr__footer-btn.is-active .nr__footer-text,
+.nr__footer-item.is-active .nr__footer-text {font-weight:700}
+/* E :footer */
+
+/* main map */
+.nr__main-map{position:relative;overflow:hidden;width:100%;height:100%;background-color:#ccc}
+.nr__main-map-bottom{position:absolute;bottom:0;padding-bottom:env(safe-area-inset-bottom);z-index:1;width:100%;background-color:#000;z-index:1;}
+.nr__main-map-top {position:absolute;top:0;left:0;z-index:1;width:100%;padding:1.9rem 1.5rem 0;display:grid;grid-template-columns:auto 1fr;gap:0.7rem;z-index:1;}
+.nr__main-map-search{display:flex;width:4.8rem;height:4.8rem;align-items:center;justify-content:center;background-color:#fff;border-radius:50%;box-shadow:0 0.1rem 0.2rem 0 #fff;}
+.nr__main-map-info {display:flex;align-items:center;justify-content:flex-start;height:4.8rem;width:100%;border-radius:2.4rem;padding:0 2rem;background-color:var(--bg-theme20);box-shadow:0 0.1rem 0.2rem 0 var(--shadow-theme2);font-size:1.5rem;color:var(--text-theme8);letter-spacing:-0.02rem;overflow-x:auto;white-space:nowrap;scrollbar-width:none;-ms-overflow-style:none;}
+.nr__main-map-info::-webkit-scrollbar{display:none;}
+.nr__main-map-info-dt{opacity:50%;display:flex;align-items:center;}
+.nr__main-map-info-dd{display:flex;align-items:center;}
+.nr__main-map-info-dd::after{content:"";width:1px;height:2rem;background-color:var(--bg-theme17);opacity:30%;margin:0 1rem;}
+.nr__main-map-info-dd:last-child:after{display:none;}
+
+/* S :Toast Popup */
+.nr__toast {position:absolute;z-index:200;opacity:0;transform:translate(-50%, -10px);transition:opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);pointer-events:auto;box-sizing:border-box;}
+.nr__toast--card-top {top:1rem;left:50%;transform:translate(-50%, -10px);width:calc(100% - 2rem);max-width:36rem;}
+.nr__toast--card-top.is-show {opacity:1;transform:translate(-50%, 0);}
+.nr__toast--card-top.is-hide {opacity:0;transform:translate(-50%, -1rem);}
+.nr__toast--top-center {position:fixed;top:2rem;left:50%;transform:translate(-50%, -10px);z-index:999;}
+.nr__toast--top-center.is-show {opacity:1;transform:translate(-50%, 0);}
+.nr__toast--top-center.is-hide {opacity:0;transform:translate(-50%, -10px);}
+.nr__toast-inner {display:flex;align-items:center;gap:0.8rem;padding:1rem 1.4rem;background:var(--bg-theme1);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(1.2rem);border:1px solid rgba(255, 255, 255, 0.15);border-radius:1.2rem;box-shadow:0 0.8rem 2rem rgba(0, 0, 0, 0.25);color:var(--text-theme1);font-size:1.4rem;font-weight:500;}
+.nr__toast-icon {display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+.nr__toast-message {flex:1;line-height:1.35;word-break:keep-all;}
+/* E :Toast Popup */
+
+/* 펼쳐진 상태 (화면 가로 폭이 넓거나 특정 비율 이상일 때) */
+/* @media (min-width:768px) and (aspect-ratio:4/3), (min-width:800px) {
+	body[data-bg]  {background-attachment:fixed;}
+	.ui-main-wrap::before{content:"";display:block;width:50%;height:100%;position:fixed;top:0;left:0;z-index:0;backdrop-filter:blur(1rem);}
+	.nr__header {width:50%;}
+	.light-theme.is-scrolled .nr__header{background-color:transparent;backdrop-filter:unset}
+	[data-diaplay-item="dash"] {padding-left:50%;}
+	[data-diaplay-item="dash"] > .nr__main-summary-area {width:50%;position:fixed;left:0;}
+	.nr__footer .nr__footer-list {padding:0 25%;}
+} */

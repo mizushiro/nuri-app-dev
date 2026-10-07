@@ -1,0 +1,213 @@
+@charset "utf-8";
+
+:root {
+  --color-primary:#2E7EF6;
+  
+  --text-theme1:#19213D;
+  --text-theme2:#6D758F;
+  --text-theme3:#6D758FB2;
+  --text-theme4:#19213D;
+  --text-theme5:#19213D;
+  --text-theme6:#0475F4;
+  --text-theme7:#1C1B1F;
+  --text-theme8:#FFF;
+
+  --body-theme:#F5F6FB;
+
+  --shadow-theme1: #001D6505;
+  --shadow-theme2: #2F33590D;
+
+  --bg-theme1:#fff;
+  --bg-theme2:#F2F8FE;
+  --bg-theme3:#F8F8F8;
+  --bg-theme4:#fff;
+  --bg-theme5:#E8ECEF;
+  --bg-theme6:#fff;
+  --bg-theme7:#fff;
+  --bg-theme8:#E8ECEF;
+  --bg-theme9:#F8F8F8;
+  --bg-theme10:#E8ECEF;
+  --bg-theme11:#F8F8F8;
+  --bg-theme12:#E8F3FF;
+  --bg-theme13:#F8F8F8;
+  --bg-theme14:#DBE3F7;
+  --bg-theme15:#fff;
+  --bg-theme16:#0000001A;
+  --bg-theme17:#fff;
+  --bg-theme18:#EAF4FF;
+  --bg-theme19:#0475F4;
+  --bg-theme20:#00000099;
+
+  --border-theme1:#E9EDF9;
+  --border-theme2:#E8ECEF;
+  --border-theme3:#201F3B;
+  --border-theme4:#201F3B;
+  --border-theme5:#9E9E9E;
+  --border-theme6:#E8ECEF;
+  --border-theme7:#E8ECEF;
+  --border-theme8:#74B7FF;
+  --border-theme9:#D3E8FF;
+  --border-theme10:#E8ECEF;
+  --border-theme11:#E9EDF980;
+  --border-theme12:#E9EDF9;
+  --border-theme13:#201F3B;
+  --border-theme14:#fff;
+  --border-theme15:#E9EDF9;
+  --border-theme16:#E2E8F0;
+  --border-theme17:#0475F4;
+  --border-theme18:#201F3B;
+
+  --air-good-start:#007BFE;
+  --air-good-end:#65B4FE;
+
+  --air-bad-start:#F19C51;
+  --air-bad-end:#F4B263;
+}
+.night-theme {
+  --text-theme1:#fff;
+  --text-theme2:#B7B7B7;
+  --text-theme3:#B7B7B7;
+  --text-theme4:#B7B7B7;
+  --text-theme5:#fff;
+
+  --body-theme:#121725;
+
+  --bg-theme1:#212633;
+  --bg-theme2:#F2F8FE1A;
+  --bg-theme3:#0D152A;
+  --bg-theme4:#2C364F;
+  --bg-theme5:#0D152A;
+  --bg-theme6:#2C364F;
+  --bg-theme7:#0D152A;
+  --bg-theme8:#2C364F;
+  --bg-theme9:#0D152A;
+  --bg-theme10:#2A3141;
+  --bg-theme11:#FFFFFF0F;
+  --bg-theme12:#1787FF33;
+  --bg-theme13:#FFFFFF1A;
+  --bg-theme14:#353D50;
+  --bg-theme15:#2C364F;
+  --bg-theme16:#FFFFFF1A;
+  --bg-theme17:#0B0F19;
+
+  --border-theme1:#2A3141;
+  --border-theme2:#2C364F;
+  --border-theme3:#FFFFFF59;
+  --border-theme4:#FFFFFF4D;
+  --border-theme5:#FFFFFF0A;
+  --border-theme6:#FFFFFF0A;
+  --border-theme7:#E8ECEF4D;
+  --border-theme8:#1787FF66;
+  --border-theme9:#1787FF4D;
+  --border-theme10:#FFFFFF4D;
+  --border-theme11:#2A3141B2;
+  --border-theme12:#0D152A;
+  --border-theme13:#2C364F;
+  --border-theme14:#212633;
+  --border-theme15:#19213D;
+  --border-theme16:#E2E8F0;
+  --border-theme17:#0475F4;
+  --border-theme18:#0D152A;
+
+  --air-good-start:#007BFE;
+  --air-good-end:#65B4FE;
+
+  --air-bad-start:#F19C51;
+  --air-bad-end:#F4B163;
+}
+.dark-theme {
+  --text-theme1:#fff;
+  --text-theme2:#B7B7B7;
+  --text-theme3:#B7B7B7;
+  --text-theme4:#B7B7B7;
+  --text-theme5:#fff;
+
+  --body-theme:#121725;
+
+  --bg-theme1:#212633;
+  --bg-theme2:#F2F8FE1A;
+  --bg-theme3:#0D152A;
+  --bg-theme4:#2C364F;
+  --bg-theme5:#0D152A;
+  --bg-theme6:#2C364F;
+  --bg-theme7:#0D152A;
+  --bg-theme8:#2C364F;
+  --bg-theme9:#0D152A;
+  --bg-theme10:#2A3141;
+  --bg-theme11:#FFFFFF0F;
+  --bg-theme12:#1787FF33;
+  --bg-theme13:#FFFFFF1A;
+  --bg-theme14:#353D50;
+  --bg-theme15:#2C364F;
+  --bg-theme16:#FFFFFF1A;
+  --bg-theme17:#0B0F19;
+
+  --border-theme1:#2A3141;
+  --border-theme2:#2C364F;
+  --border-theme3:#FFFFFF59;
+  --border-theme4:#FFFFFF4D;
+  --border-theme5:#FFFFFF0A;
+  --border-theme6:#FFFFFF0A;
+  --border-theme7:#E8ECEF4D;
+  --border-theme8:#1787FF66;
+  --border-theme9:#1787FF4D;
+  --border-theme10:#FFFFFF4D;
+  --border-theme11:#2A3141B2;
+  --border-theme12:#0D152A;
+  --border-theme13:#2C364F;
+  --border-theme14:#212633;
+  --border-theme15:#19213D;
+  --border-theme16:#E2E8F0;
+  --border-theme17:#0475F4;
+  --border-theme18:#0D152A;
+
+  --air-good-start:#007BFE;
+  --air-good-end:#65B4FE;
+
+  --air-bad-start:#F19C51;
+  --air-bad-end:#F4B163;
+}
+
+
+.icon-aspect-help-theme {background-image:url("../images-2026/icon/icon-aspect-help-light.svg")}
+.icon-aspect-sunup-theme {background-image:url("../images-2026/icon/icon-aspect-sunup-light.svg")}
+.icon-aspect-sundown-theme {background-image:url("../images-2026/icon/icon-aspect-sundown-light.svg")}
+.icon-aspect-sunup2-theme {background-image:url("../images-2026/icon/icon-aspect-sunup2-light.svg")}
+.icon-aspect-sundown2-theme {background-image:url("../images-2026/icon/icon-aspect-sundown2-light.svg")}
+.icon-aspect-main-nav1-theme {background-image:url("../images-2026/icon/icon-aspect-main-nav1-light.svg")}
+.icon-aspect-main-nav2-theme {background-image:url("../images-2026/icon/icon-aspect-main-nav2-light.svg")}
+.icon-aspect-main-nav3-theme {background-image:url("../images-2026/icon/icon-aspect-main-nav3-light.svg")}
+.icon-aspect-main-nav4-theme {background-image:url("../images-2026/icon/icon-aspect-main-nav4-light.svg")}
+
+.night-theme .icon-aspect-help-theme,
+.dark-theme .icon-aspect-help-theme {background-image:url("../images-2026/icon/icon-aspect-help-dark.svg")}
+.night-theme .icon-aspect-sunup-theme,
+.dark-theme .icon-aspect-sunup-theme {background-image:url("../images-2026/icon/icon-aspect-sunup-dark.svg")}
+.night-theme .icon-aspect-sundown-theme,
+.dark-theme .icon-aspect-sundown-theme {background-image:url("../images-2026/icon/icon-aspect-sundown-dark.svg")}
+.night-theme .icon-aspect-sunup2-theme,
+.dark-theme .icon-aspect-sunup2-theme {background-image:url("../images-2026/icon/icon-aspect-sunup2-dark.svg")}
+.night-theme .icon-aspect-sundown2-theme,
+.dark-theme .icon-aspect-sundown2-theme {background-image:url("../images-2026/icon/icon-aspect-sundown2-dark.svg")}
+.night-theme .icon-aspect-main-nav1-theme,
+.dark-theme .icon-aspect-main-nav1-theme {background-image:url("../images-2026/icon/icon-aspect-main-nav1-dark.svg")}
+.night-theme .icon-aspect-main-nav2-theme,
+.dark-theme .icon-aspect-main-nav2-theme {background-image:url("../images-2026/icon/icon-aspect-main-nav2-dark.svg")}
+.night-theme .icon-aspect-main-nav3-theme,
+.dark-theme .icon-aspect-main-nav3-theme {background-image:url("../images-2026/icon/icon-aspect-main-nav3-dark.svg")}
+.night-theme .icon-aspect-main-nav4-theme,
+.dark-theme .icon-aspect-main-nav4-theme {background-image:url("../images-2026/icon/icon-aspect-main-nav4-dark.svg")}
+
+/* main-nav 활성(on) 아이콘 */
+.is-active > .icon-aspect-main-nav1-theme,
+.is-active .icon-aspect-main-nav1-theme,
+.nr__footer-btn.is-active .icon-aspect-main-nav1-theme {background-image:url("../images-2026/icon/icon-aspect-main-nav1-on.svg") !important}
+.is-active > .icon-aspect-main-nav2-theme,
+.is-active .icon-aspect-main-nav2-theme,
+.nr__footer-btn.is-active .icon-aspect-main-nav2-theme {background-image:url("../images-2026/icon/icon-aspect-main-nav2-on.svg") !important}
+.is-active > .icon-aspect-main-nav3-theme,
+.is-active .icon-aspect-main-nav3-theme,
+.nr__footer-btn.is-active .icon-aspect-main-nav3-theme {background-image:url("../images-2026/icon/icon-aspect-main-nav3-on.svg") !important}
+.is-active > .icon-aspect-main-nav4-theme,
+.is-active .icon-aspect-main-nav4-theme,
+.nr__footer-btn.is-active .icon-aspect-main-nav4-theme {background-image:url("../images-2026/icon/icon-aspect-main-nav4-on.svg") !important}

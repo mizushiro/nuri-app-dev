@@ -1,0 +1,117 @@
+.nr__hourly-forecast {display:flex;width:100%;gap:1rem;flex-direction:column;}
+.nr__hourly-forecast-day {display:flex;gap:0.2rem;}
+.nr__weather-card-week,
+.nr__weather-card.active .nr__weather-card-body-btype, 
+.nr__weather-card-body-atype {display:none;}
+.nr__weather-card.active {
+  flex:5;border-color:var(--color-primary);
+  .nr__weather-card-week, .nr__weather-card-body-atype {display:flex;}
+  .nr__weather-card-header {background-color:var(--color-primary);color:#fff;}
+  .nr__weather-card {background-color:var(--bg-theme7);}
+}
+.nr__weather-card {display:flex;flex:2;flex-direction:column;overflow:hidden;border-radius:0.8rem;border:1px solid var(--border-theme2);transition:all 0.2s ease;}
+.nr__weather-card-header {display:flex;align-items:center;justify-content:center;background-color:var(--bg-theme8);min-height:2.8rem;font-size:1.4rem;font-weight:700;padding:0 0.3rem;}
+.nr__weather-card-body {display:flex;width:100%;height:100%;align-items:center;justify-content:center;background-color:var(--bg-theme9);padding:1.4rem 0.6rem;}
+.nr__weather-card-body-atype {width:100%;gap:0.6rem;justify-content:space-around;}
+.nr__weather-card-body-btype {color:var(--text-theme1);font-size:1.6rem;font-weight:700;}
+.nr__weather-card-icon {display:flex;width:100%;flex:1;align-items:flex-start;justify-content:space-around;color:var(--text-theme2);font-size:1.2rem;font-weight:600;}
+.nr__weather-card-icon-item {display:flex;flex-direction:column;gap:0.4rem;align-items:center;}
+.nr__weather-card-temp {flex:1;width:100%;display:flex;flex-direction:column;gap:1rem;justify-content:center;align-items:center;font-size:1.6rem;font-weight:700;}
+.nr__weather-card-temp-max,
+.nr__weather-card-temp-min {display:block;min-width:2.6rem;text-align:right;}
+.nr__weather-card-temp-max {color:#EE0000;}
+.nr__weather-card-temp-min {color:#3F85D7;}
+.nr__weather-card-body-atype hr {width:1px;display:block;height:4.4rem;border:0;border-left:1px solid var(--bg-theme10);margin:0;}
+
+.nr__row-time-box {display:flex;justify-content:center;align-items:center;font-size:1.1rem;color:#fff;background-color:var(--color-primary);min-height:1.8rem;border-radius:0.9rem;padding:0 0.8rem;line-height:1;}
+.nr__fixed-row-cell {display:flex;align-items:center;justify-content:flex-start;text-align:left;padding:0;font-size:1.4rem;font-weight:600;color:var(--text-theme2);box-sizing:border-box;}
+.nr__cell {display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.4rem;border-bottom:1px solid var(--border-theme5);font-size:1.4rem;color:var(--text-theme1);font-weight:600;box-sizing:border-box;}
+
+.nr__hourly-grid-container {display:flex;width:100%;border-top:1px solid var(--border-theme3);border-bottom:1px solid var(--border-theme3);overflow:hidden;position:relative;}
+
+.nr__cell.nr__cell-weather {position: relative;justify-content:flex-start;height:4.7rem;padding:0;background-color:var(--bg-theme11);border-top:1px solid var(--border-theme6);border-right:0 !important;border-bottom:1px solid var(--border-theme6);}
+.nr__hourly-col:first-child .nr__cell.nr__cell-weather [class*="icon-aspect-"] {border-left:1px solid var(--border-theme14);}
+.nr__hourly-col:first-child .nr__cell.nr__cell-weather::before{content:"";display:block;width:50%;height:100%;background-color:var(--bg-theme11);left:0;position: absolute;}
+.nr__cell.nr__cell-weather [class*="icon-aspect-"] {width:100%;height:4.5rem;background-size:2.8rem;background-repeat:no-repeat;background-position:center;transform:translateX(50%);background-color:var(--bg-theme11);border-right:1px solid var(--border-theme14);position:relative;z-index:2;}
+
+.nr__hourly-fixed-column {width:5.5rem;flex-shrink:0;background:var(--bg-theme1);border-right:1px solid var(--border-theme3);z-index:10;}
+
+/* Hourly Columns Container */
+.nr__hourly-columns-row {display:flex;flex-direction:row;}
+.nr__hourly-col {position:relative;width:5.6rem;flex-shrink:0;display:flex;flex-direction:column;box-sizing:border-box;text-align:center;}
+.nr__hourly-col > .nr__cell {border-right:1px dotted var(--border-theme7);}
+.nr__hourly-col:last-child > .nr__cell {border-right:none;}
+
+.nr__hourly-col:first-child .nr__cell-weather [data-icon-weather] {border-left:1px solid var(--border-theme14);}
+
+/* Chart Space Reserved Placeholder */
+.nr__cell.nr__cell-temp-chart {position:relative;justify-content:space-between;padding:1.2rem 0;border-bottom:0;}
+.nr__cell.nr__cell-sensory {font-weight:600;}
+
+.nr__date-group:last-child .nr__hourly-col:last-child .nr__cell-rain-prob-value,
+.nr__date-group:last-child .nr__hourly-col:last-child .nr__cell-precip-value {display:none !important;}
+
+.nr__hourly-col:first-child .nr__cell-rain-prob .nr__cell-rain-prob-value,
+.nr__hourly-col:first-child .nr__cell-precip .nr__cell-precip-value {border-left:1px solid var(--border-theme14);}
+.nr__hourly-col:first-child .nr__cell.nr__cell-precip::before{content:"";display:block;width:50%;height:100%;background-color:var(--bg-theme12);left:0;position: absolute;}
+.nr__hourly-col:first-child .nr__cell.nr__cell-rain-prob::before{content:"";display:block;width:50%;height:100%;background-color:var(--bg-theme13);left:0;position: absolute;}
+.nr__hourly-col.nr__empty-col {width:2.7rem;}
+
+.nr__cell.nr__cell-precip {position: relative; font-weight:600;background-color:var(--bg-theme12);border-top:1px solid var(--border-theme8);border-bottom:1px solid var(--border-theme9);padding:0;border-right:0 !important;}
+.nr__cell-rain-prob {position: relative;padding:0;font-weight:600;background-color:var(--bg-theme13);border-bottom:0 !important;border-right:0 !important;}
+
+.nr__cell-rain-prob-value,
+.nr__cell-precip-value {display:flex;width:100%;height:100%;justify-content:center;align-items:center;transform:translateX(50%);background-color:var(--bg-theme12);border-right:1px solid var(--border-theme14);position:relative;z-index:1;}
+.nr__cell-rain-prob-value {background-color:var(--bg-theme13);}
+
+.nr__cell.nr__cell-humidity {border-top:1px solid var(--border-theme10);border-bottom:0 !important;}
+.nr__cell-heat {background-color:var(--bg-theme13);border-bottom:0 !important;}
+
+.nr__cell.nr__cell-precip,
+.nr__cell.nr__cell-rain-prob,
+.nr__cell.nr__cell-humidity,
+.nr__cell.nr__cell-heat {font-size:1.3rem;}
+
+/* Mode 2: Chart Placeholders */
+.nr__mode-bar-chart .nr__cell.has-chart,
+.nr__cell.nr__cell-rain-chart,
+.nr__cell.nr__cell-wind-chart,
+.nr__cell.nr__cell-humidity-chart {position:relative;background-color:transparent;padding:0;box-sizing:border-box;}
+
+/* Wind Cell with direction arrow */
+.nr__cell.nr__cell-wind {display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.6rem;border-bottom:0 !important;}
+.nr__wind-arrow {line-height:1;}
+.nr__wind-strength {font-size:1.4rem;font-weight:600;color:var(--text-theme1);line-height:1.2;}
+.nr__wind-text {font-size:1.4rem;font-weight:600;color:var(--text-theme1);line-height:1.2;}
+
+/* Fixed Left Column */
+.nr__fixed-header-cell {display:none;}
+
+/* Custom row heights to match content & chart areas */
+.nr__row-time, .row-time {height:4.6rem;}
+.nr__row-weather, .row-weather {height:4.7rem;}
+.nr__row-temp-chart, .row-temp-chart {height:14.8rem;}
+.nr__row-sensory, .row-sensory {height:4rem;}
+.nr__row-precip, .row-precip {height:4rem;}
+.nr__row-rain-prob, .row-rain-prob {height:3.4rem;}
+.nr__row-rain-prob.has-chart, .nr__mode-bar-chart .nr__row-rain-prob {height:10rem;}
+.nr__row-wind, .row-wind {height:9.6rem;}
+.nr__row-wind.has-chart, .nr__mode-bar-chart .nr__row-wind {height:9.6rem;}
+.nr__row-humidity, .row-humidity {height:4rem;}
+.nr__row-humidity.has-chart, .nr__mode-bar-chart .nr__row-humidity {height:8rem;}
+.nr__map-area .ctrl .layer .close {display:none;}
+.nr__row-heat, .row-heat {height:3rem;}
+
+/* Horizontally Scrollable Viewport */
+.nr__hourly-scroll-viewport {flex:1;overflow-x:auto;overflow-y:hidden;position:relative;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none;cursor:grab;user-select:none;}
+.nr__hourly-scroll-viewport::-webkit-scrollbar {display:none;}
+.nr__hourly-scroll-viewport.grabbing {cursor:grabbing;}
+.nr__hourly-dates-wrapper {display:flex;width:max-content;min-width:100%;position:relative;}
+
+/* Hourly Chart Layers */
+.nr__hourly-chart-layer {position:absolute;left:0;width:max-content;pointer-events:none;z-index:3;}
+.nr__hourly-chart-layer svg {display:block;height:100%;overflow:visible;}
+
+/* Individual Date Group Block */
+.nr__date-group {display:flex;flex-direction:column;border-right:0.1rem dotted var(--border-theme7);position:relative;}
+.nr__date-group:last-child {border-right:none;}

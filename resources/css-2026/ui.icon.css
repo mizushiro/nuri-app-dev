@@ -1,0 +1,210 @@
+
+/* icon */
+[class*="icon-aspect-"] {aspect-ratio:1/1;display:block;background-position:50% 50%;background-repeat:no-repeat;background-size:contain;flex-shrink:0}
+[class*="icon-aspect-"][data-size="6"] {width:.6rem}
+[class*="icon-aspect-"][data-size="8"] {width:.8rem}
+[class*="icon-aspect-"][data-size="10"] {width:1rem}
+[class*="icon-aspect-"][data-size="12"] {width:1.2rem}
+[class*="icon-aspect-"][data-size="14"] {width:1.4rem}
+[class*="icon-aspect-"][data-size="16"] {width:1.6rem}
+[class*="icon-aspect-"][data-size="18"] {width:1.8rem}
+[class*="icon-aspect-"][data-size="20"] {width:2rem}
+[class*="icon-aspect-"][data-size="22"] {width:2.2rem}
+[class*="icon-aspect-"][data-size="24"] {width:2.4rem}
+[class*="icon-aspect-"][data-size="26"] {width:2.6rem}
+[class*="icon-aspect-"][data-size="28"] {width:2.8rem}
+[class*="icon-aspect-"][data-size="30"] {width:3rem}
+[class*="icon-aspect-"][data-size="32"] {width:3.2rem}
+[class*="icon-aspect-"][data-size="36"] {width:3.6rem}
+[class*="icon-aspect-"][data-size="40"] {width:4rem}
+[class*="icon-aspect-"][data-size="42"] {width:4.2rem}
+[class*="icon-aspect-"][data-size="48"] {width:4.8rem}
+[class*="icon-aspect-"][data-size="56"] {width:5.6rem}
+[class*="icon-aspect-"][data-size="80"] {width:8rem}
+
+[class*="icon-aspect-"][data-opacity="0.3"] {opacity:.3}
+[class*="icon-aspect-"][data-opacity="0.6"] {opacity:.6}
+[class*="icon-aspect-"][data-opacity="0.8"] {opacity:.8}
+
+.icon-aspect-checkbox-off {background-image:url("../images-2026/icon/icon-aspect-checkbox-off.svg")}
+.icon-aspect-checkbox-on {background-image:url("../images-2026/icon/icon-aspect-checkbox-on.svg")}
+.icon-aspect-close {background-image:url("../images-2026/icon/icon-aspect-close.svg")}
+.icon-aspect-close2 {background-image:url("../images-2026/icon/icon-aspect-close2.svg")}
+.icon-aspect-close-small {background-image:url("../images-2026/icon/icon-aspect-close-small.svg")}
+.icon-aspect-close2-w {background-image:url("../images-2026/icon/icon-aspect-close2-w.svg")}
+.icon-aspect-close3-w {background-image:url("../images-2026/icon/icon-aspect-close3-w.svg")}
+.icon-aspect-search {background-image:url("../images-2026/icon/icon-aspect-search.svg")}
+.icon-aspect-search-b {background-image:url("../images-2026/icon/icon-aspect-search-b.svg")}
+.icon-aspect-calendar {background-image:url("../images-2026/icon/icon-aspect-calendar.svg")}
+.icon-aspect-arrow-r-w {background-image:url("../images-2026/icon/icon-aspect-arrow-r-w.svg")}
+.icon-aspect-check-circle-w {background-image:url("../images-2026/icon/icon-aspect-check-circle-w.svg")}
+.icon-aspect-map-nav1 {background-image:url("../images-2026/icon/icon-aspect-map-nav1.svg")}
+.icon-aspect-map-nav2 {background-image:url("../images-2026/icon/icon-aspect-map-nav2.svg")}
+.icon-aspect-map-nav3 {background-image:url("../images-2026/icon/icon-aspect-map-nav3.svg")}
+.icon-aspect-map-nav4 {background-image:url("../images-2026/icon/icon-aspect-map-nav4.svg")}
+.icon-aspect-map-nav5 {background-image:url("../images-2026/icon/icon-aspect-map-nav5.svg")}
+.icon-aspect-map-nav6 {background-image:url("../images-2026/icon/icon-aspect-map-nav6.svg")}
+.icon-aspect-map-nav7 {background-image:url("../images-2026/icon/icon-aspect-map-nav7.svg")}
+.icon-aspect-map-nav8 {background-image:url("../images-2026/icon/icon-aspect-map-nav8.svg")}
+.icon-aspect-map-control1 {background-image:url("../images-2026/icon/icon-aspect-map-control1.svg")}
+.icon-aspect-map-control2 {background-image:url("../images-2026/icon/icon-aspect-map-control2.svg")}
+.icon-aspect-map-control3 {background-image:url("../images-2026/icon/icon-aspect-map-control3.svg")}
+.icon-aspect-map-control4 {background-image:url("../images-2026/icon/icon-aspect-map-control4.svg")}
+.icon-aspect-map-control5 {background-image:url("../images-2026/icon/icon-aspect-map-control5.svg")}
+.icon-aspect-map-control6 {background-image:url("../images-2026/icon/icon-aspect-map-control6.svg")}
+.icon-aspect-map-control7 {background-image:url("../images-2026/icon/icon-aspect-map-control7.svg")}
+.icon-aspect-map-control8 {background-image:url("../images-2026/icon/icon-aspect-map-control8.svg")}
+.icon-aspect-setting {background-image:url("../images-2026/icon/icon-aspect-setting.svg")}
+.icon-aspect-dropdown {background-image:url("../images-2026/icon/icon-aspect-dropdown.svg")}
+.icon-aspect-logo {background-image:url("../images-2026/icon/icon-aspect-logo.svg")}
+.icon-aspect-arrow-range-w {background-image:url("../images-2026/icon/icon-aspect-arrow-range-w.svg")}
+.icon-aspect-star {background-image:url("../images-2026/icon/icon-aspect-star.svg")}
+.icon-aspect-star-on {background-image:url("../images-2026/icon/icon-aspect-star-on.svg")}
+.icon-aspect-wind {background-image:url("../images-2026/icon/icon-aspect-wind.svg")}
+.icon-aspect-arrow-right {background-image:url("../images-2026/icon/icon-aspect-arrow-right.svg")}
+.icon-aspect-play-next {background-image:url("../images-2026/icon/icon-aspect-play-next.svg")}
+.icon-aspect-play-prev {background-image:url("../images-2026/icon/icon-aspect-play-prev.svg")}
+.icon-aspect-calendar-b {background-image:url("../images-2026/icon/icon-aspect-calendar-b.svg")}
+.icon-aspect-link {background-image:url("../images-2026/icon/icon-aspect-link.svg")}
+.icon-aspect-arrow-up {background-image:url("../images-2026/icon/icon-aspect-arrow-up.svg")}
+.icon-aspect-map-pin {background-image:url("../images-2026/icon/icon-aspect-map-pin.svg")}
+.icon-aspect-refresh-w {background-image:url("../images-2026/icon/icon-aspect-refresh-w.svg")}
+.icon-aspect-youtube-w {background-image:url("../images-2026/icon/icon-aspect-youtube-w.svg")}
+.icon-aspect-menu-w {background-image:url("../images-2026/icon/icon-aspect-menu-w.svg")}
+.icon-aspect-location-w {background-image:url("../images-2026/icon/icon-aspect-location-w.svg")}
+.icon-aspect-search-w {background-image:url("../images-2026/icon/icon-aspect-search-w.svg")}
+.icon-aspect-warning-w {background-image:url("../images-2026/icon/icon-aspect-warning-w.svg")}
+.icon-aspect-restart {background-image:url("../images-2026/icon/icon-aspect-restart.svg")}
+.icon-aspect-map-play {background-image:url("../images-2026/icon/icon-aspect-map-play.png")}
+.icon-aspect-map-prev {background-image:url("../images-2026/icon/icon-aspect-map-prev.png")}
+.icon-aspect-map-next {background-image:url("../images-2026/icon/icon-aspect-map-next.png")}
+.icon-aspect-map-pause {background-image:url("../images-2026/icon/icon-aspect-map-pause.png")}
+
+.icon-aspect-main1 {background-image:url("../images-2026/icon/icon-aspect-main1.svg")}
+.icon-aspect-main2 {background-image:url("../images-2026/icon/icon-aspect-main2.svg")}
+.icon-aspect-main3 {background-image:url("../images-2026/icon/icon-aspect-main3.svg")}
+.icon-aspect-main4 {background-image:url("../images-2026/icon/icon-aspect-main4.svg")}
+.icon-aspect-main5 {background-image:url("../images-2026/icon/icon-aspect-main5.svg")}
+
+.icon-aspect-check-off {background-image:url("../images-2026/icon/icon-aspect-check-off.svg")}
+.icon-aspect-check-on {background-image:url("../images-2026/icon/icon-aspect-check-on.svg")}
+.icon-aspect-checkbox-18-on {background-image:url("../images-2026/icon/icon-aspect-checkbox-18-on.svg")}
+.icon-aspect-select-arrow {background-image:url("../images-2026/icon/icon-aspect-select-arrow.svg")}
+.icon-aspect-select-arrow-w {background-image:url("../images-2026/icon/icon-aspect-select-arrow-w.svg")}
+.icon-aspect-setting-on {background-image:url("../images-2026/icon/icon-aspect-setting-on.svg")}
+.icon-aspect-map-control1-on {background-image:url("../images-2026/icon/icon-aspect-map-control1-on.svg")}
+.icon-aspect-map-control2-on {background-image:url("../images-2026/icon/icon-aspect-map-control2-on.svg")}
+.icon-aspect-map-control3-on {background-image:url("../images-2026/icon/icon-aspect-map-control3-on.svg")}
+.icon-aspect-map-control4-on {background-image:url("../images-2026/icon/icon-aspect-map-control4-on.svg")}
+.icon-aspect-map-control5-on {background-image:url("../images-2026/icon/icon-aspect-map-control5-on.svg")}
+.icon-aspect-map-control6-on {background-image:url("../images-2026/icon/icon-aspect-map-control6-on.svg")}
+.icon-aspect-map-control7-on {background-image:url("../images-2026/icon/icon-aspect-map-control7-on.svg")}
+.icon-aspect-map-control8-on {background-image:url("../images-2026/icon/icon-aspect-map-control8-on.svg")}
+.icon-aspect-help-dark {background-image:url("../images-2026/icon/icon-aspect-help-dark.svg")}
+.icon-aspect-help-light {background-image:url("../images-2026/icon/icon-aspect-help-light.svg")}
+.icon-aspect-sundown-dark {background-image:url("../images-2026/icon/icon-aspect-sundown-dark.svg")}
+.icon-aspect-sundown-light {background-image:url("../images-2026/icon/icon-aspect-sundown-light.svg")}
+.icon-aspect-sundown2-dark {background-image:url("../images-2026/icon/icon-aspect-sundown2-dark.svg")}
+.icon-aspect-sundown2-light {background-image:url("../images-2026/icon/icon-aspect-sundown2-light.svg")}
+.icon-aspect-sunup-dark {background-image:url("../images-2026/icon/icon-aspect-sunup-dark.svg")}
+.icon-aspect-sunup-light {background-image:url("../images-2026/icon/icon-aspect-sunup-light.svg")}
+.icon-aspect-sunup2-dark {background-image:url("../images-2026/icon/icon-aspect-sunup2-dark.svg")}
+.icon-aspect-sunup2-light {background-image:url("../images-2026/icon/icon-aspect-sunup2-light.svg")}
+
+.icon-aspect-NB01 {background-image:url("../images-2026/weather/NB01.png")} /* 맑은 */
+.icon-aspect-NB02 {background-image:url("../images-2026/weather/NB02.png")} /* 구름많은(낮) */
+.icon-aspect-NB03 {background-image:url("../images-2026/weather/NB03.png")} /* 흐림 */
+.icon-aspect-NB04 {background-image:url("../images-2026/weather/NB04.png")} /* 비 */
+.icon-aspect-NB05 {background-image:url("../images-2026/weather/NB05.png")} /* 눈 */
+.icon-aspect-NB06 {background-image:url("../images-2026/weather/NB06.png")} /* 비 또는 눈 */
+.icon-aspect-NB07 {background-image:url("../images-2026/weather/NB07.png")} /* 눈 또는 비 */
+.icon-aspect-NB08 {background-image:url("../images-2026/weather/NB08.png")} /* 낙뢰 */
+.icon-aspect-NB09 {background-image:url("../images-2026/weather/NB09.png")} /* 연무 */
+.icon-aspect-NB10 {background-image:url("../images-2026/weather/NB10.png")} /* 안개 */
+.icon-aspect-NB11 {background-image:url("../images-2026/weather/NB11.png")} /* 황사 */
+.icon-aspect-NB12 {background-image:url("../images-2026/weather/NB12.png")} /* 맑음(밤) */
+.icon-aspect-NB13 {background-image:url("../images-2026/weather/NB13.png")} /* 구름많음(밤) */
+.icon-aspect-NB14 {background-image:url("../images-2026/weather/NB14.png")} /* 소나기 */
+.icon-aspect-NB15 {background-image:url("../images-2026/weather/NB15.png")} /* 가끔 비, 한때 비 */
+.icon-aspect-NB16 {background-image:url("../images-2026/weather/NB16.png")} /* 가끔 눈, 한때 눈 */
+.icon-aspect-NB17 {background-image:url("../images-2026/weather/NB17.png")} /* 가끔 비 또는 눈, 한때 비 또는 눈 */
+.icon-aspect-NB18 {background-image:url("../images-2026/weather/NB18.png")} /* 가끔 눈 또는 비, 한때 눈 또는 비 */
+.icon-aspect-NB19 {background-image:url("../images-2026/weather/NB19.png")} /* 빗방울 */
+.icon-aspect-NB20 {background-image:url("../images-2026/weather/NB20.png")} /* 눈날림 */
+.icon-aspect-NB21 {background-image:url("../images-2026/weather/NB21.png")} /* 박무 */
+
+.icon-aspect-moon1 {background-image:url("../images-2026/weather/img-moon-01.png")} /* 월삭 */
+.icon-aspect-moon2 {background-image:url("../images-2026/weather/img-moon-02.png")} /* 초승달 */
+.icon-aspect-moon3 {background-image:url("../images-2026/weather/img-moon-03.png")} /* 상현달 */
+.icon-aspect-moon4 {background-image:url("../images-2026/weather/img-moon-04.png")} /* 차오르는달 */
+.icon-aspect-moon5 {background-image:url("../images-2026/weather/img-moon-05.png")} /* 보름달 */
+.icon-aspect-moon6 {background-image:url("../images-2026/weather/img-moon-06.png")} /* 기우는 달 */
+.icon-aspect-moon7 {background-image:url("../images-2026/weather/img-moon-07.png")} /* 하현달 */
+.icon-aspect-moon8 {background-image:url("../images-2026/weather/img-moon-08.png")} /* 그믐달 */
+
+/* 마스크 아이콘 공통 */
+[class*="icon-mask-"] {display:inline-block;background-color:currentColor;-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;flex-shrink:0}
+[class*="icon-mask-"][data-size="6"] {width:.6rem}
+[class*="icon-mask-"][data-size="8"] {width:.8rem}
+[class*="icon-mask-"][data-size="10"] {width:1rem}
+[class*="icon-mask-"][data-size="12"] {width:1.2rem}
+[class*="icon-mask-"][data-size="14"] {width:1.4rem}
+[class*="icon-mask-"][data-size="16"] {width:1.6rem}
+[class*="icon-mask-"][data-size="18"] {width:1.8rem}
+[class*="icon-mask-"][data-size="20"] {width:2rem}
+[class*="icon-mask-"][data-size="22"] {width:2.2rem}
+[class*="icon-mask-"][data-size="24"] {width:2.4rem}
+[class*="icon-mask-"][data-size="26"] {width:2.6rem}
+[class*="icon-mask-"][data-size="28"] {width:2.8rem}
+[class*="icon-mask-"][data-size="30"] {width:3rem}
+[class*="icon-mask-"][data-size="32"] {width:3.2rem}
+[class*="icon-mask-"][data-size="36"] {width:3.6rem}
+[class*="icon-mask-"][data-size="40"] {width:4rem}
+[class*="icon-mask-"][data-size="42"] {width:4.2rem}
+[class*="icon-mask-"][data-size="48"] {width:4.8rem}
+[class*="icon-mask-"][data-size="56"] {width:5.6rem}
+[class*="icon-mask-"][data-size="80"] {width:8rem}
+
+[class*="icon-mask-"][data-color="theme1"] {color:var(--text-theme1) !important}
+[class*="icon-mask-"][data-color="theme2"] {color:var(--text-theme2) !important}
+[class*="icon-mask-"][data-color="theme3"] {color:var(--text-theme3) !important}
+[class*="icon-mask-"][data-color="theme4"] {color:var(--text-theme4) !important}
+[class*="icon-mask-"][data-color="theme5"] {color:var(--text-theme5) !important}
+[class*="icon-mask-"][data-color="theme6"] {color:var(--text-theme6) !important}
+[class*="icon-mask-"][data-color="theme7"] {color:var(--text-theme7) !important}
+[class*="icon-mask-"][data-color="theme8"] {color:var(--text-theme8) !important}
+
+
+.icon-mask-youtube {width:2.8rem;height:2.8rem;-webkit-mask-image:url(../images-2026/icon/icon-aspect-youtube-w.svg);mask-image:url(../images-2026/icon/icon-aspect-youtube-w.svg);color:#fff}
+.icon-mask-refresh {width:2.8rem;height:2.8rem;-webkit-mask-image:url(../images-2026/icon/icon-aspect-refresh-w.svg);mask-image:url(../images-2026/icon/icon-aspect-refresh-w.svg);color:#fff}
+
+/* 헤더 및 공통 마스크 아이콘 */
+.icon-mask-my {width:3.4rem;height:3.4rem;-webkit-mask-image:url(../images-2026/icon/icon-mask-my.svg);mask-image:url(../images-2026/icon/icon-mask-my.svg);background-color:var(--text-theme1)}
+.icon-mask-setting {width:2.4rem;height:2.4rem;-webkit-mask-image:url(../images-2026/icon/icon-mask-setting.svg);mask-image:url(../images-2026/icon/icon-mask-setting.svg);background-color:var(--text-theme1)}
+.icon-mask-close {width:2.4rem;height:2.4rem;-webkit-mask-image:url(../images-2026/icon/icon-mask-close.svg);mask-image:url(../images-2026/icon/icon-mask-close.svg);background-color:var(--text-theme1)}
+.icon-mask-arrow {width:2.4rem;height:2.4rem;-webkit-mask-image:url(../images-2026/icon/icon-mask-arrow.svg);mask-image:url(../images-2026/icon/icon-mask-arrow.svg);background-color:var(--text-theme2)}
+.icon-mask-arrow2 {width:1.8rem;height:1.8rem;-webkit-mask-image:url(../images-2026/icon/icon-mask-arrow2.svg);mask-image:url(../images-2026/icon/icon-mask-arrow2.svg);background-color:var(--text-theme2)}
+.icon-mask-search {width:2.4rem;height:2.4rem;-webkit-mask-image:url(../images-2026/icon/icon-mask-search.svg);mask-image:url(../images-2026/icon/icon-mask-search.svg);background-color:var(-text-theme1)}
+.icon-mask-allmenu {width:2rem;height:1.8rem;-webkit-mask-image:url(../images-2026/icon/icon-aspect-menu-w.svg);mask-image:url(../images-2026/icon/icon-aspect-menu-w.svg);background-color:#fff}
+.icon-mask-star {width:2.2rem;height:2.2rem;-webkit-mask-image:url(../images-2026/icon/icon-aspect-star.svg);mask-image:url(../images-2026/icon/icon-aspect-star.svg); background-color:#fff}
+:checked + label .icon-mask-star{background-color:#FFCC00}
+.icon-mask-arrow-wind {width:1.3rem;height:1.3rem;-webkit-mask-image:url(../images-2026/icon/icon-mask-arrow-wind.svg);mask-image:url(../images-2026/icon/icon-mask-arrow-wind.svg);}
+
+/* 스타일 아이콘 */
+[class*="icon-mask-style"] {width:2.4rem;height:2.4rem;background-color:var(--text-theme2)}
+.icon-mask-style1 {-webkit-mask-image:url(../images-2026/icon/icon-mask-style1.svg);mask-image:url(../images-2026/icon/icon-mask-style1.svg)}
+.icon-mask-style2 {-webkit-mask-image:url(../images-2026/icon/icon-mask-style2.svg);mask-image:url(../images-2026/icon/icon-mask-style2.svg)}
+.icon-mask-style3 {-webkit-mask-image:url(../images-2026/icon/icon-mask-style3.svg);mask-image:url(../images-2026/icon/icon-mask-style3.svg)}
+
+/* 카테고리 메뉴 마스크 아이콘 */
+[class*="icon-mask-menu"] {width:1.8rem;height:1.8rem;color:var(--text-theme6)}
+.icon-mask-menu1 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu1.svg);mask-image:url(../images-2026/icon/icon-mask-menu1.svg)}
+.icon-mask-menu2 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu2.svg);mask-image:url(../images-2026/icon/icon-mask-menu2.svg)}
+.icon-mask-menu3 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu3.svg);mask-image:url(../images-2026/icon/icon-mask-menu3.svg)}
+.icon-mask-menu4 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu4.svg);mask-image:url(../images-2026/icon/icon-mask-menu4.svg)}
+.icon-mask-menu5 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu5.svg);mask-image:url(../images-2026/icon/icon-mask-menu5.svg)}
+.icon-mask-menu6 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu6.svg);mask-image:url(../images-2026/icon/icon-mask-menu6.svg)}
+.icon-mask-menu7 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu7.svg);mask-image:url(../images-2026/icon/icon-mask-menu7.svg)}
+.icon-mask-menu8 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu8.svg);mask-image:url(../images-2026/icon/icon-mask-menu8.svg)}
+.icon-mask-menu9 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu9.svg);mask-image:url(../images-2026/icon/icon-mask-menu9.svg)}
+.icon-mask-menu10 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu10.svg);mask-image:url(../images-2026/icon/icon-mask-menu10.svg);color:var(--text-theme7)}

@@ -1,0 +1,178 @@
+@charset "UTF-8";
+
+/* ==========================================================================
+   TimeTimeline Component CSS
+   ========================================================================== */
+
+.timeline {display:flex;flex-direction:column;width:100%;overflow:hidden;position:relative;user-select:none;transition:opacity 0.15s ease;}
+
+/* --------------------------------------------------------------------------
+   1. Control Bar (Top Player & Scroll Nav)
+   -------------------------------------------------------------------------- */
+.timeline .timeline-control-bar {display:flex;align-items:center;justify-content:space-between;background:#181D2B;color:#f8fafc;border-bottom:1px solid #0f172a;height:4.3rem;padding:0 2rem;gap:2.4rem;}
+.timeline .timeline-player-group {display:flex;align-items:center;gap:8px;}
+.timeline .btn-timeline-control {display:inline-flex;align-items:center;justify-content:center;width:2.4rem;height:2.4rem;border:none;background:transparent;color:#f1f5f9;border-radius:50%;cursor:pointer;transition:all 0.2s ease;}
+.timeline .btn-timeline-control:hover {background:rgba(255, 255, 255, 0.15);color:#ffffff;}
+.timeline .timeline-scroll-nav {display:flex;align-items:center;gap:6px;position:absolute;left:0;width:100%;justify-content:space-between;padding:0 1rem;top:6.8rem;z-index:2;pointer-events:none;}
+.timeline .btn-timeline-scroll {display:inline-flex;align-items:center;justify-content:center;width:3.8rem;height:3.8rem;background:#fff;color:#474747;border-radius:50%;cursor:pointer;transition:all 0.2s ease;box-shadow:0 0 0.8rem 0 rgba(0, 0, 0, 0.14);pointer-events:visible;}
+
+
+/* --------------------------------------------------------------------------
+   2. Main Body & Fixed Labels
+   -------------------------------------------------------------------------- */
+.timeline .timeline-main-body {display:flex;position:relative;width:100%;background:#ffffff;padding:0 0 1rem 1rem;z-index:1;}
+.timeline .timeline-fixed-header {position:sticky;left:0;z-index:20;display:flex;flex-direction:column;width:9.6rem;min-width:9.6rem;background:#f8fafc;border-right:1px solid #201F3B;box-shadow:4px 0 8px rgba(0, 0, 0, 0.04);border-bottom:1px solid #201F3B;}
+.timeline .timeline-label-cell {display:flex;align-items:center;justify-content:end;padding-right:1.4rem;font-size:1.2rem;font-weight:600;color:#6D758F;letter-spacing:-0.02em;}
+.timeline .timeline-label-cell.label-day {height:5.6rem;border-bottom:1px solid #201F3B;}
+.timeline .timeline-label-cell.label-time {height:3.2rem;}
+
+/* --------------------------------------------------------------------------
+   3. Scroll Area & Day Groups
+   -------------------------------------------------------------------------- */
+.timeline .timeline-scroll-area {flex:1;overflow-x:auto;overflow-y:hidden;cursor:grab;scrollbar-width:none;-ms-overflow-style:none;border-bottom:1px solid #201F3B;}
+.timeline .timeline-scroll-area::-webkit-scrollbar {display:none;}
+.timeline .timeline-scroll-area.is-dragging {cursor:grabbing;}
+.timeline .timeline-track {display:inline-flex;min-width:100%;align-items:stretch;}
+.timeline .timeline-day-group {display:flex;flex-direction:column;border-right:1px solid #201F3B;background:#ffffff;}
+.timeline .timeline-day-group:last-child {border-right:none;}
+
+/* --------------------------------------------------------------------------
+   4. Sticky Day Badge Header
+   -------------------------------------------------------------------------- */
+.timeline .timeline-day-header {height:5.6rem;display:flex;align-items:center;padding:0 1.2rem;border-bottom:1px solid #201F3B;background:#ffffff;}
+.timeline .timeline-day-badge {position:sticky;left:0.6rem;z-index:5;display:inline-flex;align-items:center;gap:0.4rem;padding:0 1.4rem 0 0.2rem;background:#ffffff;border:0.2rem solid #0475F4;border-radius:1.8rem;color:#19213D;font-size:1.4rem;height:3.6rem;font-weight:700;line-height:1;white-space:nowrap;transition:all 0.2s cubic-bezier(0.4, 0, 0.2, 1);}
+.timeline-day-calendar {color:#3b82f6;transition:color 0.2s;width:2.8rem;height:2.8rem;border-radius:50%;flex-shrink:0;background-color:#F4F8FF;display:flex;align-items:center;justify-content:center;}
+.timeline .timeline-day-badge::after {content:'';position:absolute;bottom:-0.6rem;left:50%;transform:translateX(-50%);border-left:0.5rem solid transparent;border-right:0.5rem solid transparent;border-top:0.6rem solid #0475F4;transition:border-color 0.2s;}
+.timeline .timeline-day-badge.is-selected {background:#2E7EF6;border-color:#0475F4;color:#ffffff;}
+.timeline .timeline-day-badge.is-selected .icon-calendar {color:#ffffff;}
+.timeline .timeline-day-badge.is-selected::after {border-top-color:#2563eb;}
+
+/* --------------------------------------------------------------------------
+   5. Time Row & Buttons (Selected & Past Fill Styles)
+   -------------------------------------------------------------------------- */
+.timeline .timeline-time-row {height:3.2rem;display:flex;align-items:stretch;}
+.timeline .timeline-time-btn {flex:0 0 6rem;min-width:6rem;height:100%;padding:0;border:none;background:#ffffff;color:#334155;font-size:1.2rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all 0.15s ease;position:relative;}
+.timeline .timeline-time-btn:last-child {border-right:none;}
+.timeline .timeline-time-btn:hover {background:#f1f5f9;color:#1e293b;}
+.timeline .timeline-time-btn.is-past {background:#e0ecfe;color:#1e293b;font-weight:600;}
+.timeline .timeline-time-btn.is-past:hover {background:#cad9f0;}
+.timeline .timeline-time-btn.is-selected {background:#e0ecfe !important;color:#1e293b !important;z-index:2;}
+.timeline .timeline-time-btn.is-selected .time-text {transform:scale(1.05);}
+.timeline .timeline-day-group:last-child .timeline-time-row {padding-right:2rem;}
+
+/* --------------------------------------------------------------------------
+   Center Selection Indicator (Mobile Center Pin & Guide Line)
+   -------------------------------------------------------------------------- */
+.timeline .timeline-center-indicator {display:none;position:absolute;top:-1.2rem;left:50%;transform:translateX(-50%);z-index:30;pointer-events:none;flex-direction:column;align-items:center;height:calc(100% + 1.2rem);}
+.timeline .timeline-selected-bubble {background-color:#2E7EF6;color:#ffffff;font-size:1.6rem;font-weight:500;height:3.2rem;padding:0.4rem 0.9rem 0.2rem;border-radius:0.4rem;line-height:1.1;white-space:nowrap;box-shadow:0 0.2rem 0.6rem rgba(0, 0, 0, 0.25);flex-shrink:0;}
+.timeline .timeline-center-line {width:0.2rem;flex:1;background-color:#2E7EF6;}
+.timeline .timeline-current-date-text {display:none;}
+@media (max-width:1023px) {
+  .timeline {overflow:visible;}
+  .timeline .timeline-center-indicator {display:flex;}
+  .timeline .timeline-current-date-text {display:inline-flex;align-items:center;color:#ffffff;font-size:1.8rem;height:4.6rem;font-weight:700;padding-left:1.4rem;letter-spacing:-0.02em;vertical-align:middle;padding-top:0.3rem;border-left:0.2rem dotted #000;}
+  .timeline .timeline-info-text {display:flex;color:#ffffff;font-size:1.2rem;line-height:1.35;letter-spacing:-0.02em;padding-right:1.4rem;text-align:left;word-break:keep-all;align-items:center;justify-content:flex-end;text-align:right;pointer-events:none;max-width:50%;}
+  .timeline .btn-prev-day, .timeline .btn-next-day {display:none;}
+  .timeline .timeline-control-bar {position:absolute;top:0;left:0;width:100%;height:5rem;border-bottom:0.4rem solid #000;padding:0;z-index:10;pointer-events:none;}
+  .timeline .timeline-main-body {padding:0;background:rgba(24, 29, 43, 0.9);}
+  .timeline .timeline-scroll-area {padding-top:5rem;}
+  .timeline .timeline-fixed-header {display:none;}
+  .timeline .timeline-day-header {display:none;}
+  .timeline .timeline-day-group {background:transparent;border-right-color:rgba(255, 255, 255, 0.08);}
+  .timeline .timeline-time-row {height:3.2rem;padding:0;}
+  .timeline .timeline-time-btn {background:transparent;color:#ffffff;min-width:5.6rem;flex:0 0 5.6rem;}
+  .timeline .timeline-time-btn .time-text {color:#ffffff;font-size:1.3rem;}
+  .timeline .timeline-time-btn.is-selected {background:transparent !important;}
+  .timeline .timeline-time-btn.is-selected .time-text {color:#0475F4;font-weight:800;}
+  .timeline .timeline-time-btn.is-past {background:transparent !important;color:#ffffff;}
+  .timeline .timeline-scroll-nav {display:none;}
+}
+
+[data-type="range"].timeline .timeline-time-btn .time-text {color:#fff;font-weight:600;font-size:1.6rem;}
+[data-type="range"].timeline .timeline-time-btn, [data-type="range"].timeline .timeline-day-group, [data-type="range"].timeline .timeline-day-header, [data-type="range"].timeline .timeline-fixed-header {background:transparent;}
+[data-type="range"].timeline .timeline-main-body {background:rgba(24, 29, 43, 0.9);}
+[data-type="range"].timeline .timeline-label-cell.label-time {color:#fff;font-size:1.6rem;font-weight:500;}
+[data-type="range"].timeline .timeline-label-cell.label-day, [data-type="range"].timeline .timeline-day-header {color:#fff;border-bottom:0.6rem solid #000;font-size:1.6rem;font-weight:500;}
+[data-type="range"].timeline .timeline-time-btn.is-selected, [data-type="range"].timeline .timeline-time-btn.is-past {background:transparent !important;}
+[data-type="range"].timeline .timeline-time-btn.is-selected .time-text {color:#0475F4;font-weight:800;font-size:1.6rem;}
+[data-type="range"].timeline .timeline-time-btn[data-time-index="0"] {pointer-events:none;}
+[data-type="range"].timeline .timeline-time-btn.is-selected::after {content:"";display:block;width:100%;height:0.6rem;background-color:#0475F4;position:absolute;top:-0.6rem;left:-50%;}
+[data-type="range"].timeline .timeline-day-badge::after {display:none;}
+[data-type="range"].timeline .timeline-time-btn::before {content:"";display:block;width:1px;height:0.4rem;background-color:#000;position:absolute;top:0;left:50%;}
+[data-type="range"].timeline .timeline-time-row {padding:0 3rem;}
+[data-type="range"].timeline .timeline-fixed-header, [data-type="range"].timeline .timeline-day-group {border-right-color:#000;}
+[data-type="range"].timeline .timeline-fixed-header, [data-type="range"].timeline .timeline-scroll-area {border-bottom-color:#000;}
+
+@media (max-width:1023px) {
+  [data-type="range"].timeline .timeline-label-cell.label-day, [data-type="range"].timeline .timeline-day-header, [data-type="range"].timeline .timeline-label-cell.label-time, [data-type="range"].timeline .timeline-time-btn .time-text {font-size:1.4rem;}
+  .timeline .timeline-time-btn.is-past, .timeline .timeline-time-btn.is-past:hover, .timeline .timeline-time-btn:hover {background-color:transparent !important;}
+  .timeline .timeline-time-btn .time-text {font-weight:400 !important;font-size:1.2rem !important;color:#fff !important;}
+  .timeline .btn-timeline-control {width:4.6rem;height:4rem;pointer-events:auto;}
+  .timeline .timeline-player-group {gap:0.6rem;padding-left:0.4rem;flex-shrink:0;}
+  .timeline .btn-timeline-control:hover {background-color:transparent;}
+  .timeline .timeline-day-group {border-right:0.2rem dotted #000;}
+  .timeline .timeline-time-btn {pointer-events:none;}
+  .timeline .timeline-center-indicator {top:-3.2rem;height:calc(100% + 3.2rem);}
+  .timeline .timeline-selected-bubble {height:3.2rem;display:flex;align-items:center;justify-content:center;min-width:7.4rem;border-radius:0.8rem 0.8rem 0 0;}
+}
+
+/* ==========================================================================
+   Programmatic / Container-based Mobile Mode (.is-mobile-timeline)
+   ========================================================================== */
+.timeline.is-mobile-timeline {overflow:visible;}
+.timeline.is-mobile-timeline .timeline-center-indicator {display:flex;top:-3.2rem;height:calc(100% + 3.2rem);}
+.timeline.is-mobile-timeline .timeline-selected-bubble {height:3.2rem;display:flex;align-items:center;justify-content:center;min-width:7.4rem;border-radius:0.8rem 0.8rem 0 0;}
+.timeline.is-mobile-timeline .timeline-current-date-text {display:inline-flex;align-items:center;color:#ffffff;font-size:1.8rem;height:4.6rem;font-weight:700;padding-left:1.4rem;letter-spacing:-0.02em;vertical-align:middle;padding-top:0.3rem;border-left:0.2rem dotted #000;}
+.timeline.is-mobile-timeline .timeline-info-text {display:flex;color:#ffffff;font-size:1.2rem;line-height:1.35;letter-spacing:-0.02em;padding-right:1.4rem;text-align:left;word-break:keep-all;align-items:center;justify-content:flex-end;text-align:right;pointer-events:none;max-width:50%;}
+.timeline.is-mobile-timeline .btn-prev-day, .timeline.is-mobile-timeline .btn-next-day {display:none;}
+.timeline.is-mobile-timeline .timeline-control-bar {position:absolute;top:0;left:0;width:100%;height:5rem;border-bottom:0.4rem solid #000;padding:0;z-index:10;pointer-events:none;}
+.timeline.is-mobile-timeline .timeline-main-body {padding:0;background:rgba(24, 29, 43, 0.9);}
+.timeline.is-mobile-timeline .timeline-scroll-area {padding-top:5rem;}
+.timeline.is-mobile-timeline .timeline-fixed-header, .timeline.is-mobile-timeline .timeline-day-header, .timeline.is-mobile-timeline .timeline-scroll-nav {display:none;}
+.timeline.is-mobile-timeline .timeline-day-group {background:transparent;border-right:0.2rem dotted #000;}
+.timeline.is-mobile-timeline .timeline-time-row {height:3.2rem;padding:0;}
+.timeline.is-mobile-timeline .timeline-time-btn {background:transparent;color:#ffffff;min-width:5.6rem;flex:0 0 5.6rem;pointer-events:none;}
+.timeline.is-mobile-timeline .timeline-time-btn .time-text {font-weight:400 !important;font-size:1.2rem !important;color:#fff !important;}
+.timeline.is-mobile-timeline .timeline-time-btn.is-selected {background:transparent !important;}
+.timeline.is-mobile-timeline .timeline-time-btn.is-selected .time-text {color:#0475F4;font-weight:800;}
+.timeline.is-mobile-timeline .timeline-time-btn.is-past, .timeline.is-mobile-timeline .timeline-time-btn.is-past:hover, .timeline.is-mobile-timeline .timeline-time-btn:hover {background-color:transparent !important;color:#ffffff;}
+.timeline.is-mobile-timeline .btn-timeline-control {width:4.6rem;height:4rem;pointer-events:auto;}
+.timeline.is-mobile-timeline .timeline-player-group {gap:0.6rem;padding-left:0.4rem;flex-shrink:0;}
+.timeline.is-mobile-timeline .btn-timeline-control:hover {background-color:transparent;}
+[data-unit="day"].timeline.is-mobile-timeline .btn-prev-day, [data-unit="day"].timeline.is-mobile-timeline .btn-next-day, [data-type="day"].timeline.is-mobile-timeline .btn-prev-day, [data-type="day"].timeline.is-mobile-timeline .btn-next-day {display:none !important;}
+
+/* ==========================================================================
+   Day Unit Timeline (data-unit="day" / data-type="day")
+   ========================================================================== */
+[data-unit="day"].timeline, [data-type="day"].timeline {width:100%;position:relative;overflow:hidden;}
+
+/* 1. 상단 컨트롤러 바 */
+[data-unit="day"].timeline .timeline-control-bar, [data-type="day"].timeline .timeline-control-bar {display:flex !important;position:relative !important;top:auto !important;left:auto !important;align-items:center;justify-content:space-between;background:rgba(24, 29, 43, 0.9);color:#f8fafc;border-bottom:0.4rem solid #000;height:5rem;padding:0 1.4rem 0 0.8rem;gap:1.2rem;z-index:10;pointer-events:auto !important;}
+[data-unit="day"].timeline .timeline-player-group, [data-type="day"].timeline .timeline-player-group {display:flex;align-items:center;gap:0.6rem;flex-shrink:0;}
+[data-unit="day"].timeline .btn-timeline-control, [data-type="day"].timeline .btn-timeline-control {display:inline-flex;align-items:center;justify-content:center;width:4.6rem;height:4rem;border:none;background:transparent;color:#ffffff;border-radius:50%;cursor:pointer;transition:all 0.2s ease;pointer-events:auto !important;}
+[data-unit="day"].timeline .btn-timeline-control:hover, [data-type="day"].timeline .btn-timeline-control:hover {background:rgba(255, 255, 255, 0.1);}
+[data-unit="day"].timeline .timeline-info-text, [data-type="day"].timeline .timeline-info-text {display:flex !important;color:#ffffff;font-size:1.2rem;line-height:1.35;letter-spacing:-0.02em;padding-right:0.6rem;align-items:center;justify-content:flex-end;text-align:right;word-break:keep-all;max-width:65%;pointer-events:auto !important;}
+
+/* 2. 하단 메인 바디 & 날짜 행 */
+[data-unit="day"].timeline .timeline-main-body, [data-type="day"].timeline .timeline-main-body, [data-unit="day"].timeline .timeline-day-unit-body, [data-type="day"].timeline .timeline-day-unit-body {width:100%;background:rgba(24, 29, 43, 0.9);padding:0 !important;display:flex;position:relative;z-index:1;}
+[data-unit="day"].timeline .timeline-day-row, [data-type="day"].timeline .timeline-day-row {display:flex;width:100%;height:4.8rem;align-items:stretch;}
+
+/* 3. 날짜 버튼 (최대 3일치 균등 분할 및 점선 구분선) */
+[data-unit="day"].timeline .timeline-day-btn, [data-type="day"].timeline .timeline-day-btn {flex:1 1 0;min-width:0;height:100%;padding:0;margin:0;border:none;border-right:0.2rem dotted #000;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;pointer-events:auto !important;transition:background-color 0.15s ease, color 0.15s ease;user-select:none;-webkit-tap-highlight-color:transparent;}
+[data-unit="day"].timeline .timeline-day-btn:last-child, [data-type="day"].timeline .timeline-day-btn:last-child {border-right:none;}
+[data-unit="day"].timeline .timeline-day-btn:hover, [data-type="day"].timeline .timeline-day-btn:hover {background:rgba(255, 255, 255, 0.05);}
+[data-unit="day"].timeline .timeline-day-btn .day-btn-text, [data-type="day"].timeline .timeline-day-btn .day-btn-text {color:#ffffff;font-size:1.8rem;font-weight:500;letter-spacing:-0.02em;white-space:nowrap;transition:color 0.15s ease, font-weight 0.15s ease;}
+[data-unit="day"].timeline .timeline-day-btn.is-selected, [data-type="day"].timeline .timeline-day-btn.is-selected {background:transparent;}
+[data-unit="day"].timeline .timeline-day-btn.is-selected .day-btn-text, [data-type="day"].timeline .timeline-day-btn.is-selected .day-btn-text {color:#0475F4;font-weight:700;}
+
+/* 4. 불필요한 요소 숨김 처리 */
+[data-unit="day"].timeline .timeline-center-indicator, [data-type="day"].timeline .timeline-center-indicator, [data-unit="day"].timeline .timeline-fixed-header, [data-type="day"].timeline .timeline-fixed-header, [data-unit="day"].timeline .timeline-scroll-nav, [data-type="day"].timeline .timeline-scroll-nav, [data-unit="day"].timeline .timeline-current-date-text, [data-type="day"].timeline .timeline-current-date-text {display:none !important;}
+
+/* 5. 모바일/작은 화면 반응형 미세 조정 */
+@media (max-width: 1023px) {
+  [data-unit="day"].timeline .btn-prev-day, [data-unit="day"].timeline .btn-next-day, [data-type="day"].timeline .btn-prev-day, [data-type="day"].timeline .btn-next-day {display:none !important;}
+}
+
+@media (max-width: 380px) {
+  [data-unit="day"].timeline .timeline-day-btn .day-btn-text, [data-type="day"].timeline .timeline-day-btn .day-btn-text {font-size:1.5rem;}
+}

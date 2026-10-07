@@ -1,0 +1,1233 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="description" content="누리앱(Nuri-App) 2026 폼 컨트롤 디자인 시스템 가이드 - 페이크 폼(form-fake), 라인 리스트, 스위치, 인디케이터 마크업 및 가이드라인" />
+  <title>폼 컨트롤 가이드 | 누리앱(Nuri-App) 디자인 시스템</title>
+
+  <!-- 기본 스타일 (ui.base.css: pretendard, ui.common, component, theme 등) -->
+  <link rel="stylesheet" href="../resources/css-2026/ui.base.css">
+
+  <style>
+    /* ==========================================================================
+       Form Guide Custom Design System Tokens & Modern UI
+       ========================================================================== */
+    :root {
+      --fg-font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      --fg-primary: #0475F4;
+      --fg-primary-hover: #0360ca;
+      --fg-primary-light: rgba(4, 117, 244, 0.1);
+      --fg-accent: #2978ED;
+      --fg-success: #10B981;
+      --fg-warning: #F59E0B;
+      --fg-danger: #EF4444;
+
+      /* Dark Theme (Default) */
+      --fg-bg-page: #0F131D;
+      --fg-bg-surface: #171C28;
+      --fg-bg-surface-elevated: #202737;
+      --fg-bg-surface-subtle: #273043;
+      --fg-border: rgba(255, 255, 255, 0.08);
+      --fg-border-strong: rgba(255, 255, 255, 0.16);
+      --fg-text-primary: #F3F4F6;
+      --fg-text-secondary: #9CA3AF;
+      --fg-text-muted: #6B7280;
+      --fg-preview-bg: #121620;
+      --fg-card-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+      --fg-code-bg: #0B0E17;
+    }
+
+    body.light-theme {
+      --fg-bg-page: #F4F6FB;
+      --fg-bg-surface: #FFFFFF;
+      --fg-bg-surface-elevated: #FFFFFF;
+      --fg-bg-surface-subtle: #EEF2F8;
+      --fg-border: #E2E8F0;
+      --fg-border-strong: #CBD5E1;
+      --fg-text-primary: #0F172A;
+      --fg-text-secondary: #475569;
+      --fg-text-muted: #94A3B8;
+      --fg-preview-bg: #F8FAFC;
+      --fg-card-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+      --fg-code-bg: #1E293B;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 62.5%; /* 1rem = 10px */
+    }
+
+    body {
+      font-family: var(--fg-font-sans);
+      background-color: var(--fg-bg-page);
+      color: var(--fg-text-primary);
+      min-height: 100vh;
+      line-height: 1.5;
+      font-size: 1.4rem;
+      transition: background-color 0.25s ease, color 0.25s ease;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Container */
+    .fg-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2.4rem 8rem;
+    }
+
+    /* Header */
+    .fg-header {
+      padding: 4rem 0 2.8rem;
+      border-bottom: 1px solid var(--fg-border);
+      margin-bottom: 3.2rem;
+    }
+
+    .fg-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .fg-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.4rem 1rem;
+      background: var(--fg-primary-light);
+      color: var(--fg-primary);
+      border-radius: 9999px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+
+    .fg-badge::before {
+      content: '';
+      width: 0.7rem;
+      height: 0.7rem;
+      border-radius: 50%;
+      background: var(--fg-primary);
+      box-shadow: 0 0 10px var(--fg-primary);
+    }
+
+    .fg-title {
+      font-size: 3.2rem;
+      font-weight: 800;
+      color: var(--fg-text-primary);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.8rem;
+    }
+
+    .fg-desc {
+      font-size: 1.5rem;
+      color: var(--fg-text-secondary);
+      max-width: 760px;
+      line-height: 1.6;
+    }
+
+    .fg-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .fg-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      padding: 0.9rem 1.6rem;
+      border-radius: 0.8rem;
+      font-size: 1.35rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid var(--fg-border);
+      background: var(--fg-bg-surface-elevated);
+      color: var(--fg-text-primary);
+      text-decoration: none;
+      user-select: none;
+    }
+
+    .fg-btn:hover {
+      background: var(--fg-bg-surface-subtle);
+      border-color: var(--fg-border-strong);
+      transform: translateY(-1px);
+    }
+
+    .fg-btn--primary {
+      background: var(--fg-primary);
+      border-color: var(--fg-primary);
+      color: #fff;
+    }
+
+    .fg-btn--primary:hover {
+      background: var(--fg-primary-hover);
+      color: #fff;
+    }
+
+    /* Quick Nav */
+    .fg-quick-nav {
+      display: flex;
+      gap: 0.8rem;
+      overflow-x: auto;
+      padding: 0.6rem 0 1.6rem;
+      margin-bottom: 3.2rem;
+      scrollbar-width: none;
+    }
+    .fg-quick-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .fg-quick-link {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.7rem 1.4rem;
+      background: var(--fg-bg-surface);
+      border: 1px solid var(--fg-border);
+      border-radius: 2rem;
+      color: var(--fg-text-secondary);
+      font-size: 1.3rem;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .fg-quick-link:hover {
+      background: var(--fg-primary-light);
+      color: var(--fg-primary);
+      border-color: var(--fg-primary);
+    }
+
+    /* Section Layout */
+    .fg-section {
+      margin-bottom: 5.6rem;
+      scroll-margin-top: 2rem;
+    }
+
+    .fg-section-head {
+      margin-bottom: 2rem;
+    }
+
+    .fg-section-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--fg-text-primary);
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .fg-section-tag {
+      font-size: 1.2rem;
+      font-weight: 600;
+      font-family: monospace;
+      padding: 0.2rem 0.8rem;
+      border-radius: 0.4rem;
+      background: var(--fg-primary-light);
+      color: var(--fg-primary);
+    }
+
+    .fg-section-desc {
+      font-size: 1.45rem;
+      color: var(--fg-text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Component Card */
+    .fg-card {
+      background: var(--fg-bg-surface);
+      border: 1px solid var(--fg-border);
+      border-radius: 1.4rem;
+      overflow: hidden;
+      box-shadow: var(--fg-card-shadow);
+      margin-bottom: 2.4rem;
+    }
+
+    .fg-card-header {
+      padding: 1.6rem 2.4rem;
+      border-bottom: 1px solid var(--fg-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.6rem;
+      flex-wrap: wrap;
+      background: var(--fg-bg-surface-elevated);
+    }
+
+    .fg-card-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--fg-text-primary);
+    }
+
+    .fg-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .fg-chip {
+      font-size: 1.2rem;
+      font-weight: 600;
+      font-family: monospace;
+      padding: 0.3rem 0.8rem;
+      border-radius: 0.4rem;
+      background: var(--fg-bg-surface-subtle);
+      border: 1px solid var(--fg-border);
+      color: var(--fg-text-secondary);
+    }
+
+    /* Live Preview Area */
+    .fg-preview {
+      padding: 3rem 2.4rem;
+      background: var(--fg-preview-bg);
+      border-bottom: 1px solid var(--fg-border);
+      min-height: 10rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 2rem;
+    }
+
+    .fg-preview--center {
+      align-items: center;
+    }
+
+    .fg-preview-wrap {
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .fg-preview-label {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--fg-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.8rem;
+    }
+
+    /* Code Block & Copy Button */
+    .fg-code-box {
+      position: relative;
+      background: var(--fg-code-bg);
+    }
+
+    .fg-code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .fg-code-lang {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #94A3B8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-family: monospace;
+    }
+
+    .fg-copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.4rem 1rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #E2E8F0;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 0.6rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .fg-copy-btn:hover {
+      background: var(--fg-primary);
+      border-color: var(--fg-primary);
+      color: #fff;
+    }
+
+    .fg-copy-btn.is-copied {
+      background: var(--fg-success);
+      border-color: var(--fg-success);
+      color: #fff;
+    }
+
+    pre.fg-code {
+      margin: 0;
+      padding: 1.8rem 2rem;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 1.3rem;
+      line-height: 1.6;
+      color: #E2E8F0;
+    }
+
+    /* Table Specification */
+    .fg-table-wrap {
+      overflow-x: auto;
+      margin-top: 1.6rem;
+    }
+
+    .fg-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 1.35rem;
+      text-align: left;
+    }
+
+    .fg-table th {
+      background: var(--fg-bg-surface-elevated);
+      color: var(--fg-text-secondary);
+      font-weight: 700;
+      padding: 1.2rem 1.6rem;
+      border-bottom: 1px solid var(--fg-border);
+      white-space: nowrap;
+    }
+
+    .fg-table td {
+      padding: 1.2rem 1.6rem;
+      border-bottom: 1px solid var(--fg-border);
+      color: var(--fg-text-primary);
+    }
+
+    .fg-table code {
+      font-family: monospace;
+      font-size: 1.25rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 0.4rem;
+      background: var(--fg-primary-light);
+      color: var(--fg-primary);
+    }
+
+    /* Toast Notification */
+    .fg-toast {
+      position: fixed;
+      bottom: 3rem;
+      right: 3rem;
+      padding: 1.2rem 2rem;
+      background: #10B981;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.4rem;
+      border-radius: 0.8rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      z-index: 99999;
+      pointer-events: none;
+    }
+
+    .fg-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Preview inner custom styling helper */
+    .preview-dark-box {
+      background: #171C28;
+      padding: 2rem;
+      border-radius: 1.2rem;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body class="light-theme">
+
+  <div class="fg-container">
+
+    <!-- S : Header -->
+    <header class="fg-header">
+      <div class="fg-header-top">
+        <div class="fg-header-title-wrap">
+          <span class="fg-badge">Design System 2026</span>
+          <h1 class="fg-title">Form Controls & Fake Button Guide</h1>
+          <p class="fg-desc">
+            <code>resources/css-2026/ui.common.css</code>에 선언된 폼 컨트롤 컴포넌트(페이크 폼 버튼, 라인 리스트, 스위치 토글, 인디케이터 배지, 드롭다운 셀렉트)의 명세서 및 인터랙티브 프리뷰입니다.
+          </p>
+        </div>
+        <div class="fg-header-actions">
+          <!-- ./inc/guide-header-actions.html 공통 영역 비동기 로드 -->
+        </div>
+      </div>
+    </header>
+    <!-- E : Header -->
+
+    <!-- S : Quick Navigation -->
+    <nav class="fg-quick-nav" aria-label="섹션 바로가기">
+      <a href="#sec-line-list" class="fg-quick-link">라인 리스트형 (line-list-type)</a>
+      <a href="#sec-line-list2" class="fg-quick-link">라인 리스트형2 (line-list-type2)</a>
+      <a href="#sec-text-type" class="fg-quick-link">텍스트 선택형 (text-type)</a>
+      <a href="#sec-round-box" class="fg-quick-link">라운드 박스 탭 (round-box)</a>
+      <a href="#sec-dropdown" class="fg-quick-link">드롭다운 / 셀렉트 버튼</a>
+      <a href="#sec-tags" class="fg-quick-link">리스트형 칩 / 태그 (round-list-type)</a>
+      <a href="#sec-switch" class="fg-quick-link">스위치 토글 (form-element-switch)</a>
+      <a href="#sec-indicator" class="fg-quick-link">인디케이터 마커 (.in-square, .in-round)</a>
+      <a href="#sec-checkbox" class="fg-quick-link">기본 체크박스 (.form-element-check)</a>
+    </nav>
+    <!-- E : Quick Navigation -->
+
+    <!-- =====================================================================
+         1. [data-form-style="line-list-type"]
+         ===================================================================== -->
+    <section class="fg-section" id="sec-line-list">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          라인 리스트형 선택 컴포넌트
+          <span class="fg-section-tag">[data-form-style="line-list-type"]</span>
+        </h2>
+        <p class="fg-section-desc">
+          선택 시 배경이 <strong>#0475F4</strong>(파란색)로 채워지며, 우측에 흰색 체크 서클 아이콘(<code>icon-aspect-check-circle-w.svg</code>)이 나타나는 리스트형 라디오/체크박스 버튼입니다. 1열 및 2열 그리드를 지원합니다.
+        </p>
+      </div>
+
+      <!-- 1-1. 1열 그리드 (data-col="1") -->
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <span class="fg-card-title">1열 그리드 리스트 (data-col="1")</span>
+          <div class="fg-card-meta">
+            <span class="fg-chip">data-form-style="line-list-type"</span>
+            <span class="fg-chip">data-col="1"</span>
+            <span class="fg-chip">data-form-h="44"</span>
+          </div>
+        </div>
+        <div class="fg-preview">
+          <div class="fg-preview-wrap">
+            <div class="fg-preview-label">Live Preview (직접 선택해보세요)</div>
+            <div class="form-fake-group-grid" data-form-style="line-list-type" data-col="1" data-form-h="44" style="background:#fff;border:1px solid #E5E9F0;border-radius:0.8rem;overflow:hidden;">
+              <div class="form-fake-button">
+                <input type="radio" class="form-fake-input" id="demo_line1_1" name="demo_line1" checked>
+                <label for="demo_line1_1" class="form-fake-label">서울특별시 서초구 방배동</label>
+              </div>
+              <div class="form-fake-button">
+                <input type="radio" class="form-fake-input" id="demo_line1_2" name="demo_line1">
+                <label for="demo_line1_2" class="form-fake-label">경기도 수원시 영통구 매탄동</label>
+              </div>
+              <div class="form-fake-button">
+                <input type="radio" class="form-fake-input" id="demo_line1_3" name="demo_line1">
+                <label for="demo_line1_3" class="form-fake-label">강원특별자치도 강릉시 포남동</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fg-code-box">
+          <div class="fg-code-header">
+            <span class="fg-code-lang">HTML</span>
+            <button type="button" class="fg-copy-btn" data-copy-target="code-line-1">코드 복사</button>
+          </div>
+          <pre class="fg-code" id="code-line-1"><code>&lt;div class="form-fake-group-grid" data-form-style="line-list-type" data-col="1" data-form-h="44"&gt;
+  &lt;div class="form-fake-button"&gt;
+    &lt;input type="radio" class="form-fake-input" id="loc1" name="loc_select" checked&gt;
+    &lt;label for="loc1" class="form-fake-label"&gt;서울특별시 서초구 방배동&lt;/label&gt;
+  &lt;/div&gt;
+  &lt;div class="form-fake-button"&gt;
+    &lt;input type="radio" class="form-fake-input" id="loc2" name="loc_select"&gt;
+    &lt;label for="loc2" class="form-fake-label"&gt;경기도 수원시 영통구 매탄동&lt;/label&gt;
+  &lt;/div&gt;
+  &lt;div class="form-fake-button"&gt;
+    &lt;input type="radio" class="form-fake-input" id="loc3" name="loc_select"&gt;
+    &lt;label for="loc3" class="form-fake-label"&gt;강원특별자치도 강릉시 포남동&lt;/label&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+      </div>
+
+      <!-- 1-2. 2열 그리드 (data-col="2") -->
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <span class="fg-card-title">2열 그리드 리스트 (data-col="2")</span>
+          <div class="fg-card-meta">
+            <span class="fg-chip">data-form-style="line-list-type"</span>
+            <span class="fg-chip">data-col="2"</span>
+            <span class="fg-chip">data-form-h="40"</span>
+          </div>
+        </div>
+        <div class="fg-preview">
+          <div class="fg-preview-wrap">
+            <div class="fg-preview-label">Live Preview (직접 선택해보세요)</div>
+            <div class="form-fake-group-grid" data-form-style="line-list-type" data-col="2" data-form-h="40" style="background:#fff;border:1px solid #E5E9F0;border-radius:0.8rem;overflow:hidden;">
+              <div class="form-fake-button">
+                <input type="radio" class="form-fake-input" id="demo_line2_1" name="demo_line2" checked>
+                <label for="demo_line2_1" class="form-fake-label">단기예보</label>
+              </div>
+              <div class="form-fake-button">
+                <input type="radio" class="form-fake-input" id="demo_line2_2" name="demo_line2">
+                <label for="demo_line2_2" class="form-fake-label">중기예보</label>
+              </div>
+              <div class="form-fake-button">
+                <input type="radio" class="form-fake-input" id="demo_line2_3" name="demo_line2">
+                <label for="demo_line2_3" class="form-fake-label">초단기실황</label>
+              </div>
+              <div class="form-fake-button">
+                <input type="radio" class="form-fake-input" id="demo_line2_4" name="demo_line2">
+                <label for="demo_line2_4" class="form-fake-label">동네예보</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fg-code-box">
+          <div class="fg-code-header">
+            <span class="fg-code-lang">HTML</span>
+            <button type="button" class="fg-copy-btn" data-copy-target="code-line-2">코드 복사</button>
+          </div>
+          <pre class="fg-code" id="code-line-2"><code>&lt;div class="form-fake-group-grid" data-form-style="line-list-type" data-col="2" data-form-h="40"&gt;
+  &lt;div class="form-fake-button"&gt;
+    &lt;input type="radio" class="form-fake-input" id="fc1" name="forecast_type" checked&gt;
+    &lt;label for="fc1" class="form-fake-label"&gt;단기예보&lt;/label&gt;
+  &lt;/div&gt;
+  &lt;div class="form-fake-button"&gt;
+    &lt;input type="radio" class="form-fake-input" id="fc2" name="forecast_type"&gt;
+    &lt;label for="fc2" class="form-fake-label"&gt;중기예보&lt;/label&gt;
+  &lt;/div&gt;
+  &lt;div class="form-fake-button"&gt;
+    &lt;input type="radio" class="form-fake-input" id="fc3" name="forecast_type"&gt;
+    &lt;label for="fc3" class="form-fake-label"&gt;초단기실황&lt;/label&gt;
+  &lt;/div&gt;
+  &lt;div class="form-fake-button"&gt;
+    &lt;input type="radio" class="form-fake-input" id="fc4" name="forecast_type"&gt;
+    &lt;label for="fc4" class="form-fake-label"&gt;동네예보&lt;/label&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         2. [data-form-style="line-list-type2"]
+         ===================================================================== -->
+    <section class="fg-section" id="sec-line-list2">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          라인 리스트형 2 (소프트 블루형)
+          <span class="fg-section-tag">[data-form-style="line-list-type2"]</span>
+        </h2>
+        <p class="fg-section-desc">
+          선택 시 배경이 은은한 연하늘색(<code>#F8FAFF</code>)으로 강조되고 글자색이 <code>#0475F4</code>로 변경되는 소프트한 리스트 스타일입니다.
+        </p>
+      </div>
+
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <span class="fg-card-title">소프트 블루 리스트</span>
+          <div class="fg-card-meta">
+            <span class="fg-chip">data-form-style="line-list-type2"</span>
+            <span class="fg-chip">data-col="1"</span>
+            <span class="fg-chip">data-form-h="42"</span>
+          </div>
+        </div>
+        <div class="fg-preview">
+          <div class="fg-preview-wrap">
+            <div class="fg-preview-label">Live Preview</div>
+            <div class="form-fake-group-grid" data-form-style="line-list-type2" data-col="1" data-form-h="42" style="background:#fff;border:1px solid #E5E9F0;border-radius:0.8rem;overflow:hidden;">
+              <div class="form-fake-button">
+                <input type="radio" class="form-fake-input" id="demo_line22_1" name="demo_line22" checked>
+                <label for="demo_line22_1" class="form-fake-label">풍속 / 풍향 상세정보</label>
+              </div>
+              <div class="form-fake-button">
+                <input type="radio" class="form-fake-input" id="demo_line22_2" name="demo_line22">
+                <label for="demo_line22_2" class="form-fake-label">강수량 및 강수확률</label>
+              </div>
+              <div class="form-fake-button">
+                <input type="radio" class="form-fake-input" id="demo_line22_3" name="demo_line22">
+                <label for="demo_line22_3" class="form-fake-label">습도 및 불쾌지수</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fg-code-box">
+          <div class="fg-code-header">
+            <span class="fg-code-lang">HTML</span>
+            <button type="button" class="fg-copy-btn" data-copy-target="code-line-type2">코드 복사</button>
+          </div>
+          <pre class="fg-code" id="code-line-type2"><code>&lt;div class="form-fake-group-grid" data-form-style="line-list-type2" data-col="1" data-form-h="42"&gt;
+  &lt;div class="form-fake-button"&gt;
+    &lt;input type="radio" class="form-fake-input" id="opt1" name="info_opt" checked&gt;
+    &lt;label for="opt1" class="form-fake-label"&gt;풍속 / 풍향 상세정보&lt;/label&gt;
+  &lt;/div&gt;
+  &lt;div class="form-fake-button"&gt;
+    &lt;input type="radio" class="form-fake-input" id="opt2" name="info_opt"&gt;
+    &lt;label for="opt2" class="form-fake-label"&gt;강수량 및 강수확률&lt;/label&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         3. [data-form-style="text-type"] & [data-form-style="text-color-type"]
+         ===================================================================== -->
+    <section class="fg-section" id="sec-text-type">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          텍스트 선택형 컴포넌트
+          <span class="fg-section-tag">[data-form-style="text-type" | "text-color-type"]</span>
+        </h2>
+        <p class="fg-section-desc">
+          버튼 외곽선 없이 텍스트 자체의 색상(<code>#7386B6</code> → <code>#2978ED</code>)으로 활성화 상태를 표현하는 경량 탭/필터 스타일입니다.
+        </p>
+      </div>
+
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <span class="fg-card-title">텍스트 탭 (text-type & text-color-type)</span>
+        </div>
+        <div class="fg-preview">
+          <div class="fg-preview-wrap">
+            <div class="fg-preview-label">text-type 데모</div>
+            <div class="form-fake-group-flex" data-form-style="text-type" data-form-h="32" style="gap: 1.2rem; margin-bottom: 2rem;">
+              <div class="form-fake-button">
+                <input type="radio" class="form-fake-input" id="demo_txt_1" name="demo_txt" checked>
+                <label for="demo_txt_1" class="form-fake-label">기온</label>
+              </div>
+              <div class="form-fake-button">
+                <input type="radio" class="form-fake-input" id="demo_txt_2" name="demo_txt">
+                <label for="demo_txt_2" class="form-fake-label">강수</label>
+              </div>
+              <div class="form-fake-button">
+                <input type="radio" class="form-fake-input" id="demo_txt_3" name="demo_txt">
+                <label for="demo_txt_3" class="form-fake-label">바람</label>
+              </div>
+            </div>
+
+            <div class="fg-preview-label">text-color-type 데모 (볼드 1.6rem)</div>
+            <div class="form-fake-group-flex" data-form-style="text-color-type" data-form-h="36" style="gap: 1.6rem;">
+              <div class="form-fake-button">
+                <input type="radio" class="form-fake-input" id="demo_txt_c1" name="demo_txt_c" checked>
+                <label for="demo_txt_c1" class="form-fake-label">오늘</label>
+              </div>
+              <div class="form-fake-button">
+                <input type="radio" class="form-fake-input" id="demo_txt_c2" name="demo_txt_c">
+                <label for="demo_txt_c2" class="form-fake-label">내일</label>
+              </div>
+              <div class="form-fake-button">
+                <input type="radio" class="form-fake-input" id="demo_txt_c3" name="demo_txt_c">
+                <label for="demo_txt_c3" class="form-fake-label">모레</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fg-code-box">
+          <div class="fg-code-header">
+            <span class="fg-code-lang">HTML</span>
+            <button type="button" class="fg-copy-btn" data-copy-target="code-text-type">코드 복사</button>
+          </div>
+          <pre class="fg-code" id="code-text-type"><code>&lt;!-- 텍스트형 탭 --&gt;
+&lt;div class="form-fake-group-flex" data-form-style="text-type" data-form-h="32"&gt;
+  &lt;div class="form-fake-button"&gt;
+    &lt;input type="radio" class="form-fake-input" id="tab1" name="tab_group" checked&gt;
+    &lt;label for="tab1" class="form-fake-label"&gt;기온&lt;/label&gt;
+  &lt;/div&gt;
+  &lt;div class="form-fake-button"&gt;
+    &lt;input type="radio" class="form-fake-input" id="tab2" name="tab_group"&gt;
+    &lt;label for="tab2" class="form-fake-label"&gt;강수&lt;/label&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         4. [data-form-style="round-box"]
+         ===================================================================== -->
+    <section class="fg-section" id="sec-round-box">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          라운드 박스형 세그먼트 토글
+          <span class="fg-section-tag">[data-form-style="round-box"]</span>
+        </h2>
+        <p class="fg-section-desc">
+          모바일 앱 내 메인 시간별 예보(3시간 간격 / 1시간 간격) 등 핵심 세그먼트 컨트롤에 사용되는 알약 형태의 라운드 박스 그룹입니다.
+        </p>
+      </div>
+
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <span class="fg-card-title">알약형 2버튼 세그먼트 토글</span>
+          <div class="fg-card-meta">
+            <span class="fg-chip">data-form-style="round-box"</span>
+            <span class="fg-chip">data-form-h="32"</span>
+          </div>
+        </div>
+        <div class="fg-preview">
+          <div class="fg-preview-wrap">
+            <div class="fg-preview-label">Live Preview (시간별 간격 예시)</div>
+            <div class="form-fake-group-flex" data-form-style="round-box" data-form-h="32">
+              <div class="form-fake-button">
+                <input type="radio" class="form-fake-input" id="demo_rb_1" name="demo_rb" checked>
+                <label for="demo_rb_1" class="form-fake-label" style="padding: 0 1.4rem;">3시간 간격</label>
+              </div>
+              <div class="form-fake-button">
+                <input type="radio" class="form-fake-input" id="demo_rb_2" name="demo_rb">
+                <label for="demo_rb_2" class="form-fake-label" style="padding: 0 1.4rem;">1시간 간격</label>
+              </div>
+            </div>
+
+            <div class="fg-preview-label" style="margin-top: 2.4rem;">높이 40px (data-form-h="40") 3버튼 예시</div>
+            <div class="form-fake-group-flex" data-form-style="round-box" data-form-h="40">
+              <div class="form-fake-button">
+                <input type="radio" class="form-fake-input" id="demo_rb3_1" name="demo_rb3" checked>
+                <label for="demo_rb3_1" class="form-fake-label" style="padding: 0 1.6rem;">전체</label>
+              </div>
+              <div class="form-fake-button">
+                <input type="radio" class="form-fake-input" id="demo_rb3_2" name="demo_rb3">
+                <label for="demo_rb3_2" class="form-fake-label" style="padding: 0 1.6rem;">오전</label>
+              </div>
+              <div class="form-fake-button">
+                <input type="radio" class="form-fake-input" id="demo_rb3_3" name="demo_rb3">
+                <label for="demo_rb3_3" class="form-fake-label" style="padding: 0 1.6rem;">오후</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fg-code-box">
+          <div class="fg-code-header">
+            <span class="fg-code-lang">HTML</span>
+            <button type="button" class="fg-copy-btn" data-copy-target="code-round-box">코드 복사</button>
+          </div>
+          <pre class="fg-code" id="code-round-box"><code>&lt;div class="form-fake-group-flex" data-form-style="round-box" data-form-h="32"&gt;
+  &lt;div class="form-fake-button"&gt;
+    &lt;input type="radio" class="form-fake-input" id="time1" name="time_interval" checked&gt;
+    &lt;label for="time1" class="form-fake-label" style="padding: 0 1.4rem;"&gt;3시간 간격&lt;/label&gt;
+  &lt;/div&gt;
+  &lt;div class="form-fake-button"&gt;
+    &lt;input type="radio" class="form-fake-input" id="time2" name="time_interval"&gt;
+    &lt;label for="time2" class="form-fake-label" style="padding: 0 1.4rem;"&gt;1시간 간격&lt;/label&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         5. 드롭다운 및 셀렉트 버튼
+         ===================================================================== -->
+    <section class="fg-section" id="sec-dropdown">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          드롭다운 & 셀렉트 버튼
+          <span class="fg-section-tag">[data-dropdown-button] | .ui-select</span>
+        </h2>
+        <p class="fg-section-desc">
+          <code>[data-form-style="round-box"]</code> 컨테이너 내부에서 드롭다운 또는 셀렉트 버튼으로 사용되며, <code>data-radio-checked="true"</code> 속성을 통해 선택 상태를 제어합니다.
+        </p>
+      </div>
+
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <span class="fg-card-title">드롭다운 / 셀렉트 트리거 버튼</span>
+          <div class="fg-card-meta">
+            <span class="fg-chip">[data-dropdown-button]</span>
+            <span class="fg-chip">.ui-select</span>
+          </div>
+        </div>
+        <div class="fg-preview">
+          <div class="fg-preview-wrap">
+            <div class="fg-preview-label">Live Preview</div>
+            <div class="form-fake-group-flex" data-form-style="round-box" data-form-h="34" style="gap: 0.4rem;">
+              <div class="form-fake-button" style="min-width: 9rem;">
+                <button type="button" class="form-fake-label" data-dropdown-button data-radio-checked="true" style="width:100%; border:none; cursor:pointer;">
+                  선택됨 (True)
+                </button>
+              </div>
+              <div class="form-fake-button" style="min-width: 9rem;">
+                <button type="button" class="form-fake-label" data-dropdown-button data-radio-checked="false" style="width:100%; border:none; cursor:pointer;">
+                  기본 (False)
+                </button>
+              </div>
+              <div class="form-fake-button" style="min-width: 9rem;">
+                <button type="button" class="form-fake-label ui-select" data-radio-checked="true" style="width:100%; border:none; cursor:pointer;">
+                  UI Select
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fg-code-box">
+          <div class="fg-code-header">
+            <span class="fg-code-lang">HTML</span>
+            <button type="button" class="fg-copy-btn" data-copy-target="code-dropdown-btn">코드 복사</button>
+          </div>
+          <pre class="fg-code" id="code-dropdown-btn"><code>&lt;div class="form-fake-group-flex" data-form-style="round-box" data-form-h="34"&gt;
+  &lt;div class="form-fake-button"&gt;
+    &lt;button type="button" class="form-fake-label" data-dropdown-button data-radio-checked="true"&gt;
+      선택됨
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="form-fake-button"&gt;
+    &lt;button type="button" class="form-fake-label ui-select" data-radio-checked="false"&gt;
+      기본형
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         6. 칩/태그 리스트 버튼 (round-list-type)
+         ===================================================================== -->
+    <section class="fg-section" id="sec-tags">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          리스트형 태그 / 칩 버튼
+          <span class="fg-section-tag">[data-form-style="round-list-type"] & [data-col="auto"]</span>
+        </h2>
+        <p class="fg-section-desc">
+          가로로 유동적으로 배치되는 필터 칩(Chip) 버튼입니다. <code>data-col="auto"</code>와 함께 사용하여 글자 수에 맞춰 자연스러운 패딩(<code>0 1.6rem</code>)을 가집니다.
+        </p>
+      </div>
+
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <span class="fg-card-title">오토 컬럼 라운드 칩 (data-col="auto")</span>
+        </div>
+        <div class="fg-preview">
+          <div class="fg-preview-wrap">
+            <div class="fg-preview-label">Live Preview</div>
+            <div class="form-fake-group-flex" data-form-style="round-list-type" data-col="auto" data-form-h="32" style="gap: 0.8rem;">
+              <div class="form-fake-button">
+                <input type="checkbox" class="form-fake-input" id="tag_1" checked>
+                <label for="tag_1" class="form-fake-label">#전체지역</label>
+              </div>
+              <div class="form-fake-button">
+                <input type="checkbox" class="form-fake-input" id="tag_2" checked>
+                <label for="tag_2" class="form-fake-label">#수도권</label>
+              </div>
+              <div class="form-fake-button">
+                <input type="checkbox" class="form-fake-input" id="tag_3">
+                <label for="tag_3" class="form-fake-label">#강원영서</label>
+              </div>
+              <div class="form-fake-button">
+                <input type="checkbox" class="form-fake-input" id="tag_4">
+                <label for="tag_4" class="form-fake-label">#충청북도</label>
+              </div>
+              <div class="form-fake-button">
+                <input type="checkbox" class="form-fake-input" id="tag_5">
+                <label for="tag_5" class="form-fake-label">#제주도</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fg-code-box">
+          <div class="fg-code-header">
+            <span class="fg-code-lang">HTML</span>
+            <button type="button" class="fg-copy-btn" data-copy-target="code-tags">코드 복사</button>
+          </div>
+          <pre class="fg-code" id="code-tags"><code>&lt;div class="form-fake-group-flex" data-form-style="round-list-type" data-col="auto" data-form-h="32"&gt;
+  &lt;div class="form-fake-button"&gt;
+    &lt;input type="checkbox" class="form-fake-input" id="tag1" checked&gt;
+    &lt;label for="tag1" class="form-fake-label"&gt;#전체지역&lt;/label&gt;
+  &lt;/div&gt;
+  &lt;div class="form-fake-button"&gt;
+    &lt;input type="checkbox" class="form-fake-input" id="tag2"&gt;
+    &lt;label for="tag2" class="form-fake-label"&gt;#수도권&lt;/label&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         7. .form-element-switch (스위치 토글)
+         ===================================================================== -->
+    <section class="fg-section" id="sec-switch">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          모바일 스위치 토글
+          <span class="fg-section-tag">.form-element-switch</span>
+        </h2>
+        <p class="fg-section-desc">
+          설정 및 알림 켜기/끄기에 사용되는 네이티브 스위치 컴포넌트입니다. 부드러운 0.3s 트랜지션, <code>.txt-uncheck</code>와 <code>.txt-checked</code> 텍스트 전환, <code>data-size="20"</code> 및 <code>disabled</code> 상태를 지원합니다.
+        </p>
+      </div>
+
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <span class="fg-card-title">스위치 토글 데모</span>
+          <div class="fg-card-meta">
+            <span class="fg-chip">.form-element-switch</span>
+            <span class="fg-chip">[data-size="20"]</span>
+          </div>
+        </div>
+        <div class="fg-preview">
+          <div class="fg-preview-wrap" style="display:flex; flex-direction:column; gap:2.4rem;">
+            <div>
+              <div class="fg-preview-label">1. 미니 사이즈 스위치 (data-size="20")</div>
+              <div style="display:flex; align-items:center; gap:2rem;">
+                <div class="form-element-switch" data-size="20">
+                  <input type="checkbox" id="demo_sw_1" checked>
+                  <label for="demo_sw_1">
+                    <span class="txt-checked">ON</span>
+                    <span class="txt-uncheck">OFF</span>
+                  </label>
+                </div>
+                <span style="font-size:1.4rem; font-weight:600;">알림 수신 (기본 켜짐)</span>
+              </div>
+            </div>
+
+            <div>
+              <div class="fg-preview-label">2. 꺼진 상태 (Unchecked)</div>
+              <div style="display:flex; align-items:center; gap:2rem;">
+                <div class="form-element-switch" data-size="20">
+                  <input type="checkbox" id="demo_sw_2">
+                  <label for="demo_sw_2">
+                    <span class="txt-checked">ON</span>
+                    <span class="txt-uncheck">OFF</span>
+                  </label>
+                </div>
+                <span style="font-size:1.4rem; font-weight:600;">야간 방해금지 (꺼짐)</span>
+              </div>
+            </div>
+
+            <div>
+              <div class="fg-preview-label">3. 비활성 상태 (Disabled)</div>
+              <div style="display:flex; align-items:center; gap:2rem;">
+                <div class="form-element-switch" data-size="20">
+                  <input type="checkbox" id="demo_sw_3" disabled>
+                  <label for="demo_sw_3">
+                    <span class="txt-checked">ON</span>
+                    <span class="txt-uncheck">OFF</span>
+                  </label>
+                </div>
+                <span style="font-size:1.4rem; color:var(--fg-text-muted);">설정 불가 항목</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fg-code-box">
+          <div class="fg-code-header">
+            <span class="fg-code-lang">HTML</span>
+            <button type="button" class="fg-copy-btn" data-copy-target="code-switch">코드 복사</button>
+          </div>
+          <pre class="fg-code" id="code-switch"><code>&lt;!-- 스위치 토글 (ON / OFF 텍스트 내장) --&gt;
+&lt;div class="form-element-switch" data-size="20"&gt;
+  &lt;input type="checkbox" id="switchAlert" checked&gt;
+  &lt;label for="switchAlert"&gt;
+    &lt;span class="txt-checked"&gt;ON&lt;/span&gt;
+    &lt;span class="txt-uncheck"&gt;OFF&lt;/span&gt;
+  &lt;/label&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         8. 인디케이터 마커 (.in-square-area, .in-round-area)
+         ===================================================================== -->
+    <section class="fg-section" id="sec-indicator">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          상태 인디케이터 배지
+          <span class="fg-section-tag">.in-square-area | .in-round-area</span>
+        </h2>
+        <p class="fg-section-desc">
+          지도 범례나 레이어 목록, 표의 범례에 사용되는 규격(1.4rem x 1.4rem) 컬러 박스 인디케이터입니다.
+        </p>
+      </div>
+
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <span class="fg-card-title">사각형 & 원형 인디케이터</span>
+        </div>
+        <div class="fg-preview">
+          <div class="fg-preview-wrap">
+            <div style="display:flex; flex-direction:column; gap:1.6rem;">
+              <div style="display:flex; align-items:center; gap:1.2rem;">
+                <span class="in-square-area" aria-hidden="true"></span>
+                <span style="font-weight:600; font-size:1.4rem;">블루 스퀘어 영역 (<code>.in-square-area</code>) - 보더 #2978ED</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:1.2rem;">
+                <span class="in-round-area" aria-hidden="true"></span>
+                <span style="font-weight:600; font-size:1.4rem;">그린 라운드 영역 (<code>.in-round-area</code>) - 보더 #3CC74A</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fg-code-box">
+          <div class="fg-code-header">
+            <span class="fg-code-lang">HTML</span>
+            <button type="button" class="fg-copy-btn" data-copy-target="code-indicator">코드 복사</button>
+          </div>
+          <pre class="fg-code" id="code-indicator"><code>&lt;!-- 사각형 인디케이터 --&gt;
+&lt;span class="in-square-area" aria-hidden="true"&gt;&lt;/span&gt;
+
+&lt;!-- 원형 인디케이터 --&gt;
+&lt;span class="in-round-area" aria-hidden="true"&gt;&lt;/span&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         9. 기본 체크박스 / 라디오 (.form-element-check)
+         ===================================================================== -->
+    <section class="fg-section" id="sec-checkbox">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">
+          기본 체크박스 & 라디오
+          <span class="fg-section-tag">.form-element-check</span>
+        </h2>
+        <p class="fg-section-desc">
+          네이티브 인풋(<code>.native-input</code>)을 숨기고 SVG 배경 이미지(<code>icon-aspect-check-off / on</code>)를 적용한 표준 체크 컨트롤입니다.
+        </p>
+      </div>
+
+      <div class="fg-card">
+        <div class="fg-card-header">
+          <span class="fg-card-title">체크박스 컨트롤</span>
+        </div>
+        <div class="fg-preview">
+          <div class="fg-preview-wrap" style="display:flex; flex-direction:column; gap:1.6rem;">
+            <div class="form-element-check">
+              <input type="checkbox" class="native-input" id="chk1" checked>
+              <label for="chk1" class="label-value">이용약관 및 개인정보 처리방침에 동의합니다.</label>
+            </div>
+            <div class="form-element-check">
+              <input type="checkbox" class="native-input" id="chk2">
+              <label for="chk2" class="label-value">위치 기반 날씨 알림 수신 동의 (선택)</label>
+            </div>
+          </div>
+        </div>
+        <div class="fg-code-box">
+          <div class="fg-code-header">
+            <span class="fg-code-lang">HTML</span>
+            <button type="button" class="fg-copy-btn" data-copy-target="code-check">코드 복사</button>
+          </div>
+          <pre class="fg-code" id="code-check"><code>&lt;div class="form-element-check"&gt;
+  &lt;input type="checkbox" class="native-input" id="agree1" checked&gt;
+  &lt;label for="agree1" class="label-value"&gt;이용약관 동의&lt;/label&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         10. 속성(Attributes) 레퍼런스 표
+         ===================================================================== -->
+    <section class="fg-section" id="sec-ref">
+      <div class="fg-section-head">
+        <h2 class="fg-section-title">폼 속성 (Data Attributes) 레퍼런스</h2>
+        <p class="fg-section-desc">주요 속성과 클래스 조합 명세입니다.</p>
+      </div>
+
+      <div class="fg-card">
+        <div class="fg-table-wrap">
+          <table class="fg-table">
+            <thead>
+              <tr>
+                <th>속성 / 클래스</th>
+                <th>지원 값</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>data-form-style</code></td>
+                <td>
+                  <code>line-list-type</code>, <code>line-list-type2</code>, <code>round-box</code>, 
+                  <code>round-list-type</code>, <code>square-list-type</code>, <code>text-type</code>, <code>text-color-type</code>
+                </td>
+                <td>폼 버튼 그룹의 비주얼 스타일 유형 결정</td>
+              </tr>
+              <tr>
+                <td><code>data-col</code></td>
+                <td><code>1</code>, <code>2</code>, <code>3</code>, <code>4</code>, <code>auto</code></td>
+                <td>그리드 열 수 분할 (<code>data-col="auto"</code>는 컨텐츠 너비에 맞춤)</td>
+              </tr>
+              <tr>
+                <td><code>data-form-h</code></td>
+                <td><code>28</code>, <code>32</code>, <code>34</code>, <code>40</code>, <code>42</code>, <code>44</code>, <code>46</code>, <code>48</code></td>
+                <td>버튼의 고정 높이 (단위: <code>rem</code>, 예: 44 = 4.4rem = 44px)</td>
+              </tr>
+              <tr>
+                <td><code>data-item-size</code></td>
+                <td><code>42</code>, <code>46</code>, <code>58</code>, <code>80</code>, <code>88</code>, <code>96</code>, <code>104</code></td>
+                <td>아이템 라벨의 최소 너비 (<code>min-width</code>)</td>
+              </tr>
+              <tr>
+                <td><code>.form-fake-input</code></td>
+                <td><code>type="radio"</code> | <code>type="checkbox"</code></td>
+                <td>투명하게 숨겨진 네이티브 인풋 (접근성 및 키보드 조작 지원)</td>
+              </tr>
+              <tr>
+                <td><code>.form-element-switch</code></td>
+                <td><code>data-size="20"</code></td>
+                <td>모바일 슬라이드형 스위치 토글 컨테이너</td>
+              </tr>
+              <tr>
+                <td><code>.in-square-area</code> / <code>.in-round-area</code></td>
+                <td>단일 클래스</td>
+                <td>지도나 표 범례에 사용하는 미니 인디케이터 배지</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="fg-toast" id="fg-toast">코드가 클립보드에 복사되었습니다!</div>
+
+  <!-- Interactive Scripts -->
+  <script type="module">
+    import { initGuideHeaderActions } from '../resources/js-2026/utils/utils.js';
+    initGuideHeaderActions();
+
+    // 1. 코드 복사 기능
+    document.querySelectorAll('.fg-copy-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const targetId = btn.getAttribute('data-copy-target');
+        const codeEl = document.getElementById(targetId);
+        if (!codeEl) return;
+
+        const textToCopy = codeEl.innerText.trim();
+        try {
+          await navigator.clipboard.writeText(textToCopy);
+          btn.classList.add('is-copied');
+          btn.textContent = '✓ 복사됨!';
+
+          const toast = document.getElementById('fg-toast');
+          toast.classList.add('show');
+          setTimeout(() => toast.classList.remove('show'), 2000);
+
+          setTimeout(() => {
+            btn.classList.remove('is-copied');
+            btn.textContent = '코드 복사';
+          }, 2000);
+        } catch (err) {
+          console.error('복사 실패:', err);
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

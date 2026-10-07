@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="description" content="누리앱(Nuri-App) 2026 다이얼로그 UI 컴포넌트 디자인 시스템 가이드 - 설정 레이어 팝업, 화면전체 차지, 아래에서 슬라이드업 모션, Focus Trap 포커스 루프 및 Focus Restoration" />
+  <title>다이얼로그 컴포넌트 가이드 | 누리앱(Nuri-App) 디자인 시스템</title>
+
+  <!-- 기본 스타일 (ui.base.css: pretendard, ui.common, component 등) -->
+  <link rel="stylesheet" href="../resources/css-2026/ui.base.css">
+  <link rel="stylesheet" href="../resources/css-2026/component.css">
+  <link rel="stylesheet" href="../resources/css-2026/component_style.css">
+
+  <style>
+    /* ==========================================================================
+       Dialog Guide Custom Tokens & Design System
+       ========================================================================== */
+    :root {
+      --fg-font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      --fg-primary: #0475F4;
+      --fg-primary-hover: #0360ca;
+      --fg-primary-light: rgba(4, 117, 244, 0.12);
+      --fg-accent: #2978ED;
+      --fg-success: #10B981;
+      --fg-warning: #F59E0B;
+      --fg-danger: #EF4444;
+
+      /* Dark Theme (Default) */
+      --fg-bg-page: #0F131D;
+      --fg-bg-surface: #171C28;
+      --fg-bg-surface-elevated: #202737;
+      --fg-bg-surface-subtle: #273043;
+      --fg-border: rgba(255, 255, 255, 0.08);
+      --fg-border-strong: rgba(255, 255, 255, 0.16);
+      --fg-text-primary: #F3F4F6;
+      --fg-text-secondary: #9CA3AF;
+      --fg-text-muted: #6B7280;
+      --fg-preview-bg: #121620;
+      --fg-card-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      --fg-code-bg: #0B0E17;
+      --fg-glass-bg: rgba(23, 28, 40, 0.85);
+      --fg-glass-border: rgba(255, 255, 255, 0.1);
+    }
+
+    body.light-theme {
+      --fg-bg-page: #F4F6FB;
+      --fg-bg-surface: #FFFFFF;
+      --fg-bg-surface-elevated: #FFFFFF;
+      --fg-bg-surface-subtle: #EEF2F8;
+      --fg-border: #E2E8F0;
+      --fg-border-strong: #CBD5E1;
+      --fg-text-primary: #0F172A;
+      --fg-text-secondary: #475569;
+      --fg-text-muted: #94A3B8;
+      --fg-preview-bg: #F8FAFC;
+      --fg-card-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+      --fg-code-bg: #1E293B;
+      --fg-glass-bg: rgba(255, 255, 255, 0.9);
+      --fg-glass-border: rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 62.5%;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--fg-font-sans);
+      background-color: var(--fg-bg-page);
+      color: var(--fg-text-primary);
+      min-height: 100vh;
+      line-height: 1.5;
+      font-size: 1.4rem;
+      transition: background-color 0.25s ease, color 0.25s ease;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .fg-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2.4rem 8rem;
+    }
+
+    /* Header */
+    .fg-header {
+      padding: 4rem 0 2.8rem;
+      border-bottom: 1px solid var(--fg-border);
+      margin-bottom: 3.2rem;
+    }
+
+    .fg-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
+      margin-bottom: 1.6rem;
+      flex-wrap: wrap;
+    }
+
+    .fg-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .fg-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.4rem 1.2rem;
+      border-radius: 9999px;
+      background: var(--fg-primary-light);
+      color: var(--fg-primary);
+      font-size: 1.2rem;
+      font-weight: 700;
+      width: fit-content;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .fg-title {
+      font-size: 3.2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--fg-text-primary);
+    }
+
+    .fg-description {
+      font-size: 1.6rem;
+      color: var(--fg-text-secondary);
+      max-width: 800px;
+      line-height: 1.6;
+    }
+
+    .fg-header-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .fg-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      padding: 1rem 1.8rem;
+      border-radius: 0.8rem;
+      font-size: 1.4rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--fg-border-strong);
+      background: var(--fg-bg-surface);
+      color: var(--fg-text-primary);
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .fg-btn:hover {
+      background: var(--fg-bg-surface-elevated);
+      border-color: var(--fg-primary);
+      color: var(--fg-primary);
+      transform: translateY(-2px);
+    }
+
+    .fg-btn--primary {
+      background: var(--fg-primary);
+      color: #ffffff !important;
+      border-color: var(--fg-primary);
+    }
+
+    .fg-btn--primary:hover {
+      background: var(--fg-primary-hover);
+      border-color: var(--fg-primary-hover);
+      box-shadow: 0 4px 12px rgba(4, 117, 244, 0.35);
+    }
+
+    /* Grid Layout */
+    .fg-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 2.4rem;
+    }
+
+    .fg-col-12 { grid-column: span 12; }
+    .fg-col-8  { grid-column: span 8; }
+    .fg-col-6  { grid-column: span 6; }
+    .fg-col-4  { grid-column: span 4; }
+
+    @media (max-width: 1024px) {
+      .fg-col-8, .fg-col-6, .fg-col-4 { grid-column: span 12; }
+    }
+
+    /* Cards */
+    .fg-card {
+      background: var(--fg-bg-surface);
+      border: 1px solid var(--fg-border);
+      border-radius: 1.6rem;
+      overflow: hidden;
+      box-shadow: var(--fg-card-shadow);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .fg-card:hover {
+      border-color: var(--fg-border-strong);
+    }
+
+    .fg-card-header {
+      padding: 2rem 2.4rem;
+      border-bottom: 1px solid var(--fg-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--fg-bg-surface-elevated);
+    }
+
+    .fg-card-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--fg-text-primary);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .fg-card-body {
+      padding: 2.4rem;
+    }
+
+    /* Demo Box */
+    .fg-demo-box {
+      background: var(--fg-preview-bg);
+      border: 1px solid var(--fg-border);
+      border-radius: 1.2rem;
+      padding: 3rem 2.4rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.6rem;
+      min-height: 18rem;
+    }
+
+    /* Code Block */
+    .fg-code-wrapper {
+      position: relative;
+      background: var(--fg-code-bg);
+      border-radius: 0.8rem;
+      border: 1px solid var(--fg-border);
+      overflow: hidden;
+    }
+
+    .fg-code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 1.4rem;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid var(--fg-border);
+      font-size: 1.2rem;
+      color: var(--fg-text-muted);
+    }
+
+    .fg-copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--fg-text-secondary);
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 0.4rem;
+      transition: all 0.15s ease;
+    }
+
+    .fg-copy-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--fg-text-primary);
+    }
+
+    pre code {
+      display: block;
+      padding: 1.6rem;
+      font-family: 'Fira Code', Consolas, Monaco, monospace;
+      font-size: 1.3rem;
+      line-height: 1.6;
+      color: #E2E8F0;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    /* Feature Highlights */
+    .fg-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.6rem;
+      margin-bottom: 3.2rem;
+    }
+
+    .fg-feature-item {
+      background: var(--fg-bg-surface);
+      border: 1px solid var(--fg-border);
+      border-radius: 1.2rem;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .fg-feature-icon {
+      font-size: 2.8rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .fg-feature-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--fg-text-primary);
+    }
+
+    .fg-feature-desc {
+      font-size: 1.35rem;
+      color: var(--fg-text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Table */
+    .fg-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 1.35rem;
+    }
+
+    .fg-table th {
+      background: var(--fg-bg-surface-elevated);
+      color: var(--fg-text-primary);
+      font-weight: 700;
+      padding: 1.2rem 1.6rem;
+      border-bottom: 1px solid var(--fg-border-strong);
+    }
+
+    .fg-table td {
+      padding: 1.2rem 1.6rem;
+      border-bottom: 1px solid var(--fg-border);
+      color: var(--fg-text-secondary);
+    }
+
+    .fg-table code {
+      background: var(--fg-bg-surface-subtle);
+      padding: 0.2rem 0.6rem;
+      border-radius: 0.4rem;
+      color: var(--fg-primary);
+      font-size: 1.25rem;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Area Dialog Container -->
+  <div class="area-dialog"></div>
+
+  <div class="fg-container">
+    <!-- Header -->
+    <header class="fg-header">
+      <div class="fg-header-top">
+        <div class="fg-title-group">
+          <span class="fg-badge">Component Guide</span>
+          <h1 class="fg-title">다이얼로그 (Dialog / Modal System)</h1>
+          <p class="fg-description">
+            화면전체를 차지하는 설정 다이얼로그(`setting-dialog`), 아래에서 슬라이드 업되는 애니메이션, 
+            Focus Trap(Tab 루프 & ESC 닫기), 그리고 닫힘 시 호출 버튼으로의 포커스 자동 복원(Focus Restoration)을 지원하는 웹 접근성 표준 모달 컴포넌트입니다.
+          </p>
+        </div>
+
+        <!-- 공통 헤더 버튼 비동기 삽입 구역 -->
+        <div class="fg-header-actions"></div>
+      </div>
+    </header>
+
+    <!-- Key Features Highlight -->
+    <div class="fg-features">
+      <div class="fg-feature-item">
+        <span class="fg-feature-icon">📱</span>
+        <h3 class="fg-feature-title">화면 전체 차지 (Full Screen)</h3>
+        <p class="fg-feature-desc">설정 화면 등 대용량 제어판에 적합하게 100dvh 모바일/데스크톱 풀스크린 모드를 지원합니다.</p>
+      </div>
+
+      <div class="fg-feature-item">
+        <span class="fg-feature-icon">⬆️</span>
+        <span class="fg-feature-title">슬라이드 업 모션</span>
+        <p class="fg-feature-desc">아래에서 부드럽게 위로 올라오는 <code>bottom-In</code> 키프레임 애니메이션 트랜지션을 제공합니다.</p>
+      </div>
+
+      <div class="fg-feature-item">
+        <span class="fg-feature-icon">🔁</span>
+        <h3 class="fg-feature-title">포커스 루프 (Focus Trap)</h3>
+        <p class="fg-feature-desc">키보드 Tab 및 Shift+Tab 탐색 시 포커스가 다이얼로그 내부를 벗어나지 않도록 제어하며 ESC 키로 닫힙니다.</p>
+      </div>
+
+      <div class="fg-feature-item">
+        <span class="fg-feature-icon">🔙</span>
+        <h3 class="fg-feature-title">포커스 복원 (Restoration)</h3>
+        <p class="fg-feature-desc">다이얼로그를 닫을 때 열었던 최초의 버튼 요소(<code>focus_back</code>)로 포커스가 자동 복원됩니다.</p>
+      </div>
+    </div>
+
+    <!-- Main Grid Content -->
+    <div class="fg-grid">
+      <!-- Section 1: Setting Dialog Demo -->
+      <div class="fg-col-12">
+        <div class="fg-card">
+          <div class="fg-card-header">
+            <h2 class="fg-card-title">⚙️ 설정 다이얼로그 (Full Screen & Slide-Up)</h2>
+          </div>
+          <div class="fg-card-body">
+            <p style="margin-bottom: 1.6rem; color: var(--fg-text-secondary);">
+              <code>header.html</code> 상단 설정 버튼(<i class="icon-mask-setting" style="display:inline-block;width:1.6rem;height:1.6rem;vertical-align:middle;"></i>)을 클릭하거나, 
+              아래 테스트 버튼을 클릭하면 화면전체를 차지하는 설정 다이얼로그가 아래에서 위로 올라옵니다.
+            </p>
+
+            <div class="fg-demo-box">
+              <button type="button" class="fg-btn fg-btn--primary" id="btn-open-setting">
+                <span>⚙️ header.html 설정 다이얼로그 오픈</span>
+              </button>
+              <span style="font-size: 1.25rem; color: var(--fg-text-muted);">
+                (홈 버튼, 설정 제목, 닫기 버튼, 11개 설정 및 세그먼트 스위치 토글 작동)
+              </span>
+            </div>
+
+            <div class="fg-code-wrapper">
+              <div class="fg-code-header">
+                <span>JavaScript & HTML Trigger</span>
+                <button type="button" class="fg-copy-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code>import Dialog, { openSettingDialog, initSettingDialog } from '../component/ui-dialog.js';
+
+// 1. 헤더 설정 버튼(.nr__allmenu-btn--setting) 클릭 이벤트 자동 연동
+initSettingDialog();
+
+// 2. 또는 자바스크립트로 직접 호출
+const btn = document.querySelector('#btn-open-setting');
+btn.addEventListener('click', (e) => {
+  openSettingDialog(e.currentTarget);
+});</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Modal Variants Demo -->
+      <div class="fg-col-6">
+        <div class="fg-card">
+          <div class="fg-card-header">
+            <h2 class="fg-card-title">💬 일반 센터 모달 & 시스템 알럿</h2>
+          </div>
+          <div class="fg-card-body">
+            <div class="fg-demo-box" style="flex-direction: row; flex-wrap: wrap;">
+              <button type="button" class="fg-btn" id="btn-demo-center">
+                <span>💬 Center Modal</span>
+              </button>
+              <button type="button" class="fg-btn" id="btn-demo-system">
+                <span>⚠️ System Alert Dialog</span>
+              </button>
+            </div>
+
+            <div class="fg-code-wrapper">
+              <div class="fg-code-header">
+                <span>System Dialog Code</span>
+                <button type="button" class="fg-copy-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code>const sysModal = new Dialog({
+  type: 'system',
+  title: '설정 저장',
+  message: '변경하신 설정을 저장하시겠습니까?',
+  confirmText: '저장하기',
+  cancelText: '취소',
+  confirmCallback: () => console.log('저장 성공'),
+});
+sysModal.show(thisBtn);</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Bottom Sheet Demo -->
+      <div class="fg-col-6">
+        <div class="fg-card">
+          <div class="fg-card-header">
+            <h2 class="fg-card-title">🔼 바텀시트 다이얼로그 (Bottom Sheet)</h2>
+          </div>
+          <div class="fg-card-body">
+            <div class="fg-demo-box">
+              <button type="button" class="fg-btn" id="btn-demo-bottom">
+                <span>🔼 Bottom Sheet Open</span>
+              </button>
+            </div>
+
+            <div class="fg-code-wrapper">
+              <div class="fg-code-header">
+                <span>Bottom Sheet Code</span>
+                <button type="button" class="fg-copy-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code>const bottomSheet = new Dialog({
+  type: 'modal',
+  ps: 'bottom',
+  dim: true,
+  dimClick: true,
+  full: false
+});
+bottomSheet.show(triggerButton);</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4: API Specification Table -->
+      <div class="fg-col-12">
+        <div class="fg-card">
+          <div class="fg-card-header">
+            <h2 class="fg-card-title">📚 Dialog API & Options Reference</h2>
+          </div>
+          <div class="fg-card-body" style="padding: 0;">
+            <table class="fg-table">
+              <thead>
+                <tr>
+                  <th>Option Key</th>
+                  <th>Type</th>
+                  <th>Default</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>full</code></td>
+                  <td>Boolean</td>
+                  <td><code>false</code></td>
+                  <td>다이얼로그 화면전체(100dvh, 100%) 차지 모드 활성화</td>
+                </tr>
+                <tr>
+                  <td><code>ps</code></td>
+                  <td>String</td>
+                  <td><code>'center'</code></td>
+                  <td>팝업 위치 (<code>'center'</code> | <code>'bottom'</code> | <code>'top'</code> | <code>'left'</code> | <code>'right'</code>)</td>
+                </tr>
+                <tr>
+                  <td><code>focus_back</code></td>
+                  <td>HTMLElement</td>
+                  <td><code>null</code></td>
+                  <td>다이얼로그가 닫힐 때 포커스를 되돌려줄 이전 트리거 버튼 요소</td>
+                </tr>
+                <tr>
+                  <td><code>dim</code></td>
+                  <td>Boolean</td>
+                  <td><code>true</code></td>
+                  <td>배경 딤(Dimmed background) 오버레이 레이어 표시 여부</td>
+                </tr>
+                <tr>
+                  <td><code>dimClick</code></td>
+                  <td>Boolean</td>
+                  <td><code>true</code></td>
+                  <td>딤 영역 클릭 시 다이얼로그 자동 닫힘 여부</td>
+                </tr>
+                <tr>
+                  <td><code>type</code></td>
+                  <td>String</td>
+                  <td><code>'modal'</code></td>
+                  <td>다이얼로그 종류 (<code>'modal'</code> | <code>'system'</code> | <code>'toast'</code>)</td>
+                </tr>
+                <tr>
+                  <td><code>title</code></td>
+                  <td>String</td>
+                  <td><code>null</code></td>
+                  <td>시스템 다이얼로그 헤더 제목 텍스트</td>
+                </tr>
+                <tr>
+                  <td><code>confirmCallback</code></td>
+                  <td>Function</td>
+                  <td><code>null</code></td>
+                  <td>확인 버튼 클릭 시 실행할 콜백 함수</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Demo Dialog Markup -->
+  <div class="ui-dialog" data-dialog="demo-center-modal" data-ps="center" aria-hidden="true" role="dialog" aria-labelledby="demo-modal-title">
+    <div class="ui-dialog--wrap" data-dialog-item="wrap" tabindex="-1" style="max-width: 480px; width: 90%; padding: 2.4rem;">
+      <div class="ui-dialog--header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.6rem;">
+        <h2 id="demo-modal-title" style="font-size: 1.8rem; font-weight: 700;">기본 센터 모달</h2>
+        <button type="button" data-dialog-button="close" style="background: none; border: none; cursor: pointer; font-size: 2rem;">✕</button>
+      </div>
+      <div class="ui-dialog--main" data-dialog-item="main" style="margin-bottom: 2rem; color: var(--fg-text-secondary);">
+        포커스 루프(Focus Trap)와 포커스 복원(Focus Restoration) 기능이 기본 적용된 일반 중앙 다이얼로그입니다. Tab 키 및 Shift+Tab 키로 내부를 순환 탐색할 수 있습니다.
+      </div>
+      <div class="ui-dialog--footer" style="display: flex; justify-content: flex-end; gap: 1rem;">
+        <button type="button" data-dialog-button="close" class="fg-btn fg-btn--primary">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui-dialog" data-dialog="demo-bottom-sheet" data-ps="bottom" aria-hidden="true" role="dialog" aria-labelledby="demo-sheet-title">
+    <div class="ui-dialog--wrap" data-dialog-item="wrap" tabindex="-1" style="width: 100%; max-width: 600px; border-radius: 1.6rem 1.6rem 0 0; padding: 2.4rem; background: var(--fg-bg-surface);">
+      <div class="ui-dialog--header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.6rem;">
+        <h2 id="demo-sheet-title" style="font-size: 1.8rem; font-weight: 700;">하단 바텀 시트</h2>
+        <button type="button" data-dialog-button="close" style="background: none; border: none; cursor: pointer; font-size: 2rem; color: inherit;">✕</button>
+      </div>
+      <div class="ui-dialog--main" data-dialog-item="main" style="margin-bottom: 2rem; color: var(--fg-text-secondary);">
+        아래에서 위로 올라오는 바텀 시트 다이얼로그입니다. Dimmed 배경 영역을 클릭하거나 Esc 키를 누르면 닫힙니다.
+      </div>
+      <div class="ui-dialog--footer" style="display: flex; justify-content: flex-end;">
+        <button type="button" data-dialog-button="close" class="fg-btn fg-btn--primary">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module">
+    import { initGuideHeaderActions } from '../resources/js-2026/utils/utils.js';
+    import Dialog, { openSettingDialog, initSettingDialog } from '../resources/js-2026/component/ui-dialog.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. 공통 가이드 헤더 로드
+      initGuideHeaderActions('./inc/guide-header-actions.html');
+
+      // 2. 설정 다이얼로그 전역 이벤트 초기화
+      initSettingDialog();
+
+      // 3. 테스트 오픈 버튼 바인딩
+      const btnOpenSetting = document.querySelector('#btn-open-setting');
+      if (btnOpenSetting) {
+        btnOpenSetting.addEventListener('click', (e) => {
+          openSettingDialog(e.currentTarget);
+        });
+      }
+
+      // 4. Center Modal
+      const centerModal = new Dialog({ id: 'demo-center-modal', ps: 'center' });
+      const btnCenter = document.querySelector('#btn-demo-center');
+      if (btnCenter) {
+        btnCenter.addEventListener('click', (e) => {
+          centerModal.show(e.currentTarget);
+        });
+      }
+
+      // 5. System Modal
+      const btnSystem = document.querySelector('#btn-demo-system');
+      if (btnSystem) {
+        btnSystem.addEventListener('click', (e) => {
+          const sysModal = new Dialog({
+            type: 'system',
+            title: '설정 변경 확인',
+            message: '알림 설정 및 사용자 환경설정을 변경하시겠습니까?',
+            confirmText: '확인',
+            cancelText: '취소',
+            confirmCallback: () => alert('설정이 변경되었습니다.'),
+          });
+          sysModal.show(e.currentTarget);
+        });
+      }
+
+      // 6. Bottom Sheet Modal
+      const bottomSheet = new Dialog({ id: 'demo-bottom-sheet', ps: 'bottom', dim: true });
+      const btnBottom = document.querySelector('#btn-demo-bottom');
+      if (btnBottom) {
+        btnBottom.addEventListener('click', (e) => {
+          bottomSheet.show(e.currentTarget);
+        });
+      }
+    });
+
+    window.copyCode = (btn) => {
+      const wrapper = btn.closest('.fg-code-wrapper');
+      const code = wrapper.querySelector('code').textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        const origText = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = origText; }, 2000);
+      });
+    };
+  </script>
+</body>
+
+</html>

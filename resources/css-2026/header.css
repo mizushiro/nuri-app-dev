@@ -1,0 +1,45 @@
+@charset "utf-8";
+
+/* S : 헤더 (nr__header) */
+/* 헤더 루트 컨테이너 (스크롤 전 기본 상태: blur 0) */
+.nr__header {position:sticky;width:100%;top:0;z-index:100;background-color:transparent;-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0);border-bottom:1px solid rgba(255,255,255,.2);user-select:none;transition:background-color .25s ease, backdrop-filter .25s ease, -webkit-backdrop-filter .25s ease, min-height .25s ease;display:flex;flex-direction:column;justify-content:space-between;min-height:9.7rem;padding-top:constant(safe-area-inset-top);padding-top:env(safe-area-inset-top, 0);transform: translateZ(0);will-change: transform;}
+
+/* 스크롤 시 (scrollY > 20): blur 1rem (10px) 적용 */
+body.is-scrolled .nr__header {-webkit-backdrop-filter:blur(1rem);backdrop-filter:blur(1rem)}
+.light-theme.is-scrolled .nr__header {background-color: rgba(4,117,244,.8);}
+.night-theme.is-scrolled .nr__header,
+.dark-theme.is-scrolled .nr__header {background-color: rgba(0,0,0,.5);}
+
+/* 상단 영역: 로고 및 우측 액션 */
+.nr__header-top {display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem 0 1.4rem;min-height:4.8rem}
+
+/* 로고 */
+.nr__header-logo {display:flex;align-items:center;margin:0;padding:0}
+.nr__header-logo-link {display:inline-flex;align-items:center;text-decoration:none; width: 14.3rem; height: 3rem;background-image: url(../images-2026/common/logo.svg); background-size: cover;}
+.nr__header-logo-img {height:3rem;width:auto;display:block}
+
+/* 우측 액션 버튼 그룹 */
+.nr__header-actions {display:flex;align-items:center;gap:1.2rem}
+.nr__header-btn {display:inline-flex;align-items:center;justify-content:center;background:transparent;border:none;padding:0;cursor:pointer;color:#fff;border-radius:50%;transition:background-color .2s ease, opacity .2s ease, transform .15s ease}
+.nr__header-btn:active {transform:scale(.94)}
+
+/* 전체메뉴(햄버거) 원형 버튼 */
+.nr__header-btn--menu {width:4.8rem;height:4.8rem;background-color:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.2);opacity:1;margin-left:.2rem}
+.nr__header-btn--menu:active {background-color:rgba(255,255,255,.35);transform:scale(.94)}
+
+/* 하단 내비게이션 (GNB 탭) */
+.nr__header-nav {padding:0 1.5rem;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.nr__header-nav::-webkit-scrollbar {display:none}
+.nr__header-gnb {display:flex;align-items:center;gap:2rem;margin:0;padding:0;list-style:none}
+.nr__header-gnb-item {flex-shrink:0}
+.nr__header-gnb-link {display:inline-flex;align-items:center;justify-content:center;position:relative;padding:.8rem .1rem 1.1rem;font-size:1.8rem;font-weight:500;letter-spacing:-2.5%;color:#fff;text-decoration:none;white-space:nowrap;transition:color .2s ease, opacity .2s ease, font-size .2s ease}
+
+/* 활성 탭 (언더라인 인디케이터) */
+.nr__header-gnb-item.is-active .nr__header-gnb-link,
+.nr__header-gnb-link.is-active {font-weight:700;opacity:1}
+.nr__header-gnb-item.is-active .nr__header-gnb-link::after,
+.nr__header-gnb-link.is-active::after {content:'';position:absolute;left:0;right:0;bottom:0;height:.2rem;background-color:#fff}
+/* E : 헤더 (nr__header) */
+
+.is-scrolled .nr__header {min-height:7.4rem}
+.is-scrolled .nr__header-gnb-link {font-size:1.4rem}

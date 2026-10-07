@@ -1,0 +1,4991 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="description" content="누리앱(Nuri-App) 2026 아이콘 시스템 가이드 - ui.icon.css 기반 전체 130종(Aspect-Ratio 111종 + CSS Mask 19종) 명세 및 가이드라인" />
+  <title>아이콘 가이드 | 누리앱(Nuri-App) 디자인 시스템</title>
+
+  <!-- 기본 스타일 (pretendard, theme, ui.common, ui.icon, component 등) -->
+  <link rel="stylesheet" href="../resources/css-2026/ui.base.css">
+  <link rel="stylesheet" href="../resources/css-2026/ui.icon.css">
+
+  <style>
+    /* ==========================================================================
+       Nuri-App Icon Guide 2026 - Premium Glassmorphic Design System
+       ========================================================================== */
+    :root {
+      --ig-font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      --ig-primary: #0475F4;
+      --ig-primary-hover: #0360ca;
+      --ig-primary-light: rgba(4, 117, 244, 0.12);
+      --ig-primary-glow: rgba(4, 117, 244, 0.35);
+      --ig-accent: #38BDF8;
+      --ig-success: #10B981;
+      --ig-warning: #F59E0B;
+      --ig-danger: #EF4444;
+      --ig-purple: #8B5CF6;
+
+      /* Dark / Night Theme (Default) */
+      --ig-bg-page: #0D111A;
+      --ig-bg-surface: #151A26;
+      --ig-bg-surface-elevated: #1D2333;
+      --ig-bg-surface-subtle: #242C3F;
+      --ig-bg-card: rgba(23, 29, 43, 0.75);
+      --ig-border: rgba(255, 255, 255, 0.08);
+      --ig-border-strong: rgba(255, 255, 255, 0.16);
+      --ig-text-primary: #F3F4F6;
+      --ig-text-secondary: #9CA3AF;
+      --ig-text-muted: #6B7280;
+      --ig-preview-dark: #10141F;
+      --ig-preview-light: #F8FAFC;
+      --ig-card-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      --ig-glass-blur: blur(16px);
+      --ig-code-bg: #0B0E17;
+    }
+
+    body.light-theme {
+      --ig-bg-page: #F4F6FB;
+      --ig-bg-surface: #FFFFFF;
+      --ig-bg-surface-elevated: #FFFFFF;
+      --ig-bg-surface-subtle: #EEF2F8;
+      --ig-bg-card: rgba(255, 255, 255, 0.85);
+      --ig-border: #E2E8F0;
+      --ig-border-strong: #CBD5E1;
+      --ig-text-primary: #0F172A;
+      --ig-text-secondary: #475569;
+      --ig-text-muted: #94A3B8;
+      --ig-preview-dark: #161D2B;
+      --ig-preview-light: #F1F4F9;
+      --ig-card-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+      --ig-code-bg: #1E293B;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 62.5%; /* 1rem = 10px */
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--ig-font-sans);
+      background-color: var(--ig-bg-page);
+      color: var(--ig-text-primary);
+      min-height: 100vh;
+      line-height: 1.5;
+      font-size: 1.4rem;
+      transition: background-color 0.25s ease, color 0.25s ease;
+      -webkit-font-smoothing: antialiased;
+      background-image: 
+        radial-gradient(ellipse 60% 40% at 50% -10%, rgba(4, 117, 244, 0.15), transparent 70%),
+        radial-gradient(ellipse 40% 30% at 90% 10%, rgba(56, 189, 248, 0.08), transparent 60%);
+      background-attachment: fixed;
+    }
+
+    /* Container */
+    .ig-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 2.4rem 8rem;
+    }
+
+    /* Common Header Actions Bar (Injected by initGuideHeaderActions) */
+    .ig-header-actions, .fg-header-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .fg-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      padding: 0.9rem 1.6rem;
+      border-radius: 0.8rem;
+      font-size: 1.35rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid var(--ig-border);
+      background: var(--ig-bg-surface-elevated);
+      color: var(--ig-text-primary);
+      text-decoration: none;
+      user-select: none;
+    }
+
+    .fg-btn:hover {
+      background: var(--ig-bg-surface-subtle);
+      border-color: var(--ig-border-strong);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .fg-btn--primary {
+      background: var(--ig-primary);
+      border-color: var(--ig-primary);
+      color: #fff !important;
+      box-shadow: 0 4px 16px var(--ig-primary-glow);
+    }
+
+    .fg-btn--primary:hover {
+      background: var(--ig-primary-hover);
+      border-color: var(--ig-primary-hover);
+    }
+
+    /* Header Section */
+    .ig-header {
+      padding: 4.8rem 0 3.2rem;
+      border-bottom: 1px solid var(--ig-border);
+      margin-bottom: 3.2rem;
+    }
+
+    .ig-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2.4rem;
+      flex-wrap: wrap;
+    }
+
+    .ig-header-title-wrap {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .ig-header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.4rem 1.2rem;
+      background: var(--ig-primary-light);
+      color: var(--ig-primary);
+      border: 1px solid rgba(4, 117, 244, 0.25);
+      border-radius: 9999px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1.4rem;
+    }
+
+    .ig-header-badge::before {
+      content: '';
+      width: 0.7rem;
+      height: 0.7rem;
+      border-radius: 50%;
+      background: var(--ig-primary);
+      box-shadow: 0 0 10px var(--ig-primary);
+      animation: pulseGlow 2s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    .ig-header-title {
+      font-size: 3.4rem;
+      font-weight: 800;
+      color: var(--ig-text-primary);
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1.4rem;
+    }
+
+    .ig-header-desc {
+      font-size: 1.55rem;
+      color: var(--ig-text-secondary);
+      max-width: 820px;
+      line-height: 1.65;
+    }
+
+    .ig-header-desc code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 1.3rem;
+      color: var(--ig-accent);
+      background: rgba(56, 189, 248, 0.1);
+      padding: 0.2rem 0.6rem;
+      border-radius: 0.4rem;
+    }
+
+    /* Stats Grid */
+    .ig-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.6rem;
+      margin-top: 2.8rem;
+    }
+
+    .ig-stat-card {
+      background: var(--ig-bg-surface);
+      border: 1px solid var(--ig-border);
+      border-radius: 1.4rem;
+      padding: 1.8rem 2.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--ig-card-shadow);
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ig-stat-card:hover {
+      border-color: var(--ig-border-strong);
+      transform: translateY(-2px);
+    }
+
+    .ig-stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--ig-primary);
+      opacity: 0.7;
+    }
+
+    .ig-stat-card.stat-weather::before { background: #F59E0B; }
+    .ig-stat-card.stat-mask::before { background: #06B6D4; }
+    .ig-stat-card.stat-filter::before { background: #10B981; }
+
+    .ig-stat-label {
+      font-size: 1.3rem;
+      color: var(--ig-text-secondary);
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+    }
+
+    .ig-stat-value {
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: var(--ig-text-primary);
+      line-height: 1;
+    }
+
+    .ig-stat-icon {
+      width: 4.4rem;
+      height: 4.4rem;
+      border-radius: 1.2rem;
+      background: var(--ig-bg-surface-subtle);
+      color: var(--ig-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+
+    /* System Tabs (All / Aspect / Mask) */
+    .ig-system-tabs-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.8rem;
+      background: var(--ig-bg-surface);
+      border: 1px solid var(--ig-border);
+      padding: 0.6rem;
+      border-radius: 1.2rem;
+      width: fit-content;
+      flex-wrap: wrap;
+    }
+
+    .ig-system-tab {
+      padding: 0.8rem 1.8rem;
+      border-radius: 0.8rem;
+      border: none;
+      background: transparent;
+      color: var(--ig-text-secondary);
+      font-size: 1.4rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .ig-system-tab:hover {
+      color: var(--ig-text-primary);
+      background: var(--ig-bg-surface-subtle);
+    }
+
+    .ig-system-tab.active {
+      background: var(--ig-primary);
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px var(--ig-primary-glow);
+    }
+
+    .ig-tab-count {
+      display: inline-block;
+      padding: 0.2rem 0.7rem;
+      border-radius: 9999px;
+      font-size: 1.15rem;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .ig-system-tab:not(.active) .ig-tab-count {
+      background: var(--ig-bg-surface-subtle);
+      color: var(--ig-text-muted);
+    }
+
+    /* Sticky Control Suite Toolbar */
+    .ig-toolbar {
+      position: sticky;
+      top: 1.6rem;
+      z-index: 100;
+      background: var(--ig-bg-card);
+      backdrop-filter: var(--ig-glass-blur);
+      -webkit-backdrop-filter: var(--ig-glass-blur);
+      border: 1px solid var(--ig-border-strong);
+      border-radius: 1.6rem;
+      padding: 1.8rem 2.2rem;
+      margin-bottom: 3.2rem;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      gap: 1.6rem;
+    }
+
+    .ig-toolbar-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.8rem;
+      flex-wrap: wrap;
+    }
+
+    /* Search Box */
+    .ig-search-wrap {
+      flex: 1;
+      min-width: 320px;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .ig-search-icon {
+      position: absolute;
+      left: 1.4rem;
+      color: var(--ig-text-muted);
+      font-size: 1.6rem;
+      pointer-events: none;
+    }
+
+    .ig-search-input {
+      width: 100%;
+      height: 4.4rem;
+      padding: 0 4.2rem 0 4.4rem;
+      border-radius: 1rem;
+      border: 1px solid var(--ig-border);
+      background: var(--ig-bg-surface);
+      color: var(--ig-text-primary);
+      font-size: 1.4rem;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .ig-search-input:focus {
+      border-color: var(--ig-primary);
+      box-shadow: 0 0 0 3px var(--ig-primary-light);
+    }
+
+    .ig-search-clear {
+      position: absolute;
+      right: 1.2rem;
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: 50%;
+      border: none;
+      background: var(--ig-bg-surface-subtle);
+      color: var(--ig-text-secondary);
+      font-size: 1.4rem;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .ig-search-clear.show {
+      display: flex;
+    }
+
+    .ig-search-clear:hover {
+      background: var(--ig-danger);
+      color: #fff;
+    }
+
+    /* Controls Group */
+    .ig-controls-group {
+      display: flex;
+      align-items: center;
+      gap: 1.6rem;
+      flex-wrap: wrap;
+    }
+
+    .ig-control-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .ig-control-label {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--ig-text-secondary);
+      white-space: nowrap;
+    }
+
+    /* Size Slider */
+    .ig-size-slider-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .ig-size-slider {
+      width: 110px;
+      height: 6px;
+      border-radius: 3px;
+      outline: none;
+      accent-color: var(--ig-primary);
+      cursor: pointer;
+    }
+
+    .ig-size-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 4.8rem;
+      padding: 0.3rem 0.8rem;
+      background: var(--ig-bg-surface);
+      border: 1px solid var(--ig-border);
+      border-radius: 0.6rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--ig-primary);
+      font-family: monospace;
+    }
+
+    /* Segmented Buttons */
+    .ig-seg-btn-group {
+      display: inline-flex;
+      background: var(--ig-bg-surface);
+      border: 1px solid var(--ig-border);
+      border-radius: 0.8rem;
+      padding: 0.3rem;
+      gap: 0.3rem;
+    }
+
+    .ig-seg-btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.6rem;
+      background: transparent;
+      color: var(--ig-text-secondary);
+      font-size: 1.25rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .ig-seg-btn:hover {
+      color: var(--ig-text-primary);
+    }
+
+    .ig-seg-btn.active {
+      background: var(--ig-primary);
+      color: #FFFFFF;
+      box-shadow: 0 2px 8px var(--ig-primary-glow);
+    }
+
+    /* Mask Live Tint Palette */
+    .ig-tint-palette {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--ig-bg-surface);
+      border: 1px solid var(--ig-border);
+      border-radius: 0.8rem;
+      padding: 0.3rem 0.6rem;
+    }
+
+    .ig-tint-chip {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+      position: relative;
+    }
+
+    .ig-tint-chip:hover {
+      transform: scale(1.2);
+    }
+
+    .ig-tint-chip.active {
+      border-color: #FFFFFF;
+      box-shadow: 0 0 0 2px var(--ig-primary);
+      transform: scale(1.15);
+    }
+
+    .ig-tint-chip--default {
+      background: linear-gradient(135deg, #0475F4 50%, #9CA3AF 50%);
+    }
+
+    .ig-color-picker-input {
+      width: 2.2rem;
+      height: 2.2rem;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      background: none;
+      padding: 0;
+    }
+
+    /* Category Filter Chips */
+    .ig-cat-tabs {
+      display: flex;
+      gap: 0.8rem;
+      overflow-x: auto;
+      padding-bottom: 0.4rem;
+      scrollbar-width: thin;
+    }
+
+    .ig-cat-tabs::-webkit-scrollbar {
+      height: 4px;
+    }
+    .ig-cat-tabs::-webkit-scrollbar-thumb {
+      background: var(--ig-border-strong);
+      border-radius: 4px;
+    }
+
+    .ig-cat-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.6rem 1.4rem;
+      border-radius: 9999px;
+      border: 1px solid var(--ig-border);
+      background: var(--ig-bg-surface);
+      color: var(--ig-text-secondary);
+      font-size: 1.3rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .ig-cat-tab:hover {
+      background: var(--ig-bg-surface-subtle);
+      border-color: var(--ig-border-strong);
+      color: var(--ig-text-primary);
+    }
+
+    .ig-cat-tab.active {
+      background: var(--ig-primary-light);
+      border-color: var(--ig-primary);
+      color: var(--ig-primary);
+      font-weight: 700;
+    }
+
+    .ig-cat-count {
+      font-size: 1.15rem;
+      opacity: 0.8;
+      padding: 0.1rem 0.5rem;
+      border-radius: 9999px;
+      background: var(--ig-bg-surface-subtle);
+    }
+
+    .ig-cat-tab.active .ig-cat-count {
+      background: var(--ig-primary);
+      color: #fff;
+    }
+
+    /* ==========================================================================
+       Grid View Cards
+       ========================================================================== */
+    .ig-icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.8rem;
+    }
+
+    .ig-card {
+      background: var(--ig-bg-surface);
+      border: 1px solid var(--ig-border);
+      border-radius: 1.4rem;
+      padding: 1.6rem;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--ig-card-shadow);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    .ig-card:hover {
+      border-color: var(--ig-border-strong);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.45);
+    }
+
+    .ig-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .ig-badge-group {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .ig-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.6rem;
+      border-radius: 0.4rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .ig-badge--aspect { background: rgba(4, 117, 244, 0.15); color: #38BDF8; }
+    .ig-badge--mask { background: rgba(6, 182, 212, 0.15); color: #06B6D4; }
+    .ig-badge--svg { background: rgba(139, 92, 246, 0.15); color: #A78BFA; }
+    .ig-badge--png { background: rgba(245, 158, 11, 0.15); color: #FBBF24; }
+    .ig-badge--white { background: rgba(255, 255, 255, 0.15); color: #FFFFFF; }
+    .ig-badge--active { background: rgba(16, 185, 129, 0.15); color: #34D399; }
+
+    /* Card Preview Box */
+    .ig-card-preview {
+      aspect-ratio: 16 / 11;
+      border-radius: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.4rem;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--ig-border);
+      transition: background 0.2s ease, transform 0.2s ease;
+      cursor: pointer;
+    }
+
+    .ig-card-preview:hover .ig-target-icon {
+      transform: scale(1.18);
+    }
+
+    .ig-target-icon {
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Preview Background Modes */
+    .preview-dark {
+      background-color: var(--ig-preview-dark);
+    }
+    .preview-light {
+      background-color: var(--ig-preview-light);
+    }
+    .bg-checker {
+      background-color: #273142;
+      background-image: linear-gradient(45deg, #1c2331 25%, transparent 25%),
+                        linear-gradient(-45deg, #1c2331 25%, transparent 25%),
+                        linear-gradient(45deg, transparent 75%, #1c2331 75%),
+                        linear-gradient(-45deg, transparent 75%, #1c2331 75%);
+      background-size: 16px 16px;
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+    }
+    body.light-theme .bg-checker {
+      background-color: #E2E8F0;
+      background-image: linear-gradient(45deg, #CBD5E1 25%, transparent 25%),
+                        linear-gradient(-45deg, #CBD5E1 25%, transparent 25%),
+                        linear-gradient(45deg, transparent 75%, #CBD5E1 75%),
+                        linear-gradient(-45deg, transparent 75%, #CBD5E1 75%);
+      background-size: 16px 16px;
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+    }
+
+    .ig-card-info {
+      flex: 1;
+      margin-bottom: 1.4rem;
+    }
+
+    .ig-card-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--ig-text-primary);
+      margin-bottom: 0.4rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ig-card-filename {
+      font-size: 1.2rem;
+      color: var(--ig-text-muted);
+      margin-bottom: 0.8rem;
+      font-family: monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ig-card-code-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      background: var(--ig-bg-surface-subtle);
+      border: 1px solid var(--ig-border);
+      border-radius: 0.6rem;
+      padding: 0.5rem 0.8rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 1.2rem;
+      color: var(--ig-accent);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .ig-card-code-box:hover {
+      background: var(--ig-primary-light);
+      border-color: var(--ig-primary);
+      color: var(--ig-primary);
+    }
+
+    .ig-card-code-box span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ig-card-actions {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.8rem;
+      margin-top: auto;
+    }
+
+    .ig-mini-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0.7rem 1.2rem;
+      border-radius: 0.6rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      border: 1px solid var(--ig-border);
+      background: var(--ig-bg-surface-elevated);
+      color: var(--ig-text-primary);
+      user-select: none;
+    }
+
+    .ig-mini-btn:hover {
+      background: var(--ig-primary);
+      border-color: var(--ig-primary);
+      color: #FFFFFF;
+    }
+
+    .ig-mini-btn--primary {
+      background: var(--ig-primary-light);
+      color: var(--ig-primary);
+      border-color: rgba(4, 117, 244, 0.3);
+    }
+
+    .ig-mini-btn--primary:hover {
+      background: var(--ig-primary);
+      color: #fff;
+    }
+
+    /* ==========================================================================
+       Table View
+       ========================================================================== */
+    .ig-table-wrap {
+      display: none;
+      background: var(--ig-bg-surface);
+      border: 1px solid var(--ig-border);
+      border-radius: 1.4rem;
+      overflow-x: auto;
+      box-shadow: var(--ig-card-shadow);
+    }
+
+    .ig-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 1.35rem;
+      text-align: left;
+    }
+
+    .ig-table th {
+      background: var(--ig-bg-surface-subtle);
+      color: var(--ig-text-secondary);
+      font-weight: 700;
+      padding: 1.4rem 1.6rem;
+      border-bottom: 1px solid var(--ig-border-strong);
+      white-space: nowrap;
+    }
+
+    .ig-table td {
+      padding: 1.2rem 1.6rem;
+      border-bottom: 1px solid var(--ig-border);
+      vertical-align: middle;
+    }
+
+    .ig-table tr:hover td {
+      background: var(--ig-bg-surface-subtle);
+    }
+
+    .ig-table-preview-cell {
+      width: 64px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.8rem;
+      border: 1px solid var(--ig-border);
+      background: var(--ig-preview-dark);
+    }
+
+    /* Empty Search State */
+    .ig-empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 8rem 2rem;
+      background: var(--ig-bg-surface);
+      border: 1px dashed var(--ig-border-strong);
+      border-radius: 1.4rem;
+    }
+
+    .ig-empty-icon {
+      font-size: 4rem;
+      margin-bottom: 1.4rem;
+      opacity: 0.7;
+    }
+
+    .ig-empty-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+    }
+
+    .ig-empty-desc {
+      color: var(--ig-text-muted);
+      font-size: 1.45rem;
+    }
+
+    /* ==========================================================================
+       Detail Modal
+       ========================================================================== */
+    .ig-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .ig-modal-backdrop.open {
+      display: flex;
+      opacity: 1;
+    }
+
+    .ig-modal {
+      background: var(--ig-bg-surface);
+      border: 1px solid var(--ig-border-strong);
+      border-radius: 1.8rem;
+      width: 100%;
+      max-width: 720px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+      transform: scale(0.95);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .ig-modal-backdrop.open .ig-modal {
+      transform: scale(1);
+    }
+
+    .ig-modal-header {
+      padding: 2.2rem 2.6rem;
+      border-bottom: 1px solid var(--ig-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ig-modal-title {
+      font-size: 2rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .ig-modal-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--ig-text-muted);
+      cursor: pointer;
+      font-size: 2.4rem;
+      line-height: 1;
+      padding: 0.4rem 0.8rem;
+      border-radius: 0.6rem;
+    }
+
+    .ig-modal-close-btn:hover {
+      color: var(--ig-text-primary);
+      background: var(--ig-bg-surface-subtle);
+    }
+
+    .ig-modal-body {
+      padding: 2.6rem;
+    }
+
+    .ig-modal-showcase {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+      border-radius: 1.4rem;
+      background: var(--ig-preview-dark);
+      border: 1px solid var(--ig-border);
+      margin-bottom: 2.4rem;
+      position: relative;
+    }
+
+    .ig-modal-bg-toggle {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .ig-modal-big-preview {
+      margin-bottom: 2.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 90px;
+    }
+
+    /* Size Variations Matrix */
+    .ig-size-variations {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 2.4rem;
+      flex-wrap: wrap;
+      width: 100%;
+      border-top: 1px solid var(--ig-border);
+      padding-top: 2rem;
+    }
+
+    .ig-size-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .ig-size-tag {
+      font-size: 1.15rem;
+      color: var(--ig-text-muted);
+      font-family: monospace;
+    }
+
+    /* Code Snippets in Modal */
+    .ig-code-block {
+      background: var(--ig-code-bg);
+      border: 1px solid var(--ig-border);
+      border-radius: 1rem;
+      padding: 1.4rem 1.6rem;
+      margin-bottom: 1.6rem;
+    }
+
+    .ig-code-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.8rem;
+      font-size: 1.25rem;
+      color: var(--ig-text-secondary);
+      font-weight: 600;
+    }
+
+    .ig-code-content {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 1.35rem;
+      color: var(--ig-accent);
+      word-break: break-all;
+      user-select: all;
+    }
+
+    .ig-code-copy-btn {
+      padding: 0.4rem 0.9rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      border-radius: 0.4rem;
+      border: 1px solid var(--ig-border);
+      background: var(--ig-bg-surface-subtle);
+      color: var(--ig-text-primary);
+      cursor: pointer;
+    }
+
+    .ig-code-copy-btn:hover {
+      background: var(--ig-primary);
+      color: #fff;
+    }
+
+    /* Toast Notification */
+    .ig-toast {
+      position: fixed;
+      bottom: 3.2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #10B981;
+      color: #FFFFFF;
+      padding: 1.2rem 2.4rem;
+      border-radius: 9999px;
+      font-size: 1.4rem;
+      font-weight: 700;
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+      z-index: 2000;
+      pointer-events: none;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .ig-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* Guidelines Documentation Section */
+    .ig-docs-section {
+      background: var(--ig-bg-surface);
+      border: 1px solid var(--ig-border);
+      border-radius: 1.6rem;
+      padding: 3.6rem;
+      margin-top: 5.6rem;
+      box-shadow: var(--ig-card-shadow);
+    }
+
+    .ig-docs-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--ig-text-primary);
+      margin-bottom: 2.4rem;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .ig-docs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.4rem;
+    }
+
+    .ig-docs-card {
+      background: var(--ig-bg-surface-elevated);
+      border: 1px solid var(--ig-border);
+      border-radius: 1.2rem;
+      padding: 2.2rem;
+    }
+
+    .ig-docs-card h4 {
+      font-size: 1.65rem;
+      font-weight: 700;
+      margin-bottom: 1.2rem;
+      color: var(--ig-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .ig-docs-card p {
+      font-size: 1.35rem;
+      color: var(--ig-text-secondary);
+      line-height: 1.65;
+      margin-bottom: 1.2rem;
+    }
+
+    .ig-docs-card code {
+      font-family: monospace;
+      background: var(--ig-bg-surface-subtle);
+      padding: 0.2rem 0.6rem;
+      border-radius: 0.4rem;
+      font-size: 1.25rem;
+      color: var(--ig-accent);
+    }
+
+    .ig-size-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 1.2rem;
+    }
+
+    .ig-size-table th, .ig-size-table td {
+      border: 1px solid var(--ig-border);
+      padding: 0.6rem 0.8rem;
+      text-align: center;
+    }
+
+    .ig-size-table th {
+      background: var(--ig-bg-surface-subtle);
+      color: var(--ig-text-secondary);
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .ig-header-title { font-size: 2.6rem; }
+      .ig-toolbar { padding: 1.4rem; }
+      .ig-toolbar-row { flex-direction: column; align-items: stretch; }
+      .ig-search-wrap { min-width: 100%; }
+      .ig-controls-group { justify-content: space-between; }
+      .ig-icon-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1.2rem; }
+      .ig-card { padding: 1.2rem; }
+      .ig-docs-section { padding: 2rem; }
+    }
+  </style>
+</head>
+
+<body class="night-theme" data-theme="true">
+
+  <!-- S : Guide Container -->
+  <div class="ig-container">
+
+    <!-- S : Header -->
+    <header class="ig-header">
+      <div class="ig-header-top">
+        <div class="ig-header-title-wrap">
+          <div class="ig-header-badge">Design System &bull; ui.icon.css v2026</div>
+          <h1 class="ig-header-title">
+            <i class="icon-aspect-logo" data-size="36" aria-hidden="true"></i>
+            누리앱 아이콘 시스템 가이드
+          </h1>
+          <p class="ig-header-desc">
+            <code>resources/css-2026/ui.icon.css</code> 명세를 기준으로 구축된 <strong>총 130종</strong> 아이콘의 통합 카탈로그입니다.<br>
+            배경 비율형(Aspect-Ratio 111종)과 동적 색상 제어(CSS Mask 19종)를 실시간 규격별로 확인하고 원클릭 복사할 수 있습니다.
+          </p>
+        </div>
+
+        <div class="ig-header-actions fg-header-actions">
+          <!-- ./inc/guide-header-actions.html 공통 영역 비동기 로드 -->
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="ig-stats-grid">
+        <div class="ig-stat-card">
+          <div>
+            <div class="ig-stat-label">총 등록 아이콘</div>
+            <div class="ig-stat-value" id="statTotalCount">130</div>
+          </div>
+          <div class="ig-stat-icon">🎨</div>
+        </div>
+
+        <div class="ig-stat-card">
+          <div>
+            <div class="ig-stat-label">Aspect-Ratio 아이콘</div>
+            <div class="ig-stat-value">111</div>
+          </div>
+          <div class="ig-stat-icon">📐</div>
+        </div>
+
+        <div class="ig-stat-card stat-mask">
+          <div>
+            <div class="ig-stat-label">CSS Mask 마스크 아이콘</div>
+            <div class="ig-stat-value">19</div>
+          </div>
+          <div class="ig-stat-icon">🎭</div>
+        </div>
+
+        <div class="ig-stat-card stat-weather">
+          <div>
+            <div class="ig-stat-label">날씨·천문 특화 (NB/달)</div>
+            <div class="ig-stat-value">29</div>
+          </div>
+          <div class="ig-stat-icon">⛅</div>
+        </div>
+
+        <div class="ig-stat-card stat-filter">
+          <div>
+            <div class="ig-stat-label">검색 / 필터 결과</div>
+            <div class="ig-stat-value" id="statFilteredCount" style="color:var(--ig-primary);">130</div>
+          </div>
+          <div class="ig-stat-icon">🔍</div>
+        </div>
+      </div>
+    </header>
+    <!-- E : Header -->
+
+    <!-- S : System Type Selector (전체 / Aspect / Mask) -->
+    <div class="ig-system-tabs-wrap" id="systemTabs">
+      <button type="button" class="ig-system-tab active" data-system="all">
+        <span>🌐 전체 시스템</span>
+        <span class="ig-tab-count">130</span>
+      </button>
+      <button type="button" class="ig-system-tab" data-system="aspect">
+        <span>📐 Aspect-Ratio 시스템</span>
+        <span class="ig-tab-count">111</span>
+      </button>
+      <button type="button" class="ig-system-tab" data-system="mask">
+        <span>🎭 CSS Mask 시스템</span>
+        <span class="ig-tab-count">19</span>
+      </button>
+    </div>
+    <!-- E : System Type Selector -->
+
+    <!-- S : Sticky Toolbar -->
+    <div class="ig-toolbar">
+      <div class="ig-toolbar-row">
+        <!-- Search Box -->
+        <div class="ig-search-wrap">
+          <span class="ig-search-icon">🔍</span>
+          <input type="text" class="ig-search-input" id="searchInput" placeholder="아이콘명, CSS 클래스, 키워드 검색 (예: 태풍, NB04, mask, search...)" autocomplete="off">
+          <button type="button" class="ig-search-clear" id="searchClear" aria-label="검색어 지우기">&times;</button>
+        </div>
+
+        <!-- Controls Group -->
+        <div class="ig-controls-group">
+          <!-- Size Slider -->
+          <div class="ig-control-item">
+            <span class="ig-control-label">미리보기 크기:</span>
+            <div class="ig-size-slider-wrap">
+              <input type="range" class="ig-size-slider" id="sizeSlider" min="16" max="64" step="4" value="24">
+              <span class="ig-size-badge" id="sizeBadge">24px</span>
+            </div>
+          </div>
+
+          <!-- Preview Background Selector -->
+          <div class="ig-control-item">
+            <span class="ig-control-label">카드 배경:</span>
+            <div class="ig-seg-btn-group" id="bgModeGroup">
+              <button type="button" class="ig-seg-btn active" data-bg="auto">Auto</button>
+              <button type="button" class="ig-seg-btn" data-bg="dark">Dark</button>
+              <button type="button" class="ig-seg-btn" data-bg="light">Light</button>
+              <button type="button" class="ig-seg-btn" data-bg="checker">체커</button>
+            </div>
+          </div>
+
+          <!-- Mask Tint Palette (Live color for mask icons) -->
+          <div class="ig-control-item" id="maskTintWrap">
+            <span class="ig-control-label">마스크 색상:</span>
+            <div class="ig-tint-palette" id="tintPalette">
+              <button type="button" class="ig-tint-chip ig-tint-chip--default active" data-color="" title="기본 (테마/CSS currentColor)"></button>
+              <button type="button" class="ig-tint-chip" style="background:#0475F4;" data-color="#0475F4" title="Primary Blue (#0475F4)"></button>
+              <button type="button" class="ig-tint-chip" style="background:#10B981;" data-color="#10B981" title="Success Green (#10B981)"></button>
+              <button type="button" class="ig-tint-chip" style="background:#EF4444;" data-color="#EF4444" title="Danger Red (#EF4444)"></button>
+              <button type="button" class="ig-tint-chip" style="background:#F59E0B;" data-color="#F59E0B" title="Warning Amber (#F59E0B)"></button>
+              <button type="button" class="ig-tint-chip" style="background:#FFFFFF;" data-color="#FFFFFF" title="Pure White (#FFFFFF)"></button>
+              <input type="color" class="ig-color-picker-input" id="customColorPicker" value="#0475F4" title="커스텀 컬러 선택">
+            </div>
+          </div>
+
+          <!-- View Mode Toggle -->
+          <div class="ig-control-item">
+            <div class="ig-seg-btn-group" id="viewModeGroup">
+              <button type="button" class="ig-seg-btn active" data-view="grid" title="그리드 뷰">그리드</button>
+              <button type="button" class="ig-seg-btn" data-view="table" title="테이블 뷰">테이블</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="ig-cat-tabs" id="categoryTabs">
+        <!-- Rendered by JavaScript -->
+      </div>
+    </div>
+    <!-- E : Sticky Toolbar -->
+
+    <!-- S : Icon Grid View -->
+    <div class="ig-icon-grid" id="iconGrid">
+      <!-- Rendered by JavaScript -->
+    </div>
+    <!-- E : Icon Grid View -->
+
+    <!-- S : Icon Table View -->
+    <div class="ig-table-wrap" id="iconTableWrap">
+      <table class="ig-table">
+        <thead>
+          <tr>
+            <th style="width: 72px;">미리보기</th>
+            <th>명칭 및 용도</th>
+            <th>시스템</th>
+            <th>CSS 클래스명</th>
+            <th>에셋 파일명</th>
+            <th>권장 규격</th>
+            <th style="width: 200px;">액션</th>
+          </tr>
+        </thead>
+        <tbody id="iconTableBody">
+          <!-- Rendered by JavaScript -->
+        </tbody>
+      </table>
+    </div>
+    <!-- E : Icon Table View -->
+
+    <!-- S : Usage Guidelines Documentation Section -->
+    <section class="ig-docs-section" id="docsSection">
+      <h3 class="ig-docs-title">
+        <i class="icon-aspect-setting" data-size="28" aria-hidden="true"></i>
+        누리앱 아이콘 시스템 규격 및 개발 사용 가이드
+      </h3>
+
+      <div class="ig-docs-grid">
+        <!-- Card 1: Aspect Ratio Rules -->
+        <div class="ig-docs-card">
+          <h4>1. Aspect-Ratio 아이콘 (<code>icon-aspect-*</code>)</h4>
+          <p>
+            <code>aspect-ratio: 1/1</code>과 <code>background-size: contain</code>을 기반으로 작동하며, <code>data-size</code> 속성을 통해 원하는 크기로 즉시 렌더링됩니다.
+          </p>
+          <div class="ig-code-block" style="margin-bottom:1rem;">
+            <div class="ig-code-content">&lt;i class="icon-aspect-location-w" data-size="24" aria-hidden="true"&gt;&lt;/i&gt;</div>
+          </div>
+          <table class="ig-size-table">
+            <tr>
+              <th>data-size</th>
+              <td>6</td><td>10</td><td>14</td><td>18</td><td>22</td><td>26</td><td>30</td><td>36</td><td>48</td><td>80</td>
+            </tr>
+            <tr>
+              <th>rem 환산</th>
+              <td>.6rem</td><td>1rem</td><td>1.4rem</td><td>1.8rem</td><td>2.2rem</td><td>2.6rem</td><td>3rem</td><td>3.6rem</td><td>4.8rem</td><td>8rem</td>
+            </tr>
+          </table>
+          <p style="font-size:1.2rem; color:var(--ig-text-muted); margin-top:0.8rem;">
+            * <code>data-opacity="0.3"</code>, <code>"0.6"</code>, <code>"0.8"</code> 투명도 속성도 즉시 적용 가능합니다.
+          </p>
+        </div>
+
+        <!-- Card 2: Mask Icons Rules -->
+        <div class="ig-docs-card">
+          <h4>2. CSS Mask 아이콘 (<code>icon-mask-*</code>)</h4>
+          <p>
+            <code>mask-image</code>와 <code>background-color: currentColor</code>를 활용하여 <strong>부모 텍스트 색상 또는 CSS color 속성을 그대로 상속</strong>받습니다.
+          </p>
+          <div class="ig-code-block" style="margin-bottom:1rem;">
+            <div class="ig-code-content">&lt;!-- 텍스트 색상 또는 style="color: ..." 로 즉시 색상 제어 --&gt;
+&lt;i class="icon-mask-my" style="color: #0475F4;" aria-hidden="true"&gt;&lt;/i&gt;</div>
+          </div>
+          <p style="font-size:1.3rem; color:var(--ig-text-secondary); line-height: 1.7;">
+            &bull; <code>icon-mask-my</code> (3.4rem / 기본 var(--text-theme1))<br>
+            &bull; <code>icon-mask-setting, close, arrow, style*</code> (2.4rem)<br>
+            &bull; <code>icon-mask-menu1~10</code> (1.8rem / 기본 var(--text-theme6))
+          </p>
+        </div>
+
+        <!-- Card 3: Weather NB & Moon Rules -->
+        <div class="ig-docs-card">
+          <h4>3. 기상청 날씨 (NB01~NB21) 및 음력 달의 위상</h4>
+          <p>
+            기상청 표준 예보 코드(NB01 맑음부터 NB21 박무까지 21종) 및 음력 8단계 달의 위상(img-moon-01 월삭부터 08 그믐달까지)이 고화질 PNG 렌더링으로 지원됩니다.
+          </p>
+          <div class="ig-code-block" style="margin-bottom:1rem;">
+            <div class="ig-code-content">&lt;!-- 날씨 비 아이콘 32px --&gt;
+&lt;i class="icon-aspect-NB04" data-size="32" aria-hidden="true"&gt;&lt;/i&gt;
+
+&lt;!-- 보름달 아이콘 28px --&gt;
+&lt;i class="icon-aspect-moon5" data-size="28" aria-hidden="true"&gt;&lt;/i&gt;</div>
+          </div>
+        </div>
+
+        <!-- Card 4: Accessibility -->
+        <div class="ig-docs-card">
+          <h4>4. 웹 접근성 (A11y) 표준 가이드</h4>
+          <p>
+            아이콘은 스크린 리더에서 불필요한 음성 낭비를 방지하기 위해 <code>aria-hidden="true"</code>를 반드시 선언해야 합니다.
+          </p>
+          <div class="ig-code-block" style="margin-bottom:1rem;">
+            <div class="ig-code-content">&lt;!-- 텍스트가 없는 단독 아이콘 버튼에는 상위 버튼에 aria-label 지정 --&gt;
+&lt;button type="button" aria-label="메뉴 닫기"&gt;
+  &lt;i class="icon-aspect-close" aria-hidden="true"&gt;&lt;/i&gt;
+&lt;/button&gt;</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- E : Usage Guidelines Documentation Section -->
+
+  </div>
+  <!-- E : Guide Container -->
+
+  <!-- S : Icon Detail Modal -->
+  <div class="ig-modal-backdrop" id="detailModal">
+    <div class="ig-modal">
+      <div class="ig-modal-header">
+        <h3 class="ig-modal-title" id="modalTitle">아이콘 상세 정보</h3>
+        <button type="button" class="ig-modal-close-btn" id="modalCloseBtn" aria-label="닫기">&times;</button>
+      </div>
+      <div class="ig-modal-body">
+        <!-- Showcase Box -->
+        <div class="ig-modal-showcase" id="modalShowcaseBox">
+          <div class="ig-modal-bg-toggle">
+            <button type="button" class="ig-mini-btn" id="modalBgDarkBtn">Dark</button>
+            <button type="button" class="ig-mini-btn" id="modalBgLightBtn">Light</button>
+            <button type="button" class="ig-mini-btn" id="modalBgCheckerBtn">체커</button>
+          </div>
+          <!-- Big Preview Target -->
+          <div class="ig-modal-big-preview" id="modalBigPreview"></div>
+
+          <!-- Variations Row -->
+          <div class="ig-size-variations" id="modalSizeVariations">
+            <!-- 16, 20, 24, 32, 48px previews -->
+          </div>
+        </div>
+
+        <!-- HTML Code Snippet -->
+        <div class="ig-code-block">
+          <div class="ig-code-label">
+            <span>표준 HTML 마크업</span>
+            <button type="button" class="ig-code-copy-btn" id="btnModalCopyHtml">HTML 복사</button>
+          </div>
+          <div class="ig-code-content" id="modalHtmlCode"></div>
+        </div>
+
+        <!-- CSS Code Snippet -->
+        <div class="ig-code-block">
+          <div class="ig-code-label">
+            <span>CSS 클래스명</span>
+            <button type="button" class="ig-code-copy-btn" id="btnModalCopyClass">클래스 복사</button>
+          </div>
+          <div class="ig-code-content" id="modalClassCode"></div>
+        </div>
+
+        <!-- File Path Snippet -->
+        <div class="ig-code-block">
+          <div class="ig-code-label">
+            <span>에셋 파일 경로</span>
+            <button type="button" class="ig-code-copy-btn" id="btnModalCopyPath">경로 복사</button>
+          </div>
+          <div class="ig-code-content" id="modalPathCode"></div>
+        </div>
+
+        <!-- CSS Rule Snippet -->
+        <div class="ig-code-block">
+          <div class="ig-code-label">
+            <span>ui.icon.css 정의 규칙</span>
+            <button type="button" class="ig-code-copy-btn" id="btnModalCopyRule">규칙 복사</button>
+          </div>
+          <div class="ig-code-content" id="modalRuleCode"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- E : Icon Detail Modal -->
+
+  <!-- S : Toast Notification -->
+  <div class="ig-toast" id="toast">
+    <span>✓</span>
+    <span id="toastMsg">클립보드에 복사되었습니다.</span>
+  </div>
+  <!-- E : Toast Notification -->
+
+  <!-- S : JavaScript Logic -->
+  <script type="module">
+    import { initGuideHeaderActions } from '../resources/js-2026/utils/utils.js';
+
+    // 0. 공통 헤더 네비게이션 비동기 주입
+    initGuideHeaderActions();
+
+    (function () {
+      'use strict';
+
+      // 1. All 130 Icons Metadata parsed from ui.icon.css
+      const ICONS = [
+  {
+    "id": "icon-aspect-checkbox-off",
+    "name": "체크박스 (해제)",
+    "category": "check-form",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-checkbox-off.svg",
+    "fileName": "icon-aspect-checkbox-off.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "체크박스",
+      "checkbox",
+      "off",
+      "해제",
+      "미선택"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-checkbox-off {background-image:url(\"../images-2026/icon/icon-aspect-checkbox-off.svg\")}"
+  },
+  {
+    "id": "icon-aspect-checkbox-on",
+    "name": "체크박스 (선택)",
+    "category": "check-form",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-checkbox-on.svg",
+    "fileName": "icon-aspect-checkbox-on.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "체크박스",
+      "checkbox",
+      "on",
+      "선택됨"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-checkbox-on {background-image:url(\"../images-2026/icon/icon-aspect-checkbox-on.svg\")}"
+  },
+  {
+    "id": "icon-aspect-close",
+    "name": "닫기 기본",
+    "category": "close",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-close.svg",
+    "fileName": "icon-aspect-close.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "닫기",
+      "close",
+      "x",
+      "취소",
+      "삭제"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-close {background-image:url(\"../images-2026/icon/icon-aspect-close.svg\")}"
+  },
+  {
+    "id": "icon-aspect-close2",
+    "name": "닫기 스타일 2",
+    "category": "close",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-close2.svg",
+    "fileName": "icon-aspect-close2.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "닫기",
+      "close2",
+      "x",
+      "모달닫기"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-close2 {background-image:url(\"../images-2026/icon/icon-aspect-close2.svg\")}"
+  },
+  {
+    "id": "icon-aspect-close-small",
+    "name": "닫기 소형 (Small)",
+    "category": "close",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-close-small.svg",
+    "fileName": "icon-aspect-close-small.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "닫기",
+      "close",
+      "small",
+      "소형",
+      "태그삭제"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-close-small {background-image:url(\"../images-2026/icon/icon-aspect-close-small.svg\")}"
+  },
+  {
+    "id": "icon-aspect-close2-w",
+    "name": "닫기 스타일 2 (화이트)",
+    "category": "close",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-close2-w.svg",
+    "fileName": "icon-aspect-close2-w.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": true,
+    "isOn": false,
+    "tags": [
+      "닫기",
+      "close2",
+      "white",
+      "x"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-close2-w {background-image:url(\"../images-2026/icon/icon-aspect-close2-w.svg\")}"
+  },
+  {
+    "id": "icon-aspect-close3-w",
+    "name": "닫기 스타일 3 (화이트)",
+    "category": "close",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-close3-w.svg",
+    "fileName": "icon-aspect-close3-w.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": true,
+    "isOn": false,
+    "tags": [
+      "닫기",
+      "close3",
+      "white",
+      "x"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-close3-w {background-image:url(\"../images-2026/icon/icon-aspect-close3-w.svg\")}"
+  },
+  {
+    "id": "icon-aspect-search",
+    "name": "검색 기본",
+    "category": "common",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-search.svg",
+    "fileName": "icon-aspect-search.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "검색",
+      "search",
+      "돋보기",
+      "찾기"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-search {background-image:url(\"../images-2026/icon/icon-aspect-search.svg\")}"
+  },
+  {
+    "id": "icon-aspect-search-b",
+    "name": "검색 볼드 (블랙)",
+    "category": "common",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-search-b.svg",
+    "fileName": "icon-aspect-search-b.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "검색",
+      "search",
+      "bold",
+      "black",
+      "돋보기"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-search-b {background-image:url(\"../images-2026/icon/icon-aspect-search-b.svg\")}"
+  },
+  {
+    "id": "icon-aspect-calendar",
+    "name": "캘린더 기본",
+    "category": "common",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-calendar.svg",
+    "fileName": "icon-aspect-calendar.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "캘린더",
+      "달력",
+      "calendar",
+      "날짜",
+      "일정"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-calendar {background-image:url(\"../images-2026/icon/icon-aspect-calendar.svg\")}"
+  },
+  {
+    "id": "icon-aspect-arrow-r-w",
+    "name": "오른쪽 화살표 (화이트)",
+    "category": "arrow",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-arrow-r-w.svg",
+    "fileName": "icon-aspect-arrow-r-w.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": true,
+    "isOn": false,
+    "tags": [
+      "화살표",
+      "arrow",
+      "right",
+      "white",
+      "오른쪽"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-arrow-r-w {background-image:url(\"../images-2026/icon/icon-aspect-arrow-r-w.svg\")}"
+  },
+  {
+    "id": "icon-aspect-check-circle-w",
+    "name": "원형 체크 (화이트)",
+    "category": "check-form",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-check-circle-w.svg",
+    "fileName": "icon-aspect-check-circle-w.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": true,
+    "isOn": false,
+    "tags": [
+      "체크",
+      "원형",
+      "circle",
+      "check",
+      "white",
+      "성공",
+      "완료"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-check-circle-w {background-image:url(\"../images-2026/icon/icon-aspect-check-circle-w.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-nav1",
+    "name": "지도 내비 1 (전국/관측)",
+    "category": "map-nav",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-nav1.svg",
+    "fileName": "icon-aspect-map-nav1.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "지도",
+      "내비",
+      "전국",
+      "관측",
+      "map",
+      "nav1"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-nav1 {background-image:url(\"../images-2026/icon/icon-aspect-map-nav1.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-nav2",
+    "name": "지도 내비 2 (레이더)",
+    "category": "map-nav",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-nav2.svg",
+    "fileName": "icon-aspect-map-nav2.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "지도",
+      "내비",
+      "레이더",
+      "radar",
+      "map",
+      "nav2"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-nav2 {background-image:url(\"../images-2026/icon/icon-aspect-map-nav2.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-nav3",
+    "name": "지도 내비 3 (위성)",
+    "category": "map-nav",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-nav3.svg",
+    "fileName": "icon-aspect-map-nav3.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "지도",
+      "내비",
+      "위성",
+      "satellite",
+      "map",
+      "nav3"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-nav3 {background-image:url(\"../images-2026/icon/icon-aspect-map-nav3.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-nav4",
+    "name": "지도 내비 4 (기상특보)",
+    "category": "map-nav",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-nav4.svg",
+    "fileName": "icon-aspect-map-nav4.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "지도",
+      "내비",
+      "특보",
+      "경보",
+      "map",
+      "nav4"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-nav4 {background-image:url(\"../images-2026/icon/icon-aspect-map-nav4.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-nav5",
+    "name": "지도 내비 5 (태풍경로)",
+    "category": "map-nav",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-nav5.svg",
+    "fileName": "icon-aspect-map-nav5.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "지도",
+      "내비",
+      "태풍",
+      "typhoon",
+      "map",
+      "nav5"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-nav5 {background-image:url(\"../images-2026/icon/icon-aspect-map-nav5.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-nav6",
+    "name": "지도 내비 6 (지진정보)",
+    "category": "map-nav",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-nav6.svg",
+    "fileName": "icon-aspect-map-nav6.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "지도",
+      "내비",
+      "지진",
+      "earthquake",
+      "map",
+      "nav6"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-nav6 {background-image:url(\"../images-2026/icon/icon-aspect-map-nav6.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-nav7",
+    "name": "지도 내비 7 (미세먼지/대기)",
+    "category": "map-nav",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-nav7.svg",
+    "fileName": "icon-aspect-map-nav7.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "지도",
+      "내비",
+      "미세먼지",
+      "air",
+      "map",
+      "nav7"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-nav7 {background-image:url(\"../images-2026/icon/icon-aspect-map-nav7.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-nav8",
+    "name": "지도 내비 8 (바람/기상도)",
+    "category": "map-nav",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-nav8.svg",
+    "fileName": "icon-aspect-map-nav8.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "지도",
+      "내비",
+      "바람",
+      "wind",
+      "map",
+      "nav8"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-nav8 {background-image:url(\"../images-2026/icon/icon-aspect-map-nav8.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-control1",
+    "name": "지도 컨트롤 1 (기본)",
+    "category": "map-control",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-control1.svg",
+    "fileName": "icon-aspect-map-control1.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "지도",
+      "컨트롤",
+      "control1",
+      "도구",
+      "툴"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-control1 {background-image:url(\"../images-2026/icon/icon-aspect-map-control1.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-control2",
+    "name": "지도 컨트롤 2 (기본)",
+    "category": "map-control",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-control2.svg",
+    "fileName": "icon-aspect-map-control2.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "지도",
+      "컨트롤",
+      "control2",
+      "도구",
+      "툴"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-control2 {background-image:url(\"../images-2026/icon/icon-aspect-map-control2.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-control3",
+    "name": "지도 컨트롤 3 (기본)",
+    "category": "map-control",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-control3.svg",
+    "fileName": "icon-aspect-map-control3.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "지도",
+      "컨트롤",
+      "control3",
+      "도구",
+      "툴"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-control3 {background-image:url(\"../images-2026/icon/icon-aspect-map-control3.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-control4",
+    "name": "지도 컨트롤 4 (기본)",
+    "category": "map-control",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-control4.svg",
+    "fileName": "icon-aspect-map-control4.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "지도",
+      "컨트롤",
+      "control4",
+      "도구",
+      "툴"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-control4 {background-image:url(\"../images-2026/icon/icon-aspect-map-control4.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-control5",
+    "name": "지도 컨트롤 5 (기본)",
+    "category": "map-control",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-control5.svg",
+    "fileName": "icon-aspect-map-control5.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "지도",
+      "컨트롤",
+      "control5",
+      "도구",
+      "툴"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-control5 {background-image:url(\"../images-2026/icon/icon-aspect-map-control5.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-control6",
+    "name": "지도 컨트롤 6 (기본)",
+    "category": "map-control",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-control6.svg",
+    "fileName": "icon-aspect-map-control6.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "지도",
+      "컨트롤",
+      "control6",
+      "도구",
+      "툴"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-control6 {background-image:url(\"../images-2026/icon/icon-aspect-map-control6.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-control7",
+    "name": "지도 컨트롤 7 (기본)",
+    "category": "map-control",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-control7.svg",
+    "fileName": "icon-aspect-map-control7.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "지도",
+      "컨트롤",
+      "control7",
+      "도구",
+      "툴"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-control7 {background-image:url(\"../images-2026/icon/icon-aspect-map-control7.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-control8",
+    "name": "지도 컨트롤 8 (기본)",
+    "category": "map-control",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-control8.svg",
+    "fileName": "icon-aspect-map-control8.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "지도",
+      "컨트롤",
+      "control8",
+      "도구",
+      "툴"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-control8 {background-image:url(\"../images-2026/icon/icon-aspect-map-control8.svg\")}"
+  },
+  {
+    "id": "icon-aspect-setting",
+    "name": "설정",
+    "category": "common",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-setting.svg",
+    "fileName": "icon-aspect-setting.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "설정",
+      "setting",
+      "환경설정",
+      "톱니바퀴"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-setting {background-image:url(\"../images-2026/icon/icon-aspect-setting.svg\")}"
+  },
+  {
+    "id": "icon-aspect-dropdown",
+    "name": "드롭다운 화살표",
+    "category": "arrow",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-dropdown.svg",
+    "fileName": "icon-aspect-dropdown.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "드롭다운",
+      "dropdown",
+      "화살표",
+      "아래",
+      "열기"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-dropdown {background-image:url(\"../images-2026/icon/icon-aspect-dropdown.svg\")}"
+  },
+  {
+    "id": "icon-aspect-logo",
+    "name": "누리앱 로고 심볼",
+    "category": "common",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-logo.svg",
+    "fileName": "icon-aspect-logo.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "로고",
+      "logo",
+      "누리",
+      "심볼",
+      "nuri"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-logo {background-image:url(\"../images-2026/icon/icon-aspect-logo.svg\")}"
+  },
+  {
+    "id": "icon-aspect-arrow-range-w",
+    "name": "범위 화살표 (화이트)",
+    "category": "arrow",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-arrow-range-w.svg",
+    "fileName": "icon-aspect-arrow-range-w.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": true,
+    "isOn": false,
+    "tags": [
+      "화살표",
+      "arrow",
+      "range",
+      "white",
+      "범위",
+      "양방향"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-arrow-range-w {background-image:url(\"../images-2026/icon/icon-aspect-arrow-range-w.svg\")}"
+  },
+  {
+    "id": "icon-aspect-star",
+    "name": "즐겨찾기 (별)",
+    "category": "common",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-star.svg",
+    "fileName": "icon-aspect-star.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "즐겨찾기",
+      "별",
+      "star",
+      "북마크",
+      "관심"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-star {background-image:url(\"../images-2026/icon/icon-aspect-star.svg\")}"
+  },
+  {
+    "id": "icon-aspect-star-on",
+    "name": "즐겨찾기 활성 (별 채움)",
+    "category": "common",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-star-on.svg",
+    "fileName": "icon-aspect-star-on.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": true,
+    "tags": [
+      "즐겨찾기",
+      "별",
+      "star",
+      "on",
+      "채움",
+      "북마크"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-star-on {background-image:url(\"../images-2026/icon/icon-aspect-star-on.svg\")}"
+  },
+  {
+    "id": "icon-aspect-wind",
+    "name": "바람 / 풍속",
+    "category": "common",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-wind.svg",
+    "fileName": "icon-aspect-wind.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "바람",
+      "wind",
+      "풍속",
+      "풍향",
+      "기상"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-wind {background-image:url(\"../images-2026/icon/icon-aspect-wind.svg\")}"
+  },
+  {
+    "id": "icon-aspect-arrow-right",
+    "name": "오른쪽 화살표",
+    "category": "arrow",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-arrow-right.svg",
+    "fileName": "icon-aspect-arrow-right.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "화살표",
+      "arrow",
+      "right",
+      "오른쪽",
+      "이동"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-arrow-right {background-image:url(\"../images-2026/icon/icon-aspect-arrow-right.svg\")}"
+  },
+  {
+    "id": "icon-aspect-play-next",
+    "name": "다음 재생 / 탐색",
+    "category": "common",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-play-next.svg",
+    "fileName": "icon-aspect-play-next.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "재생",
+      "다음",
+      "play",
+      "next",
+      "타임라인",
+      "미디어"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-play-next {background-image:url(\"../images-2026/icon/icon-aspect-play-next.svg\")}"
+  },
+  {
+    "id": "icon-aspect-play-prev",
+    "name": "이전 재생 / 탐색",
+    "category": "common",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-play-prev.svg",
+    "fileName": "icon-aspect-play-prev.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "재생",
+      "이전",
+      "play",
+      "prev",
+      "타임라인",
+      "미디어"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-play-prev {background-image:url(\"../images-2026/icon/icon-aspect-play-prev.svg\")}"
+  },
+  {
+    "id": "icon-aspect-calendar-b",
+    "name": "캘린더 볼드 (블랙)",
+    "category": "common",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-calendar-b.svg",
+    "fileName": "icon-aspect-calendar-b.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "캘린더",
+      "달력",
+      "calendar",
+      "black",
+      "날짜"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-calendar-b {background-image:url(\"../images-2026/icon/icon-aspect-calendar-b.svg\")}"
+  },
+  {
+    "id": "icon-aspect-link",
+    "name": "외부 링크 / 연결",
+    "category": "common",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-link.svg",
+    "fileName": "icon-aspect-link.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "링크",
+      "link",
+      "외부연결",
+      "바로가기",
+      "새창"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-link {background-image:url(\"../images-2026/icon/icon-aspect-link.svg\")}"
+  },
+  {
+    "id": "icon-aspect-arrow-up",
+    "name": "상단 이동 (위)",
+    "category": "common",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-arrow-up.svg",
+    "fileName": "icon-aspect-arrow-up.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "화살표",
+      "위",
+      "상단",
+      "top",
+      "arrow"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-arrow-up {background-image:url(\"../images-2026/icon/icon-aspect-arrow-up.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-pin",
+    "name": "지도 위치 핀",
+    "category": "map-nav",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-pin.svg",
+    "fileName": "icon-aspect-map-pin.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "지도",
+      "핀",
+      "위치",
+      "pin",
+      "map",
+      "marker",
+      "내위치"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-pin {background-image:url(\"../images-2026/icon/icon-aspect-map-pin.svg\")}"
+  },
+  {
+    "id": "icon-aspect-refresh-w",
+    "name": "새로고침 (화이트)",
+    "category": "common",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-refresh-w.svg",
+    "fileName": "icon-aspect-refresh-w.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": true,
+    "isOn": false,
+    "tags": [
+      "새로고침",
+      "refresh",
+      "white",
+      "재조회",
+      "업데이트"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-refresh-w {background-image:url(\"../images-2026/icon/icon-aspect-refresh-w.svg\")}"
+  },
+  {
+    "id": "icon-aspect-youtube-w",
+    "name": "유튜브 (화이트)",
+    "category": "common",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-youtube-w.svg",
+    "fileName": "icon-aspect-youtube-w.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": true,
+    "isOn": false,
+    "tags": [
+      "유튜브",
+      "youtube",
+      "영상",
+      "동영상",
+      "white"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-youtube-w {background-image:url(\"../images-2026/icon/icon-aspect-youtube-w.svg\")}"
+  },
+  {
+    "id": "icon-aspect-menu-w",
+    "name": "전체 메뉴 (화이트)",
+    "category": "common",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-menu-w.svg",
+    "fileName": "icon-aspect-menu-w.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": true,
+    "isOn": false,
+    "tags": [
+      "메뉴",
+      "menu",
+      "햄버거",
+      "전체메뉴",
+      "white",
+      "gnb"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-menu-w {background-image:url(\"../images-2026/icon/icon-aspect-menu-w.svg\")}"
+  },
+  {
+    "id": "icon-aspect-location-w",
+    "name": "현재 위치 (화이트)",
+    "category": "common",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-location-w.svg",
+    "fileName": "icon-aspect-location-w.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": true,
+    "isOn": false,
+    "tags": [
+      "위치",
+      "gps",
+      "location",
+      "white",
+      "내위치"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-location-w {background-image:url(\"../images-2026/icon/icon-aspect-location-w.svg\")}"
+  },
+  {
+    "id": "icon-aspect-search-w",
+    "name": "검색 (화이트)",
+    "category": "common",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-search-w.svg",
+    "fileName": "icon-aspect-search-w.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": true,
+    "isOn": false,
+    "tags": [
+      "검색",
+      "search",
+      "white",
+      "돋보기"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-search-w {background-image:url(\"../images-2026/icon/icon-aspect-search-w.svg\")}"
+  },
+  {
+    "id": "icon-aspect-warning-w",
+    "name": "경고 (화이트)",
+    "category": "common",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-warning-w.svg",
+    "fileName": "icon-aspect-warning-w.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": true,
+    "isOn": false,
+    "tags": [
+      "경고",
+      "warning",
+      "white",
+      "주의",
+      "느낌표",
+      "위험"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-warning-w {background-image:url(\"../images-2026/icon/icon-aspect-warning-w.svg\")}"
+  },
+  {
+    "id": "icon-aspect-restart",
+    "name": "재시작 / 리셋",
+    "category": "common",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-restart.svg",
+    "fileName": "icon-aspect-restart.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "재시작",
+      "restart",
+      "리셋",
+      "초기화",
+      "다시시작"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-restart {background-image:url(\"../images-2026/icon/icon-aspect-restart.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-play",
+    "name": "지도 영상 재생",
+    "category": "map-control",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-play.png",
+    "fileName": "icon-aspect-map-play.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "지도",
+      "재생",
+      "play",
+      "영상",
+      "타임라인",
+      "시작"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-play {background-image:url(\"../images-2026/icon/icon-aspect-map-play.png\")}"
+  },
+  {
+    "id": "icon-aspect-map-prev",
+    "name": "지도 이전 프레임",
+    "category": "map-control",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-prev.png",
+    "fileName": "icon-aspect-map-prev.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "지도",
+      "이전",
+      "prev",
+      "되감기",
+      "타임라인"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-prev {background-image:url(\"../images-2026/icon/icon-aspect-map-prev.png\")}"
+  },
+  {
+    "id": "icon-aspect-map-next",
+    "name": "지도 다음 프레임",
+    "category": "map-control",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-next.png",
+    "fileName": "icon-aspect-map-next.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "지도",
+      "다음",
+      "next",
+      "빨리감기",
+      "타임라인"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-next {background-image:url(\"../images-2026/icon/icon-aspect-map-next.png\")}"
+  },
+  {
+    "id": "icon-aspect-map-pause",
+    "name": "지도 영상 일시정지",
+    "category": "map-control",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-pause.png",
+    "fileName": "icon-aspect-map-pause.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "지도",
+      "일시정지",
+      "pause",
+      "정지",
+      "타임라인"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-pause {background-image:url(\"../images-2026/icon/icon-aspect-map-pause.png\")}"
+  },
+  {
+    "id": "icon-aspect-main1",
+    "name": "태풍 (재난/특보)",
+    "category": "alert",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-main1.svg",
+    "fileName": "icon-aspect-main1.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "태풍",
+      "재난",
+      "특보",
+      "typhoon",
+      "storm",
+      "날씨"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-main1 {background-image:url(\"../images-2026/icon/icon-aspect-main1.svg\")}"
+  },
+  {
+    "id": "icon-aspect-main2",
+    "name": "지진 (재난/특보)",
+    "category": "alert",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-main2.svg",
+    "fileName": "icon-aspect-main2.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "지진",
+      "재난",
+      "earthquake",
+      "진동",
+      "특보"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-main2 {background-image:url(\"../images-2026/icon/icon-aspect-main2.svg\")}"
+  },
+  {
+    "id": "icon-aspect-main3",
+    "name": "호우 (재난/특보)",
+    "category": "alert",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-main3.svg",
+    "fileName": "icon-aspect-main3.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "호우",
+      "비",
+      "rain",
+      "heavy rain",
+      "침수",
+      "폭우"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-main3 {background-image:url(\"../images-2026/icon/icon-aspect-main3.svg\")}"
+  },
+  {
+    "id": "icon-aspect-main4",
+    "name": "대설 (재난/특보)",
+    "category": "alert",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-main4.svg",
+    "fileName": "icon-aspect-main4.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "대설",
+      "눈",
+      "snow",
+      "heavy snow",
+      "빙판",
+      "폭설"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-main4 {background-image:url(\"../images-2026/icon/icon-aspect-main4.svg\")}"
+  },
+  {
+    "id": "icon-aspect-main5",
+    "name": "산불 (재난/특보)",
+    "category": "alert",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-main5.svg",
+    "fileName": "icon-aspect-main5.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "산불",
+      "화재",
+      "fire",
+      "산",
+      "불",
+      "특보"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-main5 {background-image:url(\"../images-2026/icon/icon-aspect-main5.svg\")}"
+  },
+  {
+    "id": "icon-aspect-check-off",
+    "name": "체크표시 (해제)",
+    "category": "check-form",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-check-off.svg",
+    "fileName": "icon-aspect-check-off.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "체크",
+      "check",
+      "off",
+      "해제"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-check-off {background-image:url(\"../images-2026/icon/icon-aspect-check-off.svg\")}"
+  },
+  {
+    "id": "icon-aspect-check-on",
+    "name": "체크표시 (선택)",
+    "category": "check-form",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-check-on.svg",
+    "fileName": "icon-aspect-check-on.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "체크",
+      "check",
+      "on",
+      "선택됨",
+      "확인"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-check-on {background-image:url(\"../images-2026/icon/icon-aspect-check-on.svg\")}"
+  },
+  {
+    "id": "icon-aspect-checkbox-18-on",
+    "name": "체크박스 18px (선택)",
+    "category": "check-form",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-checkbox-18-on.svg",
+    "fileName": "icon-aspect-checkbox-18-on.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "체크박스",
+      "checkbox",
+      "18",
+      "on",
+      "선택됨"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-checkbox-18-on {background-image:url(\"../images-2026/icon/icon-aspect-checkbox-18-on.svg\")}"
+  },
+  {
+    "id": "icon-aspect-select-arrow",
+    "name": "선택 셀렉트 화살표 (다크)",
+    "category": "arrow",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-select-arrow.svg",
+    "fileName": "icon-aspect-select-arrow.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "선택",
+      "셀렉트",
+      "select",
+      "arrow",
+      "화살표"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-select-arrow {background-image:url(\"../images-2026/icon/icon-aspect-select-arrow.svg\")}"
+  },
+  {
+    "id": "icon-aspect-select-arrow-w",
+    "name": "선택 셀렉트 화살표 (화이트)",
+    "category": "arrow",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-select-arrow-w.svg",
+    "fileName": "icon-aspect-select-arrow-w.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": true,
+    "isOn": false,
+    "tags": [
+      "선택",
+      "셀렉트",
+      "select",
+      "arrow",
+      "white"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-select-arrow-w {background-image:url(\"../images-2026/icon/icon-aspect-select-arrow-w.svg\")}"
+  },
+  {
+    "id": "icon-aspect-setting-on",
+    "name": "설정 (활성)",
+    "category": "common",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-setting-on.svg",
+    "fileName": "icon-aspect-setting-on.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": true,
+    "tags": [
+      "설정",
+      "setting",
+      "on",
+      "활성",
+      "톱니바퀴"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-setting-on {background-image:url(\"../images-2026/icon/icon-aspect-setting-on.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-control1-on",
+    "name": "지도 컨트롤 1 (활성)",
+    "category": "map-control",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-control1-on.svg",
+    "fileName": "icon-aspect-map-control1-on.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": true,
+    "tags": [
+      "지도",
+      "컨트롤",
+      "control1",
+      "활성",
+      "on",
+      "선택됨"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-control1-on {background-image:url(\"../images-2026/icon/icon-aspect-map-control1-on.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-control2-on",
+    "name": "지도 컨트롤 2 (활성)",
+    "category": "map-control",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-control2-on.svg",
+    "fileName": "icon-aspect-map-control2-on.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": true,
+    "tags": [
+      "지도",
+      "컨트롤",
+      "control2",
+      "활성",
+      "on",
+      "선택됨"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-control2-on {background-image:url(\"../images-2026/icon/icon-aspect-map-control2-on.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-control3-on",
+    "name": "지도 컨트롤 3 (활성)",
+    "category": "map-control",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-control3-on.svg",
+    "fileName": "icon-aspect-map-control3-on.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": true,
+    "tags": [
+      "지도",
+      "컨트롤",
+      "control3",
+      "활성",
+      "on",
+      "선택됨"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-control3-on {background-image:url(\"../images-2026/icon/icon-aspect-map-control3-on.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-control4-on",
+    "name": "지도 컨트롤 4 (활성)",
+    "category": "map-control",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-control4-on.svg",
+    "fileName": "icon-aspect-map-control4-on.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": true,
+    "tags": [
+      "지도",
+      "컨트롤",
+      "control4",
+      "활성",
+      "on",
+      "선택됨"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-control4-on {background-image:url(\"../images-2026/icon/icon-aspect-map-control4-on.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-control5-on",
+    "name": "지도 컨트롤 5 (활성)",
+    "category": "map-control",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-control5-on.svg",
+    "fileName": "icon-aspect-map-control5-on.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": true,
+    "tags": [
+      "지도",
+      "컨트롤",
+      "control5",
+      "활성",
+      "on",
+      "선택됨"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-control5-on {background-image:url(\"../images-2026/icon/icon-aspect-map-control5-on.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-control6-on",
+    "name": "지도 컨트롤 6 (활성)",
+    "category": "map-control",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-control6-on.svg",
+    "fileName": "icon-aspect-map-control6-on.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": true,
+    "tags": [
+      "지도",
+      "컨트롤",
+      "control6",
+      "활성",
+      "on",
+      "선택됨"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-control6-on {background-image:url(\"../images-2026/icon/icon-aspect-map-control6-on.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-control7-on",
+    "name": "지도 컨트롤 7 (활성)",
+    "category": "map-control",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-control7-on.svg",
+    "fileName": "icon-aspect-map-control7-on.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": true,
+    "tags": [
+      "지도",
+      "컨트롤",
+      "control7",
+      "활성",
+      "on",
+      "선택됨"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-control7-on {background-image:url(\"../images-2026/icon/icon-aspect-map-control7-on.svg\")}"
+  },
+  {
+    "id": "icon-aspect-map-control8-on",
+    "name": "지도 컨트롤 8 (활성)",
+    "category": "map-control",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-map-control8-on.svg",
+    "fileName": "icon-aspect-map-control8-on.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": true,
+    "tags": [
+      "지도",
+      "컨트롤",
+      "control8",
+      "활성",
+      "on",
+      "선택됨"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-map-control8-on {background-image:url(\"../images-2026/icon/icon-aspect-map-control8-on.svg\")}"
+  },
+  {
+    "id": "icon-aspect-help-dark",
+    "name": "도움말 (다크)",
+    "category": "sun-theme",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-help-dark.svg",
+    "fileName": "icon-aspect-help-dark.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": true,
+    "isOn": false,
+    "tags": [
+      "도움말",
+      "help",
+      "dark",
+      "안내",
+      "정보",
+      "물음표"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-help-dark {background-image:url(\"../images-2026/icon/icon-aspect-help-dark.svg\")}"
+  },
+  {
+    "id": "icon-aspect-help-light",
+    "name": "도움말 (라이트)",
+    "category": "sun-theme",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-help-light.svg",
+    "fileName": "icon-aspect-help-light.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "도움말",
+      "help",
+      "light",
+      "안내",
+      "정보",
+      "물음표"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-help-light {background-image:url(\"../images-2026/icon/icon-aspect-help-light.svg\")}"
+  },
+  {
+    "id": "icon-aspect-sundown-dark",
+    "name": "일몰 (다크)",
+    "category": "sun-theme",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-sundown-dark.svg",
+    "fileName": "icon-aspect-sundown-dark.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": true,
+    "isOn": false,
+    "tags": [
+      "일몰",
+      "해짐",
+      "sunset",
+      "sundown",
+      "dark",
+      "석양"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-sundown-dark {background-image:url(\"../images-2026/icon/icon-aspect-sundown-dark.svg\")}"
+  },
+  {
+    "id": "icon-aspect-sundown-light",
+    "name": "일몰 (라이트)",
+    "category": "sun-theme",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-sundown-light.svg",
+    "fileName": "icon-aspect-sundown-light.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "일몰",
+      "해짐",
+      "sunset",
+      "sundown",
+      "light",
+      "석양"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-sundown-light {background-image:url(\"../images-2026/icon/icon-aspect-sundown-light.svg\")}"
+  },
+  {
+    "id": "icon-aspect-sundown2-dark",
+    "name": "일몰 스타일 2 (다크)",
+    "category": "sun-theme",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-sundown2-dark.svg",
+    "fileName": "icon-aspect-sundown2-dark.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": true,
+    "isOn": false,
+    "tags": [
+      "일몰",
+      "sundown2",
+      "dark",
+      "석양"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-sundown2-dark {background-image:url(\"../images-2026/icon/icon-aspect-sundown2-dark.svg\")}"
+  },
+  {
+    "id": "icon-aspect-sundown2-light",
+    "name": "일몰 스타일 2 (라이트)",
+    "category": "sun-theme",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-sundown2-light.svg",
+    "fileName": "icon-aspect-sundown2-light.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "일몰",
+      "sundown2",
+      "light",
+      "석양"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-sundown2-light {background-image:url(\"../images-2026/icon/icon-aspect-sundown2-light.svg\")}"
+  },
+  {
+    "id": "icon-aspect-sunup-dark",
+    "name": "일출 (다크)",
+    "category": "sun-theme",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-sunup-dark.svg",
+    "fileName": "icon-aspect-sunup-dark.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": true,
+    "isOn": false,
+    "tags": [
+      "일출",
+      "해뜸",
+      "sunrise",
+      "sunup",
+      "dark",
+      "태양"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-sunup-dark {background-image:url(\"../images-2026/icon/icon-aspect-sunup-dark.svg\")}"
+  },
+  {
+    "id": "icon-aspect-sunup-light",
+    "name": "일출 (라이트)",
+    "category": "sun-theme",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-sunup-light.svg",
+    "fileName": "icon-aspect-sunup-light.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "일출",
+      "해뜸",
+      "sunrise",
+      "sunup",
+      "light",
+      "태양"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-sunup-light {background-image:url(\"../images-2026/icon/icon-aspect-sunup-light.svg\")}"
+  },
+  {
+    "id": "icon-aspect-sunup2-dark",
+    "name": "일출 스타일 2 (다크)",
+    "category": "sun-theme",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-sunup2-dark.svg",
+    "fileName": "icon-aspect-sunup2-dark.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": true,
+    "isOn": false,
+    "tags": [
+      "일출",
+      "sunup2",
+      "dark",
+      "태양"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-sunup2-dark {background-image:url(\"../images-2026/icon/icon-aspect-sunup2-dark.svg\")}"
+  },
+  {
+    "id": "icon-aspect-sunup2-light",
+    "name": "일출 스타일 2 (라이트)",
+    "category": "sun-theme",
+    "system": "aspect",
+    "file": "../resources/images-2026/icon/icon-aspect-sunup2-light.svg",
+    "fileName": "icon-aspect-sunup2-light.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "일출",
+      "sunup2",
+      "light",
+      "태양"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-sunup2-light {background-image:url(\"../images-2026/icon/icon-aspect-sunup2-light.svg\")}"
+  },
+  {
+    "id": "icon-aspect-NB01",
+    "name": "맑음",
+    "category": "weather",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/NB01.png",
+    "fileName": "NB01.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "맑음",
+      "햇빛",
+      "화창",
+      "sunny",
+      "clear",
+      "weather",
+      "nb01"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-NB01 {background-image:url(\"../images-2026/weather/NB01.png\")} /* 맑은 */"
+  },
+  {
+    "id": "icon-aspect-NB02",
+    "name": "구름많은(낮)",
+    "category": "weather",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/NB02.png",
+    "fileName": "NB02.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "구름",
+      "구름많음",
+      "낮",
+      "partly cloudy",
+      "weather",
+      "nb02"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-NB02 {background-image:url(\"../images-2026/weather/NB02.png\")} /* 구름많은(낮) */"
+  },
+  {
+    "id": "icon-aspect-NB03",
+    "name": "흐림",
+    "category": "weather",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/NB03.png",
+    "fileName": "NB03.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "흐림",
+      "구름",
+      "cloudy",
+      "overcast",
+      "weather",
+      "nb03"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-NB03 {background-image:url(\"../images-2026/weather/NB03.png\")} /* 흐림 */"
+  },
+  {
+    "id": "icon-aspect-NB04",
+    "name": "비",
+    "category": "weather",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/NB04.png",
+    "fileName": "NB04.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "비",
+      "우천",
+      "rain",
+      "weather",
+      "nb04"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-NB04 {background-image:url(\"../images-2026/weather/NB04.png\")} /* 비 */"
+  },
+  {
+    "id": "icon-aspect-NB05",
+    "name": "눈",
+    "category": "weather",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/NB05.png",
+    "fileName": "NB05.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "눈",
+      "설경",
+      "snow",
+      "weather",
+      "nb05"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-NB05 {background-image:url(\"../images-2026/weather/NB05.png\")} /* 눈 */"
+  },
+  {
+    "id": "icon-aspect-NB06",
+    "name": "비 또는 눈",
+    "category": "weather",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/NB06.png",
+    "fileName": "NB06.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "비또는눈",
+      "진눈깨비",
+      "rain snow",
+      "sleet",
+      "weather",
+      "nb06"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-NB06 {background-image:url(\"../images-2026/weather/NB06.png\")} /* 비 또는 눈 */"
+  },
+  {
+    "id": "icon-aspect-NB07",
+    "name": "눈 또는 비",
+    "category": "weather",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/NB07.png",
+    "fileName": "NB07.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "눈또는비",
+      "진눈깨비",
+      "snow rain",
+      "weather",
+      "nb07"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-NB07 {background-image:url(\"../images-2026/weather/NB07.png\")} /* 눈 또는 비 */"
+  },
+  {
+    "id": "icon-aspect-NB08",
+    "name": "낙뢰",
+    "category": "weather",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/NB08.png",
+    "fileName": "NB08.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "낙뢰",
+      "번개",
+      "천둥",
+      "thunder",
+      "lightning",
+      "weather",
+      "nb08"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-NB08 {background-image:url(\"../images-2026/weather/NB08.png\")} /* 낙뢰 */"
+  },
+  {
+    "id": "icon-aspect-NB09",
+    "name": "연무",
+    "category": "weather",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/NB09.png",
+    "fileName": "NB09.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "연무",
+      "haze",
+      "스모그",
+      "weather",
+      "nb09"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-NB09 {background-image:url(\"../images-2026/weather/NB09.png\")} /* 연무 */"
+  },
+  {
+    "id": "icon-aspect-NB10",
+    "name": "안개",
+    "category": "weather",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/NB10.png",
+    "fileName": "NB10.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "안개",
+      "fog",
+      "weather",
+      "nb10"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-NB10 {background-image:url(\"../images-2026/weather/NB10.png\")} /* 안개 */"
+  },
+  {
+    "id": "icon-aspect-NB11",
+    "name": "황사",
+    "category": "weather",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/NB11.png",
+    "fileName": "NB11.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "황사",
+      "yellow dust",
+      "dust",
+      "weather",
+      "nb11"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-NB11 {background-image:url(\"../images-2026/weather/NB11.png\")} /* 황사 */"
+  },
+  {
+    "id": "icon-aspect-NB12",
+    "name": "맑음(밤)",
+    "category": "weather",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/NB12.png",
+    "fileName": "NB12.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "맑음",
+      "밤",
+      "달",
+      "clear night",
+      "weather",
+      "nb12"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-NB12 {background-image:url(\"../images-2026/weather/NB12.png\")} /* 맑음(밤) */"
+  },
+  {
+    "id": "icon-aspect-NB13",
+    "name": "구름많음(밤)",
+    "category": "weather",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/NB13.png",
+    "fileName": "NB13.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "구름많음",
+      "밤",
+      "partly cloudy night",
+      "weather",
+      "nb13"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-NB13 {background-image:url(\"../images-2026/weather/NB13.png\")} /* 구름많음(밤) */"
+  },
+  {
+    "id": "icon-aspect-NB14",
+    "name": "소나기",
+    "category": "weather",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/NB14.png",
+    "fileName": "NB14.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "소나기",
+      "shower",
+      "비",
+      "rain",
+      "weather",
+      "nb14"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-NB14 {background-image:url(\"../images-2026/weather/NB14.png\")} /* 소나기 */"
+  },
+  {
+    "id": "icon-aspect-NB15",
+    "name": "가끔 비 / 한때 비",
+    "category": "weather",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/NB15.png",
+    "fileName": "NB15.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "가끔비",
+      "한때비",
+      "비",
+      "rain",
+      "weather",
+      "nb15"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-NB15 {background-image:url(\"../images-2026/weather/NB15.png\")} /* 가끔 비, 한때 비 */"
+  },
+  {
+    "id": "icon-aspect-NB16",
+    "name": "가끔 눈 / 한때 눈",
+    "category": "weather",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/NB16.png",
+    "fileName": "NB16.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "가끔눈",
+      "한때눈",
+      "눈",
+      "snow",
+      "weather",
+      "nb16"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-NB16 {background-image:url(\"../images-2026/weather/NB16.png\")} /* 가끔 눈, 한때 눈 */"
+  },
+  {
+    "id": "icon-aspect-NB17",
+    "name": "가끔 비 또는 눈",
+    "category": "weather",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/NB17.png",
+    "fileName": "NB17.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "가끔비또는눈",
+      "진눈깨비",
+      "rain snow",
+      "weather",
+      "nb17"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-NB17 {background-image:url(\"../images-2026/weather/NB17.png\")} /* 가끔 비 또는 눈, 한때 비 또는 눈 */"
+  },
+  {
+    "id": "icon-aspect-NB18",
+    "name": "가끔 눈 또는 비",
+    "category": "weather",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/NB18.png",
+    "fileName": "NB18.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "가끔눈또는비",
+      "진눈깨비",
+      "snow rain",
+      "weather",
+      "nb18"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-NB18 {background-image:url(\"../images-2026/weather/NB18.png\")} /* 가끔 눈 또는 비, 한때 눈 또는 비 */"
+  },
+  {
+    "id": "icon-aspect-NB19",
+    "name": "빗방울",
+    "category": "weather",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/NB19.png",
+    "fileName": "NB19.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "빗방울",
+      "이슬비",
+      "drizzle",
+      "raindrop",
+      "weather",
+      "nb19"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-NB19 {background-image:url(\"../images-2026/weather/NB19.png\")} /* 빗방울 */"
+  },
+  {
+    "id": "icon-aspect-NB20",
+    "name": "눈날림",
+    "category": "weather",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/NB20.png",
+    "fileName": "NB20.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "눈날림",
+      "눈",
+      "flurry",
+      "snow",
+      "weather",
+      "nb20"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-NB20 {background-image:url(\"../images-2026/weather/NB20.png\")} /* 눈날림 */"
+  },
+  {
+    "id": "icon-aspect-NB21",
+    "name": "박무",
+    "category": "weather",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/NB21.png",
+    "fileName": "NB21.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "박무",
+      "엷은안개",
+      "mist",
+      "fog",
+      "weather",
+      "nb21"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-NB21 {background-image:url(\"../images-2026/weather/NB21.png\")} /* 박무 */"
+  },
+  {
+    "id": "icon-aspect-moon1",
+    "name": "달의 위상 1 (월삭)",
+    "category": "moon",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/img-moon-01.png",
+    "fileName": "img-moon-01.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "월삭",
+      "신월",
+      "달",
+      "moon",
+      "new moon",
+      "천문"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-moon1 {background-image:url(\"../images-2026/weather/img-moon-01.png\")} /* 월삭 */"
+  },
+  {
+    "id": "icon-aspect-moon2",
+    "name": "달의 위상 2 (초승달)",
+    "category": "moon",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/img-moon-02.png",
+    "fileName": "img-moon-02.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "초승달",
+      "달",
+      "moon",
+      "waxing crescent",
+      "천문"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-moon2 {background-image:url(\"../images-2026/weather/img-moon-02.png\")} /* 초승달 */"
+  },
+  {
+    "id": "icon-aspect-moon3",
+    "name": "달의 위상 3 (상현달)",
+    "category": "moon",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/img-moon-03.png",
+    "fileName": "img-moon-03.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "상현달",
+      "달",
+      "moon",
+      "first quarter",
+      "반달",
+      "천문"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-moon3 {background-image:url(\"../images-2026/weather/img-moon-03.png\")} /* 상현달 */"
+  },
+  {
+    "id": "icon-aspect-moon4",
+    "name": "달의 위상 4 (차오르는 달)",
+    "category": "moon",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/img-moon-04.png",
+    "fileName": "img-moon-04.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "차오르는달",
+      "상현망",
+      "달",
+      "moon",
+      "waxing gibbous",
+      "천문"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-moon4 {background-image:url(\"../images-2026/weather/img-moon-04.png\")} /* 차오르는달 */"
+  },
+  {
+    "id": "icon-aspect-moon5",
+    "name": "달의 위상 5 (보름달)",
+    "category": "moon",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/img-moon-05.png",
+    "fileName": "img-moon-05.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "보름달",
+      "만월",
+      "달",
+      "moon",
+      "full moon",
+      "천문"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-moon5 {background-image:url(\"../images-2026/weather/img-moon-05.png\")} /* 보름달 */"
+  },
+  {
+    "id": "icon-aspect-moon6",
+    "name": "달의 위상 6 (기우는 달)",
+    "category": "moon",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/img-moon-06.png",
+    "fileName": "img-moon-06.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "기우는달",
+      "하현망",
+      "달",
+      "moon",
+      "waning gibbous",
+      "천문"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-moon6 {background-image:url(\"../images-2026/weather/img-moon-06.png\")} /* 기우는 달 */"
+  },
+  {
+    "id": "icon-aspect-moon7",
+    "name": "달의 위상 7 (하현달)",
+    "category": "moon",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/img-moon-07.png",
+    "fileName": "img-moon-07.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "하현달",
+      "달",
+      "moon",
+      "last quarter",
+      "반달",
+      "천문"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-moon7 {background-image:url(\"../images-2026/weather/img-moon-07.png\")} /* 하현달 */"
+  },
+  {
+    "id": "icon-aspect-moon8",
+    "name": "달의 위상 8 (그믐달)",
+    "category": "moon",
+    "system": "aspect",
+    "file": "../resources/images-2026/weather/img-moon-08.png",
+    "fileName": "img-moon-08.png",
+    "format": "PNG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "그믐달",
+      "달",
+      "moon",
+      "waning crescent",
+      "천문"
+    ],
+    "defaultSize": "24",
+    "colorVar": null,
+    "cssRule": ".icon-aspect-moon8 {background-image:url(\"../images-2026/weather/img-moon-08.png\")} /* 그믐달 */"
+  },
+  {
+    "id": "icon-mask-youtube",
+    "name": "마스크 유튜브",
+    "category": "mask",
+    "system": "mask",
+    "file": "../resources/images-2026/icon/icon-aspect-youtube-w.svg",
+    "fileName": "icon-aspect-youtube-w.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "마스크",
+      "mask",
+      "유튜브",
+      "youtube",
+      "동영상"
+    ],
+    "defaultSize": "2.8rem",
+    "colorVar": "#ffffff",
+    "cssRule": ".icon-mask-youtube {width:2.8rem;height:2.8rem;-webkit-mask-image:url(../images-2026/icon/icon-aspect-youtube-w.svg);mask-image:url(../images-2026/icon/icon-aspect-youtube-w.svg);color:#fff}"
+  },
+  {
+    "id": "icon-mask-refresh",
+    "name": "마스크 새로고침",
+    "category": "mask",
+    "system": "mask",
+    "file": "../resources/images-2026/icon/icon-aspect-refresh-w.svg",
+    "fileName": "icon-aspect-refresh-w.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "마스크",
+      "mask",
+      "새로고침",
+      "refresh",
+      "재조회"
+    ],
+    "defaultSize": "2.8rem",
+    "colorVar": "#ffffff",
+    "cssRule": ".icon-mask-refresh {width:2.8rem;height:2.8rem;-webkit-mask-image:url(../images-2026/icon/icon-aspect-refresh-w.svg);mask-image:url(../images-2026/icon/icon-aspect-refresh-w.svg);color:#fff}"
+  },
+  {
+    "id": "icon-mask-my",
+    "name": "마스크 마이페이지",
+    "category": "mask",
+    "system": "mask",
+    "file": "../resources/images-2026/icon/icon-mask-my.svg",
+    "fileName": "icon-mask-my.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "마스크",
+      "mask",
+      "my",
+      "마이",
+      "프로필",
+      "회원"
+    ],
+    "defaultSize": "3.4rem",
+    "colorVar": "var(--text-theme1)",
+    "cssRule": ".icon-mask-my {width:3.4rem;height:3.4rem;-webkit-mask-image:url(../images-2026/icon/icon-mask-my.svg);mask-image:url(../images-2026/icon/icon-mask-my.svg);color:var(--text-theme1)}"
+  },
+  {
+    "id": "icon-mask-setting",
+    "name": "마스크 설정",
+    "category": "mask",
+    "system": "mask",
+    "file": "../resources/images-2026/icon/icon-mask-setting.svg",
+    "fileName": "icon-mask-setting.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "마스크",
+      "mask",
+      "setting",
+      "설정",
+      "톱니바퀴"
+    ],
+    "defaultSize": "2.4rem",
+    "colorVar": "var(--text-theme1)",
+    "cssRule": ".icon-mask-setting {width:2.4rem;height:2.4rem;-webkit-mask-image:url(../images-2026/icon/icon-mask-setting.svg);mask-image:url(../images-2026/icon/icon-mask-setting.svg);color:var(--text-theme1)}"
+  },
+  {
+    "id": "icon-mask-close",
+    "name": "마스크 닫기",
+    "category": "mask",
+    "system": "mask",
+    "file": "../resources/images-2026/icon/icon-mask-close.svg",
+    "fileName": "icon-mask-close.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "마스크",
+      "mask",
+      "close",
+      "닫기",
+      "x"
+    ],
+    "defaultSize": "2.4rem",
+    "colorVar": "var(--text-theme1)",
+    "cssRule": ".icon-mask-close {width:2.4rem;height:2.4rem;-webkit-mask-image:url(../images-2026/icon/icon-mask-close.svg);mask-image:url(../images-2026/icon/icon-mask-close.svg);color:var(--text-theme1)}"
+  },
+  {
+    "id": "icon-mask-arrow",
+    "name": "마스크 화살표",
+    "category": "mask",
+    "system": "mask",
+    "file": "../resources/images-2026/icon/icon-mask-arrow.svg",
+    "fileName": "icon-mask-arrow.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "마스크",
+      "mask",
+      "arrow",
+      "화살표",
+      "이동"
+    ],
+    "defaultSize": "2.4rem",
+    "colorVar": "var(--text-theme2)",
+    "cssRule": ".icon-mask-arrow {width:2.4rem;height:2.4rem;-webkit-mask-image:url(../images-2026/icon/icon-mask-arrow.svg);mask-image:url(../images-2026/icon/icon-mask-arrow.svg);color:var(--text-theme2)}"
+  },
+  {
+    "id": "icon-mask-style1",
+    "name": "마스크 스타일 1",
+    "category": "mask",
+    "system": "mask",
+    "file": "../resources/images-2026/icon/icon-mask-style1.svg",
+    "fileName": "icon-mask-style1.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "마스크",
+      "mask",
+      "style1",
+      "스타일1",
+      "테마"
+    ],
+    "defaultSize": "2.4rem",
+    "colorVar": "var(--text-theme2)",
+    "cssRule": ".icon-mask-style1 {-webkit-mask-image:url(../images-2026/icon/icon-mask-style1.svg);mask-image:url(../images-2026/icon/icon-mask-style1.svg)}"
+  },
+  {
+    "id": "icon-mask-style2",
+    "name": "마스크 스타일 2",
+    "category": "mask",
+    "system": "mask",
+    "file": "../resources/images-2026/icon/icon-mask-style2.svg",
+    "fileName": "icon-mask-style2.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "마스크",
+      "mask",
+      "style2",
+      "스타일2",
+      "테마"
+    ],
+    "defaultSize": "2.4rem",
+    "colorVar": "var(--text-theme2)",
+    "cssRule": ".icon-mask-style2 {-webkit-mask-image:url(../images-2026/icon/icon-mask-style2.svg);mask-image:url(../images-2026/icon/icon-mask-style2.svg)}"
+  },
+  {
+    "id": "icon-mask-style3",
+    "name": "마스크 스타일 3",
+    "category": "mask",
+    "system": "mask",
+    "file": "../resources/images-2026/icon/icon-mask-style3.svg",
+    "fileName": "icon-mask-style3.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "마스크",
+      "mask",
+      "style3",
+      "스타일3",
+      "테마"
+    ],
+    "defaultSize": "2.4rem",
+    "colorVar": "var(--text-theme2)",
+    "cssRule": ".icon-mask-style3 {-webkit-mask-image:url(../images-2026/icon/icon-mask-style3.svg);mask-image:url(../images-2026/icon/icon-mask-style3.svg)}"
+  },
+  {
+    "id": "icon-mask-menu1",
+    "name": "마스크 메뉴 1 (전국)",
+    "category": "mask",
+    "system": "mask",
+    "file": "../resources/images-2026/icon/icon-mask-menu1.svg",
+    "fileName": "icon-mask-menu1.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "마스크",
+      "mask",
+      "menu1",
+      "메뉴1",
+      "카테고리"
+    ],
+    "defaultSize": "1.8rem",
+    "colorVar": "var(--text-theme6)",
+    "cssRule": ".icon-mask-menu1 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu1.svg);mask-image:url(../images-2026/icon/icon-mask-menu1.svg)}"
+  },
+  {
+    "id": "icon-mask-menu2",
+    "name": "마스크 메뉴 2 (레이더)",
+    "category": "mask",
+    "system": "mask",
+    "file": "../resources/images-2026/icon/icon-mask-menu2.svg",
+    "fileName": "icon-mask-menu2.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "마스크",
+      "mask",
+      "menu2",
+      "메뉴2",
+      "카테고리"
+    ],
+    "defaultSize": "1.8rem",
+    "colorVar": "var(--text-theme6)",
+    "cssRule": ".icon-mask-menu2 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu2.svg);mask-image:url(../images-2026/icon/icon-mask-menu2.svg)}"
+  },
+  {
+    "id": "icon-mask-menu3",
+    "name": "마스크 메뉴 3 (위성)",
+    "category": "mask",
+    "system": "mask",
+    "file": "../resources/images-2026/icon/icon-mask-menu3.svg",
+    "fileName": "icon-mask-menu3.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "마스크",
+      "mask",
+      "menu3",
+      "메뉴3",
+      "카테고리"
+    ],
+    "defaultSize": "1.8rem",
+    "colorVar": "var(--text-theme6)",
+    "cssRule": ".icon-mask-menu3 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu3.svg);mask-image:url(../images-2026/icon/icon-mask-menu3.svg)}"
+  },
+  {
+    "id": "icon-mask-menu4",
+    "name": "마스크 메뉴 4 (특보)",
+    "category": "mask",
+    "system": "mask",
+    "file": "../resources/images-2026/icon/icon-mask-menu4.svg",
+    "fileName": "icon-mask-menu4.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "마스크",
+      "mask",
+      "menu4",
+      "메뉴4",
+      "카테고리"
+    ],
+    "defaultSize": "1.8rem",
+    "colorVar": "var(--text-theme6)",
+    "cssRule": ".icon-mask-menu4 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu4.svg);mask-image:url(../images-2026/icon/icon-mask-menu4.svg)}"
+  },
+  {
+    "id": "icon-mask-menu5",
+    "name": "마스크 메뉴 5 (태풍)",
+    "category": "mask",
+    "system": "mask",
+    "file": "../resources/images-2026/icon/icon-mask-menu5.svg",
+    "fileName": "icon-mask-menu5.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "마스크",
+      "mask",
+      "menu5",
+      "메뉴5",
+      "카테고리"
+    ],
+    "defaultSize": "1.8rem",
+    "colorVar": "var(--text-theme6)",
+    "cssRule": ".icon-mask-menu5 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu5.svg);mask-image:url(../images-2026/icon/icon-mask-menu5.svg)}"
+  },
+  {
+    "id": "icon-mask-menu6",
+    "name": "마스크 메뉴 6 (지진)",
+    "category": "mask",
+    "system": "mask",
+    "file": "../resources/images-2026/icon/icon-mask-menu6.svg",
+    "fileName": "icon-mask-menu6.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "마스크",
+      "mask",
+      "menu6",
+      "메뉴6",
+      "카테고리"
+    ],
+    "defaultSize": "1.8rem",
+    "colorVar": "var(--text-theme6)",
+    "cssRule": ".icon-mask-menu6 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu6.svg);mask-image:url(../images-2026/icon/icon-mask-menu6.svg)}"
+  },
+  {
+    "id": "icon-mask-menu7",
+    "name": "마스크 메뉴 7 (미세먼지)",
+    "category": "mask",
+    "system": "mask",
+    "file": "../resources/images-2026/icon/icon-mask-menu7.svg",
+    "fileName": "icon-mask-menu7.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "마스크",
+      "mask",
+      "menu7",
+      "메뉴7",
+      "카테고리"
+    ],
+    "defaultSize": "1.8rem",
+    "colorVar": "var(--text-theme6)",
+    "cssRule": ".icon-mask-menu7 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu7.svg);mask-image:url(../images-2026/icon/icon-mask-menu7.svg)}"
+  },
+  {
+    "id": "icon-mask-menu8",
+    "name": "마스크 메뉴 8 (바람)",
+    "category": "mask",
+    "system": "mask",
+    "file": "../resources/images-2026/icon/icon-mask-menu8.svg",
+    "fileName": "icon-mask-menu8.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "마스크",
+      "mask",
+      "menu8",
+      "메뉴8",
+      "카테고리"
+    ],
+    "defaultSize": "1.8rem",
+    "colorVar": "var(--text-theme6)",
+    "cssRule": ".icon-mask-menu8 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu8.svg);mask-image:url(../images-2026/icon/icon-mask-menu8.svg)}"
+  },
+  {
+    "id": "icon-mask-menu9",
+    "name": "마스크 메뉴 9 (기타)",
+    "category": "mask",
+    "system": "mask",
+    "file": "../resources/images-2026/icon/icon-mask-menu9.svg",
+    "fileName": "icon-mask-menu9.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "마스크",
+      "mask",
+      "menu9",
+      "메뉴9",
+      "카테고리"
+    ],
+    "defaultSize": "1.8rem",
+    "colorVar": "var(--text-theme6)",
+    "cssRule": ".icon-mask-menu9 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu9.svg);mask-image:url(../images-2026/icon/icon-mask-menu9.svg)}"
+  },
+  {
+    "id": "icon-mask-menu10",
+    "name": "마스크 메뉴 10 (설정)",
+    "category": "mask",
+    "system": "mask",
+    "file": "../resources/images-2026/icon/icon-mask-menu10.svg",
+    "fileName": "icon-mask-menu10.svg",
+    "format": "SVG",
+    "exists": true,
+    "isWhite": false,
+    "isOn": false,
+    "tags": [
+      "마스크",
+      "mask",
+      "menu10",
+      "메뉴10",
+      "카테고리"
+    ],
+    "defaultSize": "1.8rem",
+    "colorVar": "var(--text-theme7)",
+    "cssRule": ".icon-mask-menu10 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu10.svg);mask-image:url(../images-2026/icon/icon-mask-menu10.svg);color:var(--text-theme7)}"
+  }
+];
+
+      // 2. Categories Definition
+      const CATEGORIES = [
+        { id: 'all', name: '전체' },
+        { id: 'alert', name: '🚨 재난·특보' },
+        { id: 'weather', name: '⛅ 날씨 예보 (NB)' },
+        { id: 'moon', name: '🌙 달의 위상' },
+        { id: 'map-nav', name: '🗺️ 지도 내비' },
+        { id: 'map-control', name: '🧭 지도 컨트롤·재생' },
+        { id: 'sun-theme', name: '🌅 일출·일몰·태양' },
+        { id: 'check-form', name: '☑️ 폼·체크' },
+        { id: 'arrow', name: '➡️ 화살표·선택' },
+        { id: 'close', name: '✖️ 닫기·취소' },
+        { id: 'common', name: '⚙️ 공통·유틸' },
+        { id: 'mask', name: '🎭 CSS 마스크' }
+      ];
+
+      // State
+      let currentSystem = 'all'; // 'all' | 'aspect' | 'mask'
+      let currentCategory = 'all';
+      let currentSearch = '';
+      let currentSize = 24;
+      let currentBgMode = 'auto'; // 'auto' | 'dark' | 'light' | 'checker'
+      let currentView = 'grid'; // 'grid' | 'table'
+      let currentMaskColor = ''; // empty string = default, or hex color
+      let selectedIcon = null;
+
+      // DOM Elements
+      const iconGrid = document.getElementById('iconGrid');
+      const iconTableWrap = document.getElementById('iconTableWrap');
+      const iconTableBody = document.getElementById('iconTableBody');
+      const categoryTabs = document.getElementById('categoryTabs');
+      const systemTabs = document.getElementById('systemTabs');
+      const searchInput = document.getElementById('searchInput');
+      const searchClear = document.getElementById('searchClear');
+      const sizeSlider = document.getElementById('sizeSlider');
+      const sizeBadge = document.getElementById('sizeBadge');
+      const statFilteredCount = document.getElementById('statFilteredCount');
+      const statTotalCount = document.getElementById('statTotalCount');
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      const customColorPicker = document.getElementById('customColorPicker');
+
+      // Modal Elements
+      const detailModal = document.getElementById('detailModal');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalCloseBtn = document.getElementById('modalCloseBtn');
+      const modalBigPreview = document.getElementById('modalBigPreview');
+      const modalSizeVariations = document.getElementById('modalSizeVariations');
+      const modalShowcaseBox = document.getElementById('modalShowcaseBox');
+      const modalHtmlCode = document.getElementById('modalHtmlCode');
+      const modalClassCode = document.getElementById('modalClassCode');
+      const modalPathCode = document.getElementById('modalPathCode');
+      const modalRuleCode = document.getElementById('modalRuleCode');
+      const btnModalCopyHtml = document.getElementById('btnModalCopyHtml');
+      const btnModalCopyClass = document.getElementById('btnModalCopyClass');
+      const btnModalCopyPath = document.getElementById('btnModalCopyPath');
+      const btnModalCopyRule = document.getElementById('btnModalCopyRule');
+      const modalBgDarkBtn = document.getElementById('modalBgDarkBtn');
+      const modalBgLightBtn = document.getElementById('modalBgLightBtn');
+      const modalBgCheckerBtn = document.getElementById('modalBgCheckerBtn');
+
+      statTotalCount.textContent = ICONS.length;
+
+      // Toast Helper
+      let toastTimer = null;
+      function showToast(msg) {
+        if (toastTimer) clearTimeout(toastTimer);
+        toastMsg.textContent = msg;
+        toast.classList.add('show');
+        toastTimer = setTimeout(() => {
+          toast.classList.remove('show');
+        }, 2200);
+      }
+
+      // Clipboard Helper
+      function copyToClipboard(text, successMsg) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(() => {
+            showToast(successMsg);
+          }).catch(() => {
+            fallbackCopy(text, successMsg);
+          });
+        } else {
+          fallbackCopy(text, successMsg);
+        }
+      }
+
+      function fallbackCopy(text, successMsg) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          showToast(successMsg);
+        } catch (e) {
+          showToast('복사에 실패했습니다.');
+        }
+        document.body.removeChild(textarea);
+      }
+
+      // 3. Render System Tabs
+      function bindSystemTabs() {
+        const tabs = systemTabs.querySelectorAll('.ig-system-tab');
+        tabs.forEach(tab => {
+          tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            currentSystem = tab.dataset.system;
+            renderCategoryTabs();
+            renderIcons();
+          });
+        });
+      }
+
+      // 4. Render Category Tabs with live counts
+      function renderCategoryTabs() {
+        categoryTabs.innerHTML = '';
+
+        // Filter icons by currentSystem first
+        const basePool = currentSystem === 'all' 
+          ? ICONS 
+          : ICONS.filter(item => item.system === currentSystem);
+
+        CATEGORIES.forEach(cat => {
+          const count = cat.id === 'all' 
+            ? basePool.length 
+            : basePool.filter(item => item.category === cat.id).length;
+
+          // If count is 0 in this system mode and not 'all', omit or keep
+          if (count === 0 && currentSystem !== 'all' && cat.id !== 'all') return;
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'ig-cat-tab ' + (cat.id === currentCategory ? 'active' : '');
+          btn.dataset.category = cat.id;
+          btn.innerHTML = cat.name + ' <span class="ig-cat-count">' + count + '</span>';
+          btn.addEventListener('click', () => {
+            currentCategory = cat.id;
+            categoryTabs.querySelectorAll('.ig-cat-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            renderIcons();
+          });
+          categoryTabs.appendChild(btn);
+        });
+      }
+
+      // 5. Filter Icons
+      function getFilteredIcons() {
+        const query = currentSearch.trim().toLowerCase();
+
+        return ICONS.filter(icon => {
+          // System Match
+          if (currentSystem !== 'all' && icon.system !== currentSystem) return false;
+
+          // Category Match
+          if (currentCategory !== 'all' && icon.category !== currentCategory) return false;
+
+          // Search Match
+          if (!query) return true;
+          const matchId = icon.id.toLowerCase().includes(query);
+          const matchName = icon.name.toLowerCase().includes(query);
+          const matchFile = icon.fileName.toLowerCase().includes(query);
+          const matchFormat = icon.format.toLowerCase().includes(query);
+          const matchTags = icon.tags && icon.tags.some(t => t.toLowerCase().includes(query));
+          return matchId || matchName || matchFile || matchFormat || matchTags;
+        });
+      }
+
+      // Preview Background Class Helper
+      function getPreviewBgClass(isWhite) {
+        if (currentBgMode === 'dark') return 'preview-dark';
+        if (currentBgMode === 'light') return 'preview-light';
+        if (currentBgMode === 'checker') return 'bg-checker';
+        if (isWhite) return 'preview-dark';
+        const isNight = document.body.classList.contains('night-theme') || document.body.classList.contains('dark-theme');
+        return isNight ? 'preview-dark' : 'preview-light';
+      }
+
+      // Generate HTML Tag string
+      function getHtmlSnippet(icon, size) {
+        const sz = size || currentSize;
+        if (icon.system === 'aspect') {
+          return '<i class="' + icon.id + '" data-size="' + sz + '" aria-hidden="true"></i>';
+        } else {
+          const colorAttr = currentMaskColor ? ' style="color: ' + currentMaskColor + ';"' : '';
+          return '<i class="' + icon.id + '"' + colorAttr + ' aria-hidden="true"></i>';
+        }
+      }
+
+      // 6. Render Icons (Grid & Table)
+      function renderIcons() {
+        const filtered = getFilteredIcons();
+        statFilteredCount.textContent = filtered.length;
+
+        if (filtered.length === 0) {
+          const emptyHtml = 
+            '<div class="ig-empty-state">' +
+              '<div class="ig-empty-icon">🔎</div>' +
+              '<div class="ig-empty-title">검색된 아이콘이 없습니다</div>' +
+              '<div class="ig-empty-desc">다른 검색어나 카테고리/시스템 필터를 선택해 보세요.</div>' +
+            '</div>';
+          iconGrid.innerHTML = emptyHtml;
+          iconTableBody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 5rem 1rem;">' + emptyHtml + '</td></tr>';
+          return;
+        }
+
+        // Render Grid View
+        let gridHtml = '';
+        filtered.forEach(icon => {
+          const bgClass = getPreviewBgClass(icon.isWhite);
+          const isMask = icon.system === 'mask';
+          const formatBadge = '<span class="ig-badge ' + (icon.format === 'PNG' ? 'ig-badge--png' : 'ig-badge--svg') + '">' + icon.format + '</span>';
+          const sysBadge = '<span class="ig-badge ' + (isMask ? 'ig-badge--mask' : 'ig-badge--aspect') + '">' + (isMask ? 'Mask' : 'Aspect') + '</span>';
+          const whiteBadge = icon.isWhite ? '<span class="ig-badge ig-badge--white">White</span>' : '';
+          const activeBadge = icon.isOn ? '<span class="ig-badge ig-badge--active">Active</span>' : '';
+
+          // Preview styling
+          let iconInlineStyle = '';
+          if (isMask) {
+            if (currentMaskColor) iconInlineStyle += 'color: ' + currentMaskColor + ';';
+            if (currentSize !== 24) iconInlineStyle += 'width:' + (currentSize / 10) + 'rem; height:' + (currentSize / 10) + 'rem;';
+          } else {
+            if (currentSize !== 24) iconInlineStyle += 'width:' + (currentSize / 10) + 'rem; height:' + (currentSize / 10) + 'rem;';
+          }
+
+          gridHtml += 
+            '<div class="ig-card" data-id="' + icon.id + '">' +
+              '<div class="ig-card-header">' +
+                '<div class="ig-badge-group">' + sysBadge + formatBadge + whiteBadge + activeBadge + '</div>' +
+              '</div>' +
+              '<div class="ig-card-preview ' + bgClass + '" title="상세보기">' +
+                '<i class="' + icon.id + ' ig-target-icon" ' + 
+                  (!isMask ? 'data-size="' + currentSize + '" ' : '') +
+                  (iconInlineStyle ? 'style="' + iconInlineStyle + '" ' : '') +
+                  'aria-hidden="true"></i>' +
+              '</div>' +
+              '<div class="ig-card-info">' +
+                '<h4 class="ig-card-title">' + icon.name + '</h4>' +
+                '<div class="ig-card-filename">' + icon.fileName + '</div>' +
+                '<div class="ig-card-code-box" title="클래스명 복사">' +
+                  '<span>.' + icon.id + '</span>' +
+                  '<span style="font-size:1.1rem; opacity:0.7;">📋</span>' +
+                '</div>' +
+              '</div>' +
+              '<div class="ig-card-actions">' +
+                '<button type="button" class="ig-mini-btn ig-mini-btn--primary btn-copy-html">' +
+                  '<span>HTML 복사</span>' +
+                '</button>' +
+                '<button type="button" class="ig-mini-btn btn-open-detail" title="상세보기">' +
+                  '<span>상세</span>' +
+                '</button>' +
+              '</div>' +
+            '</div>';
+        });
+        iconGrid.innerHTML = gridHtml;
+
+        // Render Table View
+        let tableHtml = '';
+        filtered.forEach(icon => {
+          const bgClass = getPreviewBgClass(icon.isWhite);
+          const isMask = icon.system === 'mask';
+          const sysLabel = isMask ? '<span class="ig-badge ig-badge--mask">CSS Mask</span>' : '<span class="ig-badge ig-badge--aspect">Aspect-Ratio</span>';
+          const recSize = isMask ? icon.defaultSize : 'data-size="' + (icon.defaultSize || '24') + '"';
+
+          let iconInlineStyle = '';
+          if (isMask && currentMaskColor) iconInlineStyle += 'color: ' + currentMaskColor + ';';
+
+          tableHtml += 
+            '<tr>' +
+              '<td>' +
+                '<div class="ig-table-preview-cell ' + bgClass + '">' +
+                  '<i class="' + icon.id + '" ' + 
+                    (!isMask ? 'data-size="24" ' : '') +
+                    (iconInlineStyle ? 'style="' + iconInlineStyle + '" ' : '') +
+                    'aria-hidden="true"></i>' +
+                '</div>' +
+              '</td>' +
+              '<td>' +
+                '<strong>' + icon.name + '</strong>' +
+                '<div style="font-size:1.15rem; color:var(--ig-text-muted);">' + icon.tags.join(', ') + '</div>' +
+              '</td>' +
+              '<td>' + sysLabel + '</td>' +
+              '<td>' +
+                '<code style="font-size:1.25rem; color:var(--ig-accent); cursor:pointer;" class="btn-table-copy-class" title="클릭하여 복사">.' + icon.id + '</code>' +
+              '</td>' +
+              '<td>' +
+                '<span style="font-family:monospace; font-size:1.2rem;">' + icon.fileName + '</span>' +
+              '</td>' +
+              '<td>' +
+                '<code style="font-size:1.2rem; color:var(--ig-text-secondary);">' + recSize + '</code>' +
+              '</td>' +
+              '<td>' +
+                '<div style="display:flex; gap:0.6rem;">' +
+                  '<button type="button" class="ig-mini-btn ig-mini-btn--primary btn-table-copy-html" data-id="' + icon.id + '">HTML</button>' +
+                  '<button type="button" class="ig-mini-btn btn-table-detail" data-id="' + icon.id + '">상세</button>' +
+                '</div>' +
+              '</td>' +
+            '</tr>';
+        });
+        iconTableBody.innerHTML = tableHtml;
+
+        // Bind Card Events
+        bindCardEvents();
+      }
+
+      // 7. Bind Events for Generated Grid Cards & Table rows
+      function bindCardEvents() {
+        // Grid: Card preview click & Detail button
+        iconGrid.querySelectorAll('.ig-card').forEach(card => {
+          const id = card.dataset.id;
+          const iconObj = ICONS.find(i => i.id === id);
+          if (!iconObj) return;
+
+          // Open detail on preview click
+          const previewEl = card.querySelector('.ig-card-preview');
+          if (previewEl) {
+            previewEl.addEventListener('click', () => openModal(iconObj));
+          }
+
+          // Open detail button
+          const detailBtn = card.querySelector('.btn-open-detail');
+          if (detailBtn) {
+            detailBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              openModal(iconObj);
+            });
+          }
+
+          // Click code box to copy class
+          const codeBox = card.querySelector('.ig-card-code-box');
+          if (codeBox) {
+            codeBox.addEventListener('click', (e) => {
+              e.stopPropagation();
+              copyToClipboard(iconObj.id, '클래스명 (' + iconObj.id + ') 복사 완료!');
+            });
+          }
+
+          // Click HTML Copy button
+          const copyHtmlBtn = card.querySelector('.btn-copy-html');
+          if (copyHtmlBtn) {
+            copyHtmlBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const snippet = getHtmlSnippet(iconObj);
+              copyToClipboard(snippet, 'HTML 마크업이 복사되었습니다!');
+            });
+          }
+        });
+
+        // Table: Table copy buttons
+        iconTableBody.querySelectorAll('.btn-table-copy-html').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const iconObj = ICONS.find(i => i.id === btn.dataset.id);
+            if (iconObj) {
+              const snippet = getHtmlSnippet(iconObj);
+              copyToClipboard(snippet, 'HTML 마크업이 복사되었습니다!');
+            }
+          });
+        });
+
+        iconTableBody.querySelectorAll('.btn-table-copy-class').forEach(el => {
+          el.addEventListener('click', () => {
+            const rawClass = el.textContent.replace(/^./, '').trim();
+            copyToClipboard(rawClass, '클래스명 (' + rawClass + ') 복사 완료!');
+          });
+        });
+
+        iconTableBody.querySelectorAll('.btn-table-detail').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const iconObj = ICONS.find(i => i.id === btn.dataset.id);
+            if (iconObj) openModal(iconObj);
+          });
+        });
+      }
+
+      // 8. Detail Modal Logic
+      function openModal(icon) {
+        selectedIcon = icon;
+        modalTitle.innerHTML = '<i class="' + icon.id + '" data-size="24" aria-hidden="true"></i> ' + icon.name;
+
+        // Big preview
+        const isMask = icon.system === 'mask';
+        let maskStyle = '';
+        if (isMask) {
+          maskStyle = 'width: 5.6rem; height: 5.6rem;';
+          if (currentMaskColor) maskStyle += ' color: ' + currentMaskColor + ';';
+        }
+        modalBigPreview.innerHTML = '<i class="' + icon.id + '" ' + 
+          (!isMask ? 'data-size="56" ' : '') + 
+          (maskStyle ? 'style="' + maskStyle + '" ' : '') + 
+          'aria-hidden="true"></i>';
+
+        // Size variations row (16, 20, 24, 32, 48px)
+        const sizes = [16, 20, 24, 32, 48];
+        let varHtml = '';
+        sizes.forEach(sz => {
+          let vStyle = '';
+          if (isMask) {
+            vStyle = 'width:' + (sz / 10) + 'rem; height:' + (sz / 10) + 'rem;';
+            if (currentMaskColor) vStyle += ' color: ' + currentMaskColor + ';';
+          }
+          varHtml += 
+            '<div class="ig-size-col">' +
+              '<i class="' + icon.id + '" ' + 
+                (!isMask ? 'data-size="' + sz + '" ' : '') + 
+                (vStyle ? 'style="' + vStyle + '" ' : '') + 
+                'aria-hidden="true"></i>' +
+              '<span class="ig-size-tag">' + sz + 'px</span>' +
+            '</div>';
+        });
+        modalSizeVariations.innerHTML = varHtml;
+
+        // Set Code Snippets
+        modalHtmlCode.textContent = getHtmlSnippet(icon, 24);
+        modalClassCode.textContent = icon.id;
+        modalPathCode.textContent = icon.file;
+        modalRuleCode.textContent = icon.cssRule || ('.' + icon.id + ' { ... }');
+
+        // Set showcase background
+        const defaultBg = icon.isWhite ? 'preview-dark' : (document.body.classList.contains('light-theme') ? 'preview-light' : 'preview-dark');
+        modalShowcaseBox.className = 'ig-modal-showcase ' + defaultBg;
+
+        // Open modal
+        detailModal.classList.add('open');
+      }
+
+      function closeModal() {
+        detailModal.classList.remove('open');
+        selectedIcon = null;
+      }
+
+      modalCloseBtn.addEventListener('click', closeModal);
+      detailModal.addEventListener('click', (e) => {
+        if (e.target === detailModal) closeModal();
+      });
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && detailModal.classList.contains('open')) {
+          closeModal();
+        }
+        // '/' key quick focus search
+        if (e.key === '/' && document.activeElement !== searchInput) {
+          e.preventDefault();
+          searchInput.focus();
+        }
+      });
+
+      // Modal Background toggles
+      modalBgDarkBtn.addEventListener('click', () => {
+        modalShowcaseBox.className = 'ig-modal-showcase preview-dark';
+      });
+      modalBgLightBtn.addEventListener('click', () => {
+        modalShowcaseBox.className = 'ig-modal-showcase preview-light';
+      });
+      modalBgCheckerBtn.addEventListener('click', () => {
+        modalShowcaseBox.className = 'ig-modal-showcase bg-checker';
+      });
+
+      // Modal Copy Buttons
+      btnModalCopyHtml.addEventListener('click', () => {
+        if (selectedIcon) copyToClipboard(getHtmlSnippet(selectedIcon, 24), 'HTML 마크업이 복사되었습니다!');
+      });
+      btnModalCopyClass.addEventListener('click', () => {
+        if (selectedIcon) copyToClipboard(selectedIcon.id, '클래스명이 복사되었습니다!');
+      });
+      btnModalCopyPath.addEventListener('click', () => {
+        if (selectedIcon) copyToClipboard(selectedIcon.file, '에셋 경로가 복사되었습니다!');
+      });
+      btnModalCopyRule.addEventListener('click', () => {
+        if (selectedIcon) copyToClipboard(selectedIcon.cssRule || selectedIcon.id, 'CSS 규칙이 복사되었습니다!');
+      });
+
+      // 9. Search Input Events
+      searchInput.addEventListener('input', (e) => {
+        currentSearch = e.target.value;
+        searchClear.classList.toggle('show', !!currentSearch);
+        renderIcons();
+      });
+
+      searchClear.addEventListener('click', () => {
+        searchInput.value = '';
+        currentSearch = '';
+        searchClear.classList.remove('show');
+        searchInput.focus();
+        renderIcons();
+      });
+
+      // 10. Size Slider Event
+      sizeSlider.addEventListener('input', (e) => {
+        currentSize = parseInt(e.target.value, 10);
+        sizeBadge.textContent = currentSize + 'px';
+        renderIcons();
+      });
+
+      // 11. Background Mode Selector
+      const bgBtns = document.querySelectorAll('#bgModeGroup .ig-seg-btn');
+      bgBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          bgBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentBgMode = btn.dataset.bg;
+          renderIcons();
+        });
+      });
+
+      // 12. Mask Tint Palette Event
+      const tintChips = document.querySelectorAll('.ig-tint-chip');
+      tintChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          tintChips.forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+          currentMaskColor = chip.dataset.color || '';
+          renderIcons();
+        });
+      });
+
+      customColorPicker.addEventListener('input', (e) => {
+        tintChips.forEach(c => c.classList.remove('active'));
+        currentMaskColor = e.target.value;
+        renderIcons();
+      });
+
+      // 13. View Mode Toggle (Grid vs Table)
+      const viewBtns = document.querySelectorAll('#viewModeGroup .ig-seg-btn');
+      viewBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          viewBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentView = btn.dataset.view;
+          if (currentView === 'grid') {
+            iconGrid.style.display = 'grid';
+            iconTableWrap.style.display = 'none';
+          } else {
+            iconGrid.style.display = 'none';
+            iconTableWrap.style.display = 'block';
+          }
+        });
+      });
+
+      // 14. Initialize
+      bindSystemTabs();
+      renderCategoryTabs();
+      renderIcons();
+
+    })();
+  </script>
+  <!-- E : JavaScript Logic -->
+
+</body>
+
+</html>

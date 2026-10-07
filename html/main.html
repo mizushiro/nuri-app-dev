@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport"
+    content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="author" content="" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="autocomplete" content="off" />
+
+  <title>날씨알리미</title>
+
+  <link rel="stylesheet" href="../resources/css-2026/ui.base.css">
+  <link rel="stylesheet" href="../resources/css-2026/ui-forecast.css">
+  <link rel="stylesheet" href="../resources/js-2026/plugin/swiper-bundle.min.css">
+  <link rel="stylesheet" href="../resources/css-2026/timeline.css">
+
+</head>
+
+<body class="light-theme" data-theme="true" data-bg="light-01" data-display="dash">
+  <script>
+    (function() {
+      const hour = new Date().getHours();
+      const isNight = hour >= 18 || hour < 6;
+      if (isNight) {
+        document.body.classList.remove('light-theme');
+        document.body.classList.add('night-theme');
+        document.body.setAttribute('data-bg', 'night-01');
+      } else {
+        document.body.classList.remove('night-theme');
+        document.body.classList.add('light-theme');
+        document.body.setAttribute('data-bg', 'light-01');
+      }
+    })();
+  </script>
+  <div class="ui-main-wrap">
+    <!-- S : header -->
+    <header class="nr__header"></header>
+    <!-- E : header -->
+    <main>
+      <!-- 대시보드형 & 정보집약형 -->
+      <div data-diaplay-item="dash">
+        <div class="nr__main-summary-sticky">
+          <div class="nr__main-summary-area">
+            <!-- S : 상단 일시 및 특보 퀵버튼 -->
+            <div class="nr__summary-top">
+              <span class="nr__summary-time text-14" data-weight="500">
+                <!-- JSON 데이터 기반 스크립트로 동적 렌더링됩니다 -->
+              </span>
+              <div class="nr__summary-alert-btns">
+                <!-- JSON 데이터 기반 스크립트로 동적 렌더링됩니다 -->
+              </div>
+            </div>
+            <!-- E : 상단 일시 및 특보 퀵버튼 -->
+            <div class="nr__summary-swiper">
+              <div class="swiper">
+                <div class="swiper-wrapper">
+                  <!-- JSON 데이터 기반 스크립트로 동적 렌더링됩니다 -->
+                </div>
+                <div class="swiper-pagination"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nr__main-section-group">
+          <!-- S : 정보집약형 -->
+          <section class="nr__main-section-box" data-diaplay-item="info-only">
+            <div class="px-20 pb-6 pt-6">
+              <ul class="nr__allmenu-category-list">
+                <!-- 1. 전국 -->
+                <li class="nr__allmenu-category-item">
+                  <div class="nr__allmenu-cat-head">
+                    <span class="nr__allmenu-cat-icon">
+                      <i class="icon-mask-menu1" aria-hidden="true"></i>
+                    </span>
+                    <strong class="nr__allmenu-cat-name">전국</strong>
+                  </div>
+                  <div class="nr__allmenu-sub-wrap">
+                    <a href="#" class="nr__allmenu-sub-link">주요도시<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">지역별 상세관측<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">과거관측<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                  </div>
+                </li>
+
+                <!-- 2. 예보 -->
+                <li class="nr__allmenu-category-item">
+                  <div class="nr__allmenu-cat-head">
+                    <span class="nr__allmenu-cat-icon">
+                      <i class="icon-mask-menu2" aria-hidden="true"></i>
+                    </span>
+                    <strong class="nr__allmenu-cat-name">예보</strong>
+                  </div>
+                  <div class="nr__allmenu-sub-wrap">
+                    <a href="#" class="nr__allmenu-sub-link">단기예보<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">중기예보<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                  </div>
+                </li>
+
+                <!-- 3. 영상 -->
+                <li class="nr__allmenu-category-item">
+                  <div class="nr__allmenu-cat-head">
+                    <span class="nr__allmenu-cat-icon">
+                      <i class="icon-mask-menu3" aria-hidden="true"></i>
+                    </span>
+                    <strong class="nr__allmenu-cat-name">영상</strong>
+                  </div>
+                  <div class="nr__allmenu-sub-wrap">
+                    <a href="#" class="nr__allmenu-sub-link">날씨지도<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">분석일기도<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">위성<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">낙뢰<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                  </div>
+                </li>
+
+                <!-- 4. 바다 -->
+                <li class="nr__allmenu-category-item">
+                  <div class="nr__allmenu-cat-head">
+                    <span class="nr__allmenu-cat-icon">
+                      <i class="icon-mask-menu4" aria-hidden="true"></i>
+                    </span>
+                    <strong class="nr__allmenu-cat-name">바다</strong>
+                  </div>
+                  <div class="nr__allmenu-sub-wrap">
+                    <a href="#" class="nr__allmenu-sub-link">일일예보<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">중기예보<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">너울 예측<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">이안류 예측<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                  </div>
+                </li>
+
+                <!-- 5. 항공 -->
+                <li class="nr__allmenu-category-item">
+                  <div class="nr__allmenu-cat-head">
+                    <span class="nr__allmenu-cat-icon">
+                      <i class="icon-mask-menu5" aria-hidden="true"></i>
+                    </span>
+                    <strong class="nr__allmenu-cat-name">항공</strong>
+                  </div>
+                  <div class="nr__allmenu-sub-wrap">
+                    <a href="#" class="nr__allmenu-sub-link">공항날씨<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">실시간 운항정보<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                  </div>
+                </li>
+
+                <!-- 6. 지진 -->
+                <li class="nr__allmenu-category-item">
+                  <div class="nr__allmenu-cat-head">
+                    <span class="nr__allmenu-cat-icon">
+                      <i class="icon-mask-menu6" aria-hidden="true"></i>
+                    </span>
+                    <strong class="nr__allmenu-cat-name">지진</strong>
+                  </div>
+                  <div class="nr__allmenu-sub-wrap">
+                    <a href="#" class="nr__allmenu-sub-link">실시간 지진감시<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">최근 지진<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">지진해일 조회<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">화산 조회<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                  </div>
+                </li>
+
+                <!-- 7. 태풍 -->
+                <li class="nr__allmenu-category-item">
+                  <div class="nr__allmenu-cat-head">
+                    <span class="nr__allmenu-cat-icon">
+                      <i class="icon-mask-menu7" aria-hidden="true"></i>
+                    </span>
+                    <strong class="nr__allmenu-cat-name">태풍</strong>
+                  </div>
+                  <div class="nr__allmenu-sub-wrap">
+                    <a href="#" class="nr__allmenu-sub-link">태풍 통보문<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">열대감시<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                  </div>
+                </li>
+
+                <!-- 8. 산악 -->
+                <li class="nr__allmenu-category-item">
+                  <div class="nr__allmenu-cat-head">
+                    <span class="nr__allmenu-cat-icon">
+                      <i class="icon-mask-menu8" aria-hidden="true"></i>
+                    </span>
+                    <strong class="nr__allmenu-cat-name">산악</strong>
+                  </div>
+                  <div class="nr__allmenu-sub-wrap">
+                    <a href="#" class="nr__allmenu-sub-link">산악날씨<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+          <!-- E : 정보집약형 -->
+
+          <!-- S : 시간별 예보 -->
+          <section class="nr__main-section-box" id="section-hourly">
+            <div class="nr__main-section-header">
+              <h2 class="text-16" data-text-color="theme1" data-weight="700">시간별 예보</h2>
+              <div class="nr__content-type form-fake-group-flex" data-form-style="round-box" data-form-h="32">
+                <div class="form-fake-button">
+                  <input type="radio" class="form-fake-input" id="time1" name="time" checked="">
+                  <label for="time1" class="form-fake-label">3시간 간격</label>
+                </div>
+                <div class="form-fake-button">
+                  <input type="radio" class="form-fake-input" id="time2" name="time">
+                  <label for="time2" class="form-fake-label">1시간 간격</label>
+                </div>
+              </div>
+            </div>
+            <div class="px-15 pb-28 pt-12">
+              <div id="hourly-forecast-sec">
+                <div class="nr__hourly-forecast" id="hourly-forecast-day">
+                  <!-- JSON 데이터 기반 스크립트로 동적 렌더링됩니다 -->
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- E : 시간별 예보 -->
+
+          <!-- S : 일별예보 -->
+          <section class="nr__main-section-box" id="section-daily">
+            <div class="nr__main-section-header">
+              <h2 class="text-16" data-text-color="theme1" data-weight="700">일별예보</h2>
+              <span class="text-16 nr__daily-range" data-text-color="theme2" data-weight="600">
+                <!-- JSON 데이터 기반 스크립트로 동적 렌더링됩니다 -->
+              </span>
+            </div>
+            <div class="px-20 pb-28 pt-12">
+              <div class="nr__daily-forecast">
+                <div class="nr__daily-forecast-head">
+                  <div class="nr__daily-forecast-date" aria-hidden="true"></div>
+                  <div class="nr__daily-forecast-weather">
+                    <span class="text-12" data-text-color="theme2" data-weight="600">오전</span>
+                    <span class="nr__daily-forecast-slash nr__daily-forecast-slash--blank" aria-hidden="true">/</span>
+                    <span class="text-12" data-text-color="theme2" data-weight="600">오후</span>
+                  </div>
+                  <div class="nr__daily-forecast-temp">
+                    <span class="text-12" data-text-color="theme2" data-weight="600">최저</span>
+                    <span class="nr__daily-forecast-slash">/</span>
+                    <span class="text-12" data-text-color="theme2" data-weight="600">최고</span>
+                  </div>
+                </div>
+                <ul class="nr__daily-forecast-list">
+                  <!-- JSON 데이터 기반 스크립트로 동적 렌더링됩니다 -->
+                </ul>
+              </div>
+            </div>
+          </section>
+          <!-- E : 일별예보 -->
+
+          <!-- S : 일출일몰 · 월출월몰 -->
+          <section class="nr__main-section-box" id="section-sun-moon">
+            <div class="nr__main-section-header">
+              <h2 class="text-16" data-text-color="theme1" data-weight="700">일출일몰 · 월출월몰</h2>
+              <button type="button" class="nr__help-btn" aria-label="도움말">
+                <i class="icon-aspect-help-theme" data-size="24" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="px-24 pb-16 pt-28">
+              <div class="nr__sun-moon">
+                <ul class="nr__sun-moon-sun">
+                  <!-- JSON 데이터 기반 스크립트로 동적 렌더링됩니다 -->
+                </ul>
+                <div class="nr__sun-moon-divider" aria-hidden="true"></div>
+                <ul class="nr__sun-moon-moon">
+                  <!-- JSON 데이터 기반 스크립트로 동적 렌더링됩니다 -->
+                </ul>
+                <p class="text-12 mt-20" data-text-color="theme2" data-weight="500" data-text-align="right"
+                  data-line-h="1.25">
+                  제공 : 한국천문연구원
+                </p>
+              </div>
+            </div>
+          </section>
+          <!-- E : 일출일몰 · 월출월몰 -->
+
+          <!-- S : 대기질정보 -->
+          <section class="nr__main-section-box" id="section-air">
+            <div class="nr__main-section-header">
+              <h2 class="text-16" data-text-color="theme1" data-weight="700">대기질정보</h2>
+              <button type="button" class="nr__help-btn" aria-label="도움말">
+                <i class="icon-aspect-help-theme" data-size="24" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="px-20 pb-16 pt-28">
+              <div class="nr__air-quality">
+                <ul class="nr__air-quality-list">
+                  <!-- JSON 데이터 기반 스크립트로 동적 렌더링됩니다 -->
+                </ul>
+                <p class="text-12 mt-12" data-text-color="theme2" data-weight="500" data-text-align="right"
+                  data-line-h="1.25">
+                  <!-- JSON 데이터 기반 스크립트로 동적 렌더링됩니다 -->
+                </p>
+              </div>
+            </div>
+          </section>
+          <!-- E : 대기질정보 -->
+
+          <!-- S : 자외선지수 -->
+          <section class="nr__main-section-box" id="section-uv">
+            <div class="nr__main-section-header">
+              <h2 class="text-16" data-text-color="theme1" data-weight="700">자외선지수</h2>
+              <button type="button" class="nr__help-btn" aria-label="도움말">
+                <i class="icon-aspect-help-theme" data-size="24" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="px-15 py-20">
+              <div class="nr__uv-index">
+                <ul class="nr__uv-index-list">
+                  <!-- JSON 데이터 기반 스크립트로 동적 렌더링됩니다 -->
+                </ul>
+              </div>
+            </div>
+          </section>
+          <!-- E : 자외선지수 -->
+
+          <!-- S : 대기정체지수 -->
+          <section class="nr__main-section-box" id="section-stagnation">
+            <div class="nr__main-section-header">
+              <h2 class="text-16" data-text-color="theme1" data-weight="700">대기정체지수</h2>
+              <button type="button" class="nr__help-btn" aria-label="도움말">
+                <i class="icon-aspect-help-theme" data-size="24" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="px-15 py-20">
+              <div class="nr__uv-index">
+                <ul class="nr__uv-index-list">
+                  <!-- JSON 데이터 기반 스크립트로 동적 렌더링됩니다 -->
+                </ul>
+              </div>
+            </div>
+          </section>
+          <!-- E : 대기정체지수 -->
+
+          <!-- S : 꽃가루농도위험지수 -->
+          <section class="nr__main-section-box" id="section-pollen">
+            <div class="nr__main-section-header">
+              <h2 class="text-16" data-text-color="theme1" data-weight="700">꽃가루농도위험지수</h2>
+              <button type="button" class="nr__help-btn" aria-label="도움말">
+                <i class="icon-aspect-help-theme" data-size="24" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="px-15 py-20">
+              <div class="nr__pollen-filter form-fake-group-flex" data-form-style="round-box-list">
+                <div class="form-fake-button">
+                  <input type="radio" class="form-fake-input" id="pollen1" name="pollen" value="weeds" checked>
+                  <label for="pollen1" class="form-fake-label" data-form-h="34">잡초류</label>
+                </div>
+                <div class="form-fake-button">
+                  <input type="radio" class="form-fake-input" id="pollen2" name="pollen" value="oak">
+                  <label for="pollen2" class="form-fake-label" data-form-h="34">참나무</label>
+                </div>
+                <div class="form-fake-button">
+                  <input type="radio" class="form-fake-input" id="pollen3" name="pollen" value="pine">
+                  <label for="pollen3" class="form-fake-label" data-form-h="34">소나무</label>
+                </div>
+                <div class="form-fake-button">
+                  <input type="radio" class="form-fake-input" id="pollen4" name="pollen" value="cypress">
+                  <label for="pollen4" class="form-fake-label" data-form-h="34">측백나무</label>
+                </div>
+              </div>
+              <div class="nr__uv-index">
+                <ul class="nr__uv-index-list">
+                  <!-- JSON 데이터 기반 스크립트로 동적 렌더링됩니다 -->
+                </ul>
+              </div>
+            </div>
+          </section>
+          <!-- E : 꽃가루농도위험지수 -->
+
+          <!-- S : 영상 -->
+          <section class="nr__main-section-box" id="section-radar">
+            <div class="nr__main-section-header">
+              <h2 class="text-16" data-text-color="theme1" data-weight="700">영상</h2>
+              <button type="button" class="nr__help-btn" aria-label="도움말">
+                <i class="icon-aspect-help-theme" data-size="24" aria-hidden="true"></i>
+              </button>
+              <div class="nr__content-type form-fake-group-flex" data-form-style="round-box" data-form-h="32">
+                <div class="form-fake-button">
+                  <input type="radio" class="form-fake-input" id="picture1" name="picture" checked="">
+                  <label for="picture1" class="form-fake-label">레이더</label>
+                </div>
+                <div class="form-fake-button">
+                  <input type="radio" class="form-fake-input" id="picture2" name="picture">
+                  <label for="picture2" class="form-fake-label">위성</label>
+                </div>
+              </div>
+            </div>
+            <div class="px-10 pb-8 pt-20">
+              <!-- S : 영상 콘텐츠 -->
+              <div class="nr__radar-content">
+                <!-- S : 상단 탭 및 메타 정보 -->
+                <div class="nr__radar-sub-header">
+                  <div class="ui-flex pl-6" data-gap="6">
+                    <span class="text-14" data-weight="600" data-text-color="theme1">레이더</span>
+                    <span class="text-14" data-weight="700" data-text-color="blue">강수예측</span>
+                  </div>
+                  <div class="nr__radar-meta">
+                    <time class="text-14" data-weight="500" data-text-color="theme1"
+                      datetime="2026-08-03T14:10">2026.08.03. 14:10</time>
+                    <button type="button" class="nr__radar-refresh-btn" aria-label="새로고침">
+                      <i class="icon-aspect-restart" data-size="16" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- E : 상단 탭 및 메타 정보 -->
+
+                <!-- S : 지도 영상 뷰어 -->
+                <div class="nr__radar-viewer">
+                  <div class="nr__radar-map-box">
+                    <img src="../resources/images-2026/temp/map.png" alt="강수예측 레이더 영상 지도" class="nr__radar-map-img">
+                  </div>
+
+                  <div class="nr__radar-map-player">
+                    <button type="button" class="nr__radar-player-btn" aria-label="10초 뒤로">
+                      <i class="icon-aspect-map-prev" data-size="36" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="nr__radar-player-btn" aria-label="재생">
+                      <i class="icon-aspect-map-play" data-size="36" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="nr__radar-player-btn" aria-label="10초 앞으로">
+                      <i class="icon-aspect-map-next" data-size="36" aria-hidden="true"></i>
+                    </button>
+                  </div>
+
+                  <!-- 우측 플로팅 컨트롤 -->
+                  <div class="nr__radar-map-controls">
+                    <button type="button" class="nr__radar-map-btn" aria-label="현재 위치로 이동">
+                      <i class="icon-aspect-map-control5" data-size="24" aria-hidden="true"></i>
+                    </button>
+                    <div class="nr__radar-map-zoom">
+                      <button type="button" class="nr__radar-map-btn" aria-label="지도 확대">
+                        <i class="icon-aspect-map-control6" data-size="24" aria-hidden="true"></i>
+                      </button>
+                      <span class="nr__radar-map-zoom-divider" aria-hidden="true"></span>
+                      <button type="button" class="nr__radar-map-btn" aria-label="지도 축소">
+                        <i class="icon-aspect-map-control7" data-size="24" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- 하단 타임라인 & 강수량 범례 -->
+                  <div class="nr__radar-bottom">
+                    <div class="nr__radar-timeline" role="progressbar" aria-valuenow="0" aria-valuemin="0"
+                      aria-valuemax="100">
+                      <div class="nr__radar-timeline-track">
+                        <span class="nr__radar-timeline-fill" style="width: 0%;"></span>
+                      </div>
+                    </div>
+                    <div class="nr__radar-legend">
+                      <div class="nr__legend-gauge-group">
+                        <div class="nr__legend-gauge-item">
+                          <i class="nr__legend-gauge-color" style="background-color:#371415"></i>
+                          <span class="nr__legend-gauge-num">50</span>
+                        </div>
+                        <div class="nr__legend-gauge-item">
+                          <i class="nr__legend-gauge-color" style="background-color:#6A2433"></i>
+                          <span class="nr__legend-gauge-num">40</span>
+                        </div>
+                        <div class="nr__legend-gauge-item">
+                          <i class="nr__legend-gauge-color" style="background-color:#A93F67"></i>
+                          <span class="nr__legend-gauge-num">30</span>
+                        </div>
+                        <div class="nr__legend-gauge-item">
+                          <i class="nr__legend-gauge-color" style="background-color:#C76D59"></i>
+                          <span class="nr__legend-gauge-num">25</span>
+                        </div>
+                        <div class="nr__legend-gauge-item">
+                          <i class="nr__legend-gauge-color" style="background-color:#CA9649"></i>
+                          <span class="nr__legend-gauge-num">20</span>
+                        </div>
+                        <div class="nr__legend-gauge-item">
+                          <i class="nr__legend-gauge-color" style="background-color:#C9BA41"></i>
+                          <span class="nr__legend-gauge-num">15</span>
+                        </div>
+                        <div class="nr__legend-gauge-item">
+                          <i class="nr__legend-gauge-color" style="background-color:#A8C548"></i>
+                          <span class="nr__legend-gauge-num">10</span>
+                        </div>
+                        <div class="nr__legend-gauge-item">
+                          <i class="nr__legend-gauge-color" style="background-color:#5EB752"></i>
+                          <span class="nr__legend-gauge-num">5</span>
+                        </div>
+                        <div class="nr__legend-gauge-item">
+                          <i class="nr__legend-gauge-color" style="background-color:#52A28C"></i>
+                          <span class="nr__legend-gauge-num">0</span>
+                        </div>
+                        <div class="nr__legend-gauge-item">
+                          <i class="nr__legend-gauge-color" style="background-color:#4673AC"></i>
+                          <span class="nr__legend-gauge-num">-5</span>
+                        </div>
+                        <div class="nr__legend-gauge-item">
+                          <i class="nr__legend-gauge-color" style="background-color:#58529D"></i>
+                          <span class="nr__legend-gauge-num">-10</span>
+                        </div>
+                        <div class="nr__legend-gauge-item">
+                          <i class="nr__legend-gauge-color" style="background-color:#322966"></i>
+                          <span class="nr__legend-gauge-num">-15</span>
+                        </div>
+                        <div class="nr__legend-gauge-item">
+                          <i class="nr__legend-gauge-color" style="background-color:#841E84"></i>
+                          <span class="nr__legend-gauge-num">-20</span>
+                        </div>
+                        <div class="nr__legend-gauge-item">
+                          <i class="nr__legend-gauge-color" style="background-color:#D999D9"></i>
+                          <span class="nr__legend-gauge-num">-30</span>
+                        </div>
+                        <div class="nr__legend-gauge-item">
+                          <i class="nr__legend-gauge-color" style="background-color:#C4C4C4"></i>
+                          <span class="nr__legend-gauge-num">-40</span>
+                        </div>
+                      </div>
+                      <span class="nr__legend-unit">Km</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- E : 지도 영상 뷰어 -->
+
+                <!-- S : 하단 날씨지도 버튼 -->
+                <div class="nr__radar-actions">
+                  <a href="#" class="nr__radar-link-btn" role="button">
+                    <span>날씨지도</span>
+                  </a>
+                </div>
+                <!-- E : 하단 날씨지도 버튼 -->
+              </div>
+              <!-- E : 영상 콘텐츠 -->
+            </div>
+          </section>
+          <!-- E : 영상 -->
+        </div>
+      </div>
+
+      <!-- 지도형 -->
+      <div data-diaplay-item="map">
+        <iframe data-src="https://www.weather.go.kr/wnuri-map/html/map.html" frameborder="0"></iframe>
+      </div>
+      <!-- <div data-diaplay-item="map">
+        <div class="nr__main-map" style="background: url(../resources/images-2026/temp/map.png) ;">
+          <div class="nr__main-map-top">
+            <button type="button" aria-label="검색" class="nr__main-map-search" aria-label="검색">
+              <i class="icon-mask-search" aria-hidden="true"></i>
+            </button>
+            <dl class="nr__main-map-info">
+              <dt class="nr__main-map-info-dt">
+                재생에너지
+                <i class="icon-mask-arrow" data-size="24" data-color="theme8"></i>
+              </dt>
+              <dd class="nr__main-map-info-dd">법선면일사량</dd>
+              <dd class="nr__main-map-info-dd">1000W/m²</dd>
+            </dl>
+          </div>
+
+          <div class="nr__main-map-bottom">
+            <div data-timeline="mainTimeLine"></div>
+            <div class="nr__radar-legend">
+              <div class="nr__legend-gauge-group">
+                <div class="nr__legend-gauge-item">
+                  <i class="nr__legend-gauge-color" style="background-color:#371415"></i>
+                  <span class="nr__legend-gauge-num">50</span>
+                </div>
+                <div class="nr__legend-gauge-item">
+                  <i class="nr__legend-gauge-color" style="background-color:#6A2433"></i>
+                  <span class="nr__legend-gauge-num">40</span>
+                </div>
+                <div class="nr__legend-gauge-item">
+                  <i class="nr__legend-gauge-color" style="background-color:#A93F67"></i>
+                  <span class="nr__legend-gauge-num">30</span>
+                </div>
+                <div class="nr__legend-gauge-item">
+                  <i class="nr__legend-gauge-color" style="background-color:#C76D59"></i>
+                  <span class="nr__legend-gauge-num">25</span>
+                </div>
+                <div class="nr__legend-gauge-item">
+                  <i class="nr__legend-gauge-color" style="background-color:#CA9649"></i>
+                  <span class="nr__legend-gauge-num">20</span>
+                </div>
+                <div class="nr__legend-gauge-item">
+                  <i class="nr__legend-gauge-color" style="background-color:#C9BA41"></i>
+                  <span class="nr__legend-gauge-num">15</span>
+                </div>
+                <div class="nr__legend-gauge-item">
+                  <i class="nr__legend-gauge-color" style="background-color:#A8C548"></i>
+                  <span class="nr__legend-gauge-num">10</span>
+                </div>
+                <div class="nr__legend-gauge-item">
+                  <i class="nr__legend-gauge-color" style="background-color:#5EB752"></i>
+                  <span class="nr__legend-gauge-num">5</span>
+                </div>
+                <div class="nr__legend-gauge-item">
+                  <i class="nr__legend-gauge-color" style="background-color:#52A28C"></i>
+                  <span class="nr__legend-gauge-num">0</span>
+                </div>
+                <div class="nr__legend-gauge-item">
+                  <i class="nr__legend-gauge-color" style="background-color:#4673AC"></i>
+                  <span class="nr__legend-gauge-num">-5</span>
+                </div>
+                <div class="nr__legend-gauge-item">
+                  <i class="nr__legend-gauge-color" style="background-color:#58529D"></i>
+                  <span class="nr__legend-gauge-num">-10</span>
+                </div>
+                <div class="nr__legend-gauge-item">
+                  <i class="nr__legend-gauge-color" style="background-color:#322966"></i>
+                  <span class="nr__legend-gauge-num">-15</span>
+                </div>
+                <div class="nr__legend-gauge-item">
+                  <i class="nr__legend-gauge-color" style="background-color:#841E84"></i>
+                  <span class="nr__legend-gauge-num">-20</span>
+                </div>
+                <div class="nr__legend-gauge-item">
+                  <i class="nr__legend-gauge-color" style="background-color:#D999D9"></i>
+                  <span class="nr__legend-gauge-num">-30</span>
+                </div>
+                <div class="nr__legend-gauge-item">
+                  <i class="nr__legend-gauge-color" style="background-color:#C4C4C4"></i>
+                  <span class="nr__legend-gauge-num">-40</span>
+                </div>
+              </div>
+              <span class="nr__legend-unit">Km</span>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </main>
+
+    <!-- S : footer -->
+    <footer class="nr__footer">
+      <nav class="nr__footer-nav" aria-label="하단 메뉴">
+        <ul class="nr__footer-list">
+          <li class="nr__footer-item">
+            <button type="button" class="nr__footer-btn is-active" data-target="#section-hourly" aria-current="page">
+              <i class="icon-aspect-main-nav1-theme" data-size="28" aria-hidden="true"></i>
+              <span class="nr__footer-text">시간별예보</span>
+            </button>
+          </li>
+          <li class="nr__footer-item">
+            <button type="button" class="nr__footer-btn" data-target="#section-daily">
+              <i class="icon-aspect-main-nav2-theme" data-size="28" aria-hidden="true"></i>
+              <span class="nr__footer-text">일별예보</span>
+            </button>
+          </li>
+          <li class="nr__footer-item">
+            <button type="button" class="nr__footer-btn" data-target="#section-air">
+              <i class="icon-aspect-main-nav3-theme" data-size="28" aria-hidden="true"></i>
+              <span class="nr__footer-text">대기질</span>
+            </button>
+          </li>
+          <li class="nr__footer-item">
+            <button type="button" class="nr__footer-btn" data-target="#section-radar">
+              <i class="icon-aspect-main-nav4-theme" data-size="28" aria-hidden="true"></i>
+              <span class="nr__footer-text">레이더 · 위성</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </footer>
+    <!-- E : footer -->
+  </div>
+
+  <script src="../resources/js-2026/plugin/swiper-bundle.min.js"></script>
+  <script type="module">
+    import { UX, WeatherMainManager } from '../resources/js-2026/uiuxu.common.js';
+    import Timeline from '../resources/js-2026/component/timeLine.js';
+
+    // 메인 UI 통합 초기화 (공통 헤더/푸터, 드롭다운, 다이얼로그 등)
+    UX.init('main', { skipForecast: true });
+
+    // 지역 > 오늘날씨정보 > 일주일치정보 통합 날씨 매니저 초기화 및 스와이퍼 연동
+    WeatherMainManager.init({
+      jsonUrl: '../resources/json/weather.json',
+    });
+
+    // 1. 샘플 데이터 정의
+    // const Sample_timelineData = [
+    //   { day: '20260701', times: ['00', '02', '12'] },
+    //   { day: '20260702', times: ['00', '03', '06', '09', '12', '15', '18', '21'] },
+    //   { day: '20260703', times: ['00', '06', '12', '18'] },
+    //   { day: '20260704', times: ['00', '03', '06', '09', '12', '15', '18', '21'] },
+    //   { day: '20260705', times: ['00', '03', '06', '09', '12'] },
+    //   { day: '20260706', times: ['00', '03', '06', '09', '12', '15', '18', '21'] },
+    //   { day: '20260707', times: ['00', '06', '12'] }
+    // ];
+    // const mainTimeLine = new Timeline({
+    //   id: 'mainTimeLine',
+    //   type: 'range',
+    //   data: Sample_timelineData,
+    //   selectedDayIndex: 1,  // 초기 선택 날짜 인덱스
+    //   selectedTimeIndex: 3, // 초기 선택 시간 인덱스 (09시)
+    //   interval: 3000,       // 자동 플레이 간격 (1초)
+    //   text: null,
+    //   onChange: (info) => {
+    //     console.log('Time Selected:', info);
+    //   }
+    // });
+
+  </script>
+
+</body>
+
+</html>
