@@ -15,7 +15,12 @@ import {
   initNoticeHelpTooltips,
 } from "./component/ui-dropdown.js";
 import { initAccordion, initAllAccordions } from "./component/ui-accordion.js";
-import { initSettingDialog, initAllDialogs } from "./component/ui-dialog.js";
+import { initAllDialogs } from "./component/ui-dialog.js";
+import {
+  initAllMenu,
+  setMapChangeCallback,
+  getMapSelectionData,
+} from "./component/allmenu.js";
 import { initRadarPlayer } from "./component/radarPlayer.js";
 
 export {
@@ -45,8 +50,17 @@ export const UX = {
       })
         .then(async () => {
           console.log("header load");
+          initAllMenu();
+          setMapChangeCallback((data) => {
+            console.log("[지도형 선택 콜백]", data.path, data);
+          });
         })
         .catch((err) => console.error("Error loading header content:", err));
+    } else {
+      initAllMenu();
+      setMapChangeCallback((data) => {
+        console.log("[지도형 선택 콜백]", data.path, data);
+      });
     }
 
     UX.initBodyScroll();
@@ -65,6 +79,8 @@ export const UX = {
   },
   WeatherMain: WeatherMainManager,
   initRadarPlayer,
+  setMapChangeCallback,
+  getMapSelectionData,
   getTimeBasedTheme: (date = new Date()) => {
     const hour = date.getHours();
     // 저녁 6시(18시)부터 익일 아침 6시(06시)까지 나이트모드, 그 외는 라이트모드

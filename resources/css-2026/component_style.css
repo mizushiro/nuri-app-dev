@@ -57,7 +57,7 @@
 
 /* dialog */
 .ui-dialog--wrap {position:relative;display:flex;flex-direction:column;}
-.ui-dialog--header {flex-shrink:0;position: relative;display: flex;align-items: center;justify-content: space-between;height: 5.6rem;padding: 0 1.6rem;padding-top: env(safe-area-inset-top, 0px);border-bottom: 1px solid var(--border-theme6, #EEF2FA);background-color: var(--bg-theme1, #FFFFFF);flex-shrink: 0;}
+.ui-dialog--header {flex-shrink:0;position: relative;display: flex;align-items: center;justify-content: space-between;height: 5.6rem;padding: 0 1.6rem;padding-top: env(safe-area-inset-top, 0px);border-bottom: 1px solid var(--border-theme6, #EEF2FA);background-color: var(--bg-theme17, #FFFFFF);flex-shrink: 0;}
 .ui-dialog--header-title {font-size: 2rem;font-weight: 700;color: var(--text-theme1);margin: 0;}
 [data-dialog-button="close"] {width:2.4rem;height:2.4rem;color: var(--text-theme);}
 [data-dialog-button="close"] i {pointer-events:none}

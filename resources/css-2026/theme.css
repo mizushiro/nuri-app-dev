@@ -11,6 +11,7 @@
   --text-theme6:#0475F4;
   --text-theme7:#1C1B1F;
   --text-theme8:#FFF;
+  --text-theme9:#6D758F;
 
   --body-theme:#F5F6FB;
 
@@ -37,6 +38,8 @@
   --bg-theme18:#EAF4FF;
   --bg-theme19:#0475F4;
   --bg-theme20:#00000099;
+  --bg-theme21:#fff;
+  --bg-theme22:#FAFBFD;
 
   --border-theme1:#E9EDF9;
   --border-theme2:#E8ECEF;
@@ -56,6 +59,8 @@
   --border-theme16:#E2E8F0;
   --border-theme17:#0475F4;
   --border-theme18:#201F3B;
+  --border-theme19:#F5F6FB;
+  --border-theme20:#E9EDF9;
 
   --air-good-start:#007BFE;
   --air-good-end:#65B4FE;
@@ -70,6 +75,11 @@
   --text-theme4:#B7B7B7;
   --text-theme5:#fff;
 
+  --text-theme6:#0475F4;
+  --text-theme7:#1C1B1F;
+  --text-theme8:#FFF;
+  --text-theme9:#FFFFFFCC;
+
   --body-theme:#121725;
 
   --bg-theme1:#212633;
@@ -90,6 +100,12 @@
   --bg-theme16:#FFFFFF1A;
   --bg-theme17:#0B0F19;
 
+  --bg-theme18:#0475F433;
+  --bg-theme19:#0475F4;
+  --bg-theme20:#00000099;
+  --bg-theme21:#121725;
+  --bg-theme22:#191F2C;
+
   --border-theme1:#2A3141;
   --border-theme2:#2C364F;
   --border-theme3:#FFFFFF59;
@@ -108,6 +124,8 @@
   --border-theme16:#E2E8F0;
   --border-theme17:#0475F4;
   --border-theme18:#0D152A;
+  --border-theme19:#000;
+  --border-theme20:#2C364F;
 
   --air-good-start:#007BFE;
   --air-good-end:#65B4FE;
@@ -122,6 +140,11 @@
   --text-theme4:#B7B7B7;
   --text-theme5:#fff;
 
+  --text-theme6:#0475F4;
+  --text-theme7:#1C1B1F;
+  --text-theme8:#FFF;
+  --text-theme9:#FFFFFFCC;
+
   --body-theme:#121725;
 
   --bg-theme1:#212633;
@@ -142,6 +165,12 @@
   --bg-theme16:#FFFFFF1A;
   --bg-theme17:#0B0F19;
 
+  --bg-theme18:#0475F433;
+  --bg-theme19:#0475F4;
+  --bg-theme20:#00000099;
+  --bg-theme21:#121725;
+  --bg-theme22:#191F2C;
+
   --border-theme1:#2A3141;
   --border-theme2:#2C364F;
   --border-theme3:#FFFFFF59;
@@ -160,6 +189,8 @@
   --border-theme16:#E2E8F0;
   --border-theme17:#0475F4;
   --border-theme18:#0D152A;
+  --border-theme19:#000;
+  --border-theme20:#2C364F;
 
   --air-good-start:#007BFE;
   --air-good-end:#65B4FE;

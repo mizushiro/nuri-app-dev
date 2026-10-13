@@ -24,7 +24,7 @@
 
 </head>
 
-<body class="light-theme" data-theme="true" data-bg="light-01" data-display="dash">
+<body class="light-theme" data-theme="true" data-bg="light-01" data-display="dash" data-zoom="1">
   <script>
     (function() {
       const hour = new Date().getHours();
@@ -38,6 +38,10 @@
         document.body.classList.add('light-theme');
         document.body.setAttribute('data-bg', 'light-01');
       }
+      try {
+        const savedZoom = sessionStorage.getItem('nr_zoom');
+        if (savedZoom) document.body.setAttribute('data-zoom', savedZoom);
+      } catch (e) {}
     })();
   </script>
   <div class="ui-main-wrap">

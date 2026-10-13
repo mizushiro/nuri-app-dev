@@ -70,40 +70,6 @@
 
 		<!-- S : 전체메뉴 본문 스크롤 영역 -->
 		<div class="ui-dialog--main nr__allmenu-body" data-dialog-item="main">
-		<!-- S : 화면스타일 선택 섹션 -->
-			<section class="nr__allmenu-style-section">
-				<div class="nr__allmenu-section-title">
-					<strong class="text-16" data-text-color="theme1" data-weight="700">화면스타일 선택</strong>
-					<button type="button" class="nr__help-btn" aria-label="화면스타일 도움말">
-						<i class="icon-aspect-help-theme" data-size="24" aria-hidden="true"></i>
-					</button>
-				</div>
-				<div class="nr__allmenu-style-cards form-fake-group-flex" data-form-style="round-icon-box">
-					<div class="form-fake-button">
-						<input type="radio" class="form-fake-input" id="allmenu_style_1" name="allmenu_style_" value="dash" checked="">
-						<label for="allmenu_style_1" class="form-fake-label">
-							<i class="icon-mask-style1" aria-hidden="true"></i>
-							대시보드형
-						</label>
-					</div>
-					<div class="form-fake-button">
-						<input type="radio" class="form-fake-input" id="allmenu_style_2" name="allmenu_style_" value="info">
-						<label for="allmenu_style_2" class="form-fake-label">
-							<i class="icon-mask-style2" aria-hidden="true"></i>
-							정보집약형
-						</label>
-					</div>
-					<div class="form-fake-button">
-						<input type="radio" class="form-fake-input" id="allmenu_style_3" name="allmenu_style_" value="map">
-						<label for="allmenu_style_3" class="form-fake-label">
-							<i class="icon-mask-style3" aria-hidden="true"></i>
-							지도형
-						</label>
-					</div>
-				</div>
-			</section>
-			<!-- E : 화면스타일 선택 섹션 -->
-
 			<!-- S : 서비스 카테고리 메뉴 목록 섹션 -->
 			<section class="nr__allmenu-category-section">
 				<ul class="nr__allmenu-category-list">
@@ -310,6 +276,247 @@
 
 		<!-- S : 본문 -->
 		<div class="ui-dialog--main nr__setting-main" data-dialog-item="main">
+			<!-- S : 화면스타일 선택 섹션 -->
+			<section class="nr__allmenu-style-section">
+				<div class="nr__allmenu-section-title">
+					<strong class="text-16" data-text-color="theme1" data-weight="700">화면스타일 선택</strong>
+					<button type="button" class="nr__help-btn" aria-label="화면스타일 도움말">
+						<i class="icon-aspect-help-theme" data-size="24" aria-hidden="true"></i>
+					</button>
+				</div>
+				<div class="nr__allmenu-style-cards form-fake-group-flex" data-form-style="round-icon-box">
+					<div class="form-fake-button">
+						<input type="radio" class="form-fake-input" id="allmenu_style_1" name="allmenu_style_" value="dash" checked="">
+						<label for="allmenu_style_1" class="form-fake-label">
+							<i class="icon-mask-style1" aria-hidden="true"></i>
+							대시보드형
+						</label>
+					</div>
+					<div class="form-fake-button">
+						<input type="radio" class="form-fake-input" id="allmenu_style_2" name="allmenu_style_" value="info">
+						<label for="allmenu_style_2" class="form-fake-label">
+							<i class="icon-mask-style2" aria-hidden="true"></i>
+							정보집약형
+						</label>
+					</div>
+					<div class="form-fake-button form-fake-group" data-maptype-check="allmenu_style_3_1">
+						<input type="radio" class="form-fake-input" id="allmenu_style_3" name="allmenu_style_" value="map">
+						<label for="allmenu_style_3" class="form-fake-label">
+							<i class="icon-mask-style3" aria-hidden="true"></i>
+							지도형
+						</label>
+						<div data-mapsub-area="allmenu_style_3" class="form-fake-group-flex" data-form-style="round-list-type" data-col="auto">
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_1" name="allmenu_style_3" value="allmenu_style_3_1" checked>
+								<label for="allmenu_style_3_1" class="form-fake-label" data-form-h="36">
+                  수치모델
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_2" name="allmenu_style_3" value="allmenu_style_3_2">
+								<label for="allmenu_style_3_2" class="form-fake-label" data-form-h="36">
+									예보
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_3" name="allmenu_style_3" value="allmenu_style_3_3">
+								<label for="allmenu_style_3_3" class="form-fake-label" data-form-h="36">
+									관측
+								</label>
+							</div>
+						</div>
+						<div data-mapsub2-area="allmenu_style_3_1" class="form-fake-group-flex" data-form-style="square-list-type" data-col="auto">
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_1_1" name="allmenu_style_3_1" value="wind" checked>
+								<label for="allmenu_style_3_1_1" class="form-fake-label">
+									바람
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_1_2" name="allmenu_style_3_1" value="rain">
+								<label for="allmenu_style_3_1_2" class="form-fake-label">
+									강수
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_1_3" name="allmenu_style_3_1" value="cloud">
+								<label for="allmenu_style_3_1_3" class="form-fake-label">
+									구름
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_1_4" name="allmenu_style_3_1" value="temp">
+								<label for="allmenu_style_3_1_4" class="form-fake-label">
+									기온
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_1_5" name="allmenu_style_3_1" value="sst">
+								<label for="allmenu_style_3_1_5" class="form-fake-label">
+									해수면온도
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_1_6" name="allmenu_style_3_1" value="sea-wind">
+								<label for="allmenu_style_3_1_6" class="form-fake-label">
+									해상바람
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_1_7" name="allmenu_style_3_1" value="humidity">
+								<label for="allmenu_style_3_1_7" class="form-fake-label">
+									습도
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_1_8" name="allmenu_style_3_1" value="sea-ice">
+								<label for="allmenu_style_3_1_8" class="form-fake-label">
+									해빙
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_1_9" name="allmenu_style_3_1" value="snow">
+								<label for="allmenu_style_3_1_9" class="form-fake-label">
+									적설
+								</label>
+							</div>
+						</div>
+						<div data-mapsub2-area="allmenu_style_3_2" class="form-fake-group-flex" data-form-style="square-list-type" data-col="auto">
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_2_1" name="allmenu_style_3_2" value="temp" checked>
+								<label for="allmenu_style_3_2_1" class="form-fake-label">
+									기온
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_2_2" name="allmenu_style_3_2" value="sensory-temp">
+								<label for="allmenu_style_3_2_2" class="form-fake-label">
+									체감온도
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_2_3" name="allmenu_style_3_2" value="humidity">
+								<label for="allmenu_style_3_2_3" class="form-fake-label">
+									상대습도
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_2_4" name="allmenu_style_3_2" value="wind">
+								<label for="allmenu_style_3_2_4" class="form-fake-label">
+									바람
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_2_5" name="allmenu_style_3_2" value="pop">
+								<label for="allmenu_style_3_2_5" class="form-fake-label">
+									강수확률
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_2_6" name="allmenu_style_3_2" value="rain-amount">
+								<label for="allmenu_style_3_2_6" class="form-fake-label">
+									강수량
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_2_7" name="allmenu_style_3_2" value="snow">
+								<label for="allmenu_style_3_2_7" class="form-fake-label">
+									적설
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_2_8" name="allmenu_style_3_2" value="sky">
+								<label for="allmenu_style_3_2_8" class="form-fake-label">
+									하늘상태
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_2_9" name="allmenu_style_3_2" value="pty">
+								<label for="allmenu_style_3_2_9" class="form-fake-label">
+									강수형태
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_2_10" name="allmenu_style_3_2" value="wave">
+								<label for="allmenu_style_3_2_10" class="form-fake-label">
+									유의파고
+								</label>
+							</div>
+						</div>
+						<div data-mapsub2-area="allmenu_style_3_3" class="form-fake-group-flex" data-form-style="square-list-type" data-col="auto">
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_3_1" name="allmenu_style_3_3" value="radar" checked>
+								<label for="allmenu_style_3_3_1" class="form-fake-label">
+									레이더
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_3_2" name="allmenu_style_3_3" value="satellite">
+								<label for="allmenu_style_3_3_2" class="form-fake-label">
+									위성
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_3_3" name="allmenu_style_3_3" value="current-temp">
+								<label for="allmenu_style_3_3_3" class="form-fake-label">
+									현재기온
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_3_4" name="allmenu_style_3_3" value="max-temp">
+								<label for="allmenu_style_3_3_4" class="form-fake-label">
+									일최고기온
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_3_5" name="allmenu_style_3_3" value="min-temp">
+								<label for="allmenu_style_3_3_5" class="form-fake-label">
+									일최저기온
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_3_6" name="allmenu_style_3_3" value="max-wind">
+								<label for="allmenu_style_3_3_6" class="form-fake-label">
+									일최대풍속
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_3_7" name="allmenu_style_3_3" value="max-instant-wind">
+								<label for="allmenu_style_3_3_7" class="form-fake-label">
+									일최대순간풍속
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_3_8" name="allmenu_style_3_3" value="daily-rain">
+								<label for="allmenu_style_3_3_8" class="form-fake-label">
+									일강수
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_3_9" name="allmenu_style_3_3" value="rain-3h">
+								<label for="allmenu_style_3_3_9" class="form-fake-label">
+									3시간누적강수
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_3_10" name="allmenu_style_3_3" value="land-point">
+								<label for="allmenu_style_3_3_10" class="form-fake-label">
+									육상지점
+								</label>
+							</div>
+							<div class="form-fake-button">
+								<input type="radio" class="form-fake-input" id="allmenu_style_3_3_11" name="allmenu_style_3_3" value="sea-point">
+								<label for="allmenu_style_3_3_11" class="form-fake-label">
+									해상지점
+								</label>
+							</div>
+						</div>
+						<div class="form-fake-group-dim"></div>
+					</div>
+				</div>
+			</section>
+			<!-- E : 화면스타일 선택 섹션 -->
+
 			<ul class="nr__allmenu-arrow-nav">
 				<li class="nr__allmenu-arrow-item">
 					<a href="#" class="nr__allmenu-arrow-link">
@@ -330,7 +537,7 @@
 					</a>
 				</li>
 			</ul>
-			<hr />
+
 			<ul class="nr__setting-list">
 				<!-- 3. 예보 표출 -->
 				<li class="nr__setting-item">
@@ -420,7 +627,7 @@
 				<li class="nr__setting-item">
 					<span class="nr__setting-label">큰 글자 모드</span>
 					<div class="form-element-switch" data-size="30">
-						<input type="checkbox" id="setting_sw_8" checked>
+						<input type="checkbox" id="setting_sw_8">
 						<label for="setting_sw_8" data-label-on="ON" data-label-off="OFF">
 							<span class="txt-checked">ON</span>
 							<span class="txt-uncheck">OFF</span>

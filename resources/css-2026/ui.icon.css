@@ -191,7 +191,7 @@
 .icon-mask-arrow-wind {width:1.3rem;height:1.3rem;-webkit-mask-image:url(../images-2026/icon/icon-mask-arrow-wind.svg);mask-image:url(../images-2026/icon/icon-mask-arrow-wind.svg);}
 
 /* 스타일 아이콘 */
-[class*="icon-mask-style"] {width:2.4rem;height:2.4rem;background-color:var(--text-theme2)}
+[class*="icon-mask-style"] {width:2.4rem;height:2.4rem;background-color:var(--bg-theme19)}
 .icon-mask-style1 {-webkit-mask-image:url(../images-2026/icon/icon-mask-style1.svg);mask-image:url(../images-2026/icon/icon-mask-style1.svg)}
 .icon-mask-style2 {-webkit-mask-image:url(../images-2026/icon/icon-mask-style2.svg);mask-image:url(../images-2026/icon/icon-mask-style2.svg)}
 .icon-mask-style3 {-webkit-mask-image:url(../images-2026/icon/icon-mask-style3.svg);mask-image:url(../images-2026/icon/icon-mask-style3.svg)}
@@ -207,4 +207,4 @@
 .icon-mask-menu7 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu7.svg);mask-image:url(../images-2026/icon/icon-mask-menu7.svg)}
 .icon-mask-menu8 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu8.svg);mask-image:url(../images-2026/icon/icon-mask-menu8.svg)}
 .icon-mask-menu9 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu9.svg);mask-image:url(../images-2026/icon/icon-mask-menu9.svg)}
-.icon-mask-menu10 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu10.svg);mask-image:url(../images-2026/icon/icon-mask-menu10.svg);color:var(--text-theme7)}
+.icon-mask-menu10 {-webkit-mask-image:url(../images-2026/icon/icon-mask-menu10.svg);mask-image:url(../images-2026/icon/icon-mask-menu10.svg);color:var(--text-theme1)}
