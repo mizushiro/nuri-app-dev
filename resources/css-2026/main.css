@@ -1,7 +1,7 @@
 @charset "utf-8";
 body[data-theme][data-display="dash"] {
   main > [data-diaplay-item="dash"] {gap:2.4rem;display:flex;flex-direction:column;}
-  .nr__main-summary-sticky {position:sticky;display:flex;flex-direction:column;justify-content:flex-end;z-index:50;min-height:55.6rem;top:-37.8rem;border-radius:1.6rem;}
+  .nr__main-summary-sticky {position:sticky;display:flex;flex-direction:column;justify-content:flex-end;z-index:50;min-height:53.6rem;top:-35.8rem;border-radius:1.6rem;}
   .nr__main-summary-area {padding-bottom:0.6rem;}
 }
 body.is-simple.light-theme .nr__main-summary-sticky > .nr__main-summary-area {background-color:rgba(4,117,244,.8);}
@@ -276,3 +276,31 @@ body.dark-theme,
 	[data-diaplay-item="dash"] > .nr__main-summary-area {width:50%;position:fixed;left:0;}
 	.nr__footer .nr__footer-list {padding:0 25%;}
 } */
+
+/* 큰글씨 모드 */
+body[data-zoom="2"] {
+  .nr__summary-card--main {padding-bottom:3.2rem}
+  .nr__summary-weather {margin-top:3.2rem}
+  .nr__summary-weather [data-size="80"] {width:7.2rem}
+  .nr__summary-sub-val {gap:.2rem}
+  .nr__summary-sub-val > .text-21 {font-size:1.8rem}
+  .nr__summary-sub-val > .text-16 {font-size:1.3rem}
+  .nr__summary-temp > .text-68 {font-size:6rem}
+  .nr__summary-grid {gap:.8rem}
+  .nr__summary-card--sub {padding:1rem .8rem 1.4rem 1rem}
+  .nr__main-section-box > .px-24 {padding:2.4rem 1.6rem 1.2rem}
+  .nr__sun-moon-sun {gap:1.2rem}
+  .nr__sun-moon-item > [data-size="56"] {width:5.2rem}
+  .nr__sun-moon-sun .nr__sun-moon-item {gap:.6rem}
+  .nr__sun-moon-item > .text-20,
+  .nr__sun-moon-info > .text-20 {font-size:1.8rem}
+  .nr__sun-moon-item > .text-18 {font-size:1.6rem}
+  .nr__uv-index-list {gap:.4rem}
+  .nr__uv-index-badge {font-size:1.3rem}
+  .nr__main-section-box > .px-15 {padding-left:1.2rem;padding-right:1.2rem}
+  .nr__legend-gauge-num {font-size:1rem}
+  .nr__main-section-box  > .px-20 {padding-left:1.2rem;padding-right:1.2rem}
+
+  &[data-display="dash"] .nr__main-summary-sticky {min-height: 51.6rem;top: -33.8rem;}
+  .nr__weather-card.active {min-width:12rem;}
+}

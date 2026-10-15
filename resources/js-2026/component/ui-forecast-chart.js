@@ -113,12 +113,7 @@ export const defaultRenderTempChart = (layer, context) => {
     if (i === 0) {
       d += `M ${pt.x} ${pt.y}`;
     } else {
-      const prev = coords[i - 1];
-      const cx1 = prev.x + (pt.x - prev.x) / 2;
-      const cy1 = prev.y;
-      const cx2 = prev.x + (pt.x - prev.x) / 2;
-      const cy2 = pt.y;
-      d += ` C ${cx1} ${cy1}, ${cx2} ${cy2}, ${pt.x} ${pt.y}`;
+      d += ` L ${pt.x} ${pt.y}`;
     }
   });
 
@@ -268,13 +263,8 @@ export const defaultRenderHumidityChart = (layer, context) => {
       d += `M ${pt.x} ${pt.y}`;
       areaD += `M ${pt.x} ${height} L ${pt.x} ${pt.y}`;
     } else {
-      const prev = coords[i - 1];
-      const cx1 = prev.x + (pt.x - prev.x) / 2;
-      const cy1 = prev.y;
-      const cx2 = prev.x + (pt.x - prev.x) / 2;
-      const cy2 = pt.y;
-      d += ` C ${cx1} ${cy1}, ${cx2} ${cy2}, ${pt.x} ${pt.y}`;
-      areaD += ` C ${cx1} ${cy1}, ${cx2} ${cy2}, ${pt.x} ${pt.y}`;
+      d += ` L ${pt.x} ${pt.y}`;
+      areaD += ` L ${pt.x} ${pt.y}`;
     }
   });
 
@@ -293,7 +283,7 @@ export const defaultRenderHumidityChart = (layer, context) => {
         </linearGradient>
       </defs>
       <path d="${areaD}" fill="url(#humidityGrad)" />
-      <path d="${d}" fill="none" stroke="#0288d1" stroke-width="2" stroke-linecap="round" />
+      <path d="${d}" fill="none" stroke="#0288d1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
   `;
 
   coords.forEach(pt => {

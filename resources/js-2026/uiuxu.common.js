@@ -182,12 +182,15 @@ export const UX = {
   initBodyScroll: () => {
     const handleScroll = () => {
       const scrollY = window.scrollY || window.pageYOffset;
+      const isLargeFont = document.body.dataset.zoom === "2";
+      const changePoint = isLargeFont ? 460 : 390;
+
       if (scrollY > 20) {
         document.body.classList.add("is-scrolled");
       } else {
         document.body.classList.remove("is-scrolled");
       }
-      if (scrollY > 450) {
+      if (scrollY > changePoint) {
         document.body.classList.add("is-simple");
       } else {
         document.body.classList.remove("is-simple");
