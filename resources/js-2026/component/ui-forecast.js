@@ -99,6 +99,19 @@ export const selectWeatherCard = (targetDate, options = {}) => {
     }
   });
 
+  // 1-1. 단기/중기 2단 행 최소화/확장 상태 동적 갱신
+  const dayRows = document.querySelectorAll('.nr__hourly-forecast-day');
+  dayRows.forEach(row => {
+    const hasActive = row.querySelector('.nr__weather-card.active') !== null;
+    if (hasActive) {
+      row.classList.add('is-expanded');
+      row.classList.remove('is-minimized');
+    } else {
+      row.classList.add('is-minimized');
+      row.classList.remove('is-expanded');
+    }
+  });
+
   // date-group data-current 속성 갱신
   const dateGroups = document.querySelectorAll('.nr__date-group');
   dateGroups.forEach(group => {
@@ -161,18 +174,31 @@ export const selectWeatherCard = (targetDate, options = {}) => {
 export const weekdayExe = (target, data) => {
   const targetEl = typeof target === 'string' ? document.getElementById(target) : target;
   if (!targetEl) return;
-  // 최대 5일치로 제한
-  const limitedData = Array.isArray(data) ? data.slice(0, 5) : data;
+  // 최대 10일치 (단기 5일 + 중기 5일)
+  const limitedData = Array.isArray(data) ? data.slice(0, 10) : data;
   if (limitedData) globalForecastData = limitedData;
-  // JSON 데이터를 Swiper 슬라이드 HTML 문자열로 생성하는 함수
-  const weatherSlideMaker = (dataList) => {
-    let result = '<div class="nr__hourly-forecast-day">';
+
+  const shortTermList = limitedData.slice(0, 5);
+  const midTermList = limitedData.slice(5, 10);
+
+  // 초기 선택 날짜 설정
+  const activeData = Array.isArray(limitedData) ? (limitedData.find(item => item.active) || limitedData[0]) : null;
+  const initialActive = document.querySelector('.nr__weather-card.active') || document.querySelector('.nr__weather-card');
+  currentSelectedDate = activeData ? activeData.date : (initialActive ? initialActive.dataset.date : null);
+
+  const isShortExpanded = shortTermList.some(item => item.date === currentSelectedDate) || midTermList.length === 0;
+  const isMidExpanded = !isShortExpanded && midTermList.some(item => item.date === currentSelectedDate);
+
+  const renderCardsInRow = (dataList, isExpanded, termKey) => {
+    let result = `<div class="nr__hourly-forecast-day nr__forecast-row-${termKey} ${isExpanded ? 'is-expanded' : 'is-minimized'}" data-term="${termKey}">`;
     
-    dataList.forEach((item, idx) => {
-      const displayDay = idx === 0 ? '오늘' : idx === 1 ? '내일' : idx === 2 ? '모레' : (item.dayOfWeek || item.day);
-      const displayDate = idx < 3 ? `${item.date} ${item.dayOfWeek}` : item.date;
+    dataList.forEach((item) => {
+      const globalIdx = limitedData.indexOf(item);
+      const displayDay = globalIdx === 0 ? '오늘' : globalIdx === 1 ? '내일' : globalIdx === 2 ? '모레' : (item.dayOfWeek || item.day);
+      const isActive = item.date === currentSelectedDate;
+
       result += `
-        <div class="nr__weather-card ${item.active ? 'active' : ''}" data-date="${item.date}" data-day="${displayDay}" data-am-temp="${item.amTemp}" data-am-rain="${item.amRain}" data-pm-temp="${item.pmTemp}" data-pm-rain="${item.pmRain}">
+        <div class="nr__weather-card ${isActive ? 'active' : ''}" data-date="${item.date}" data-day="${displayDay}" data-am-temp="${item.amTemp}" data-am-rain="${item.amRain}" data-pm-temp="${item.pmTemp}" data-pm-rain="${item.pmRain}">
           <div class="nr__weather-card-header">
             <span class="nr__weather-card-date">${item.date}</span>
             <span class="nr__weather-card-week">${item.dayOfWeek}</span>
@@ -213,19 +239,20 @@ export const weekdayExe = (target, data) => {
     });
 
     result += '</div>';
-
     return result;
   };
 
-  targetEl.insertAdjacentHTML('beforeend', weatherSlideMaker(limitedData));
+  let rowsHtml = '<div class="nr__hourly-forecast-days">';
+  rowsHtml += renderCardsInRow(shortTermList, isShortExpanded, 'short');
+  if (midTermList.length > 0) {
+    rowsHtml += renderCardsInRow(midTermList, isMidExpanded, 'mid');
+  }
+  rowsHtml += '</div>';
 
-  // 초기 선택 날짜 설정
-  const activeData = Array.isArray(limitedData) ? (limitedData.find(item => item.active) || limitedData[0]) : null;
-  const initialActive = document.querySelector('.nr__weather-card.active') || document.querySelector('.nr__weather-card');
-  currentSelectedDate = activeData ? activeData.date : (initialActive ? initialActive.dataset.date : null);
+  targetEl.insertAdjacentHTML('beforeend', rowsHtml);
 
   // 카드 클릭 이벤트 및 콜백 바인딩
-  const weatherCards = document.querySelectorAll('.nr__weather-card');
+  const weatherCards = targetEl.querySelectorAll('.nr__weather-card');
   weatherCards.forEach((card) => {
     card.addEventListener('click', function () {
       selectWeatherCard(this.dataset.date, { fromScroll: false });
@@ -241,8 +268,8 @@ export const weekdayExe = (target, data) => {
 export const hourlyForecastExe = (target, data, options = {}) => {
   const targetEl = typeof target === 'string' ? document.getElementById(target) : target;
   if (!targetEl) return;
-  // 최대 5일치로 제한
-  const limitedData = Array.isArray(data) ? data.slice(0, 5) : data;
+  // 최대 10일치 (단기 5일 + 중기 5일)
+  const limitedData = Array.isArray(data) ? data.slice(0, 10) : data;
   if (limitedData) globalForecastData = limitedData;
   // 현재 선택된 간격 가져오기 (3시간 or 1시간)
   const getCurrentInterval = () => {
@@ -281,8 +308,8 @@ export const hourlyForecastExe = (target, data, options = {}) => {
 
   const renderComponent = () => {
     const currentInterval = getCurrentInterval();
-    // hourly 데이터가 존재하는 날짜 항목만 사용 (최대 5일치로 제한)
-    const validDates = limitedData.filter(d => d.hourly && d.hourly.length > 0).slice(0, 5);
+    // hourly 데이터가 존재하는 날짜 항목만 사용 (최대 10일치)
+    const validDates = limitedData.filter(d => d.hourly && d.hourly.length > 0).slice(0, 10);
     if (!currentSelectedDate && validDates.length > 0) {
       const activeItem = validDates.find(d => d.active) || validDates[0];
       currentSelectedDate = activeItem.date;
@@ -817,11 +844,11 @@ export const uiForecastExe = (target, data, options = {}) => {
   if (!targetEl) return;
 
   targetEl.innerHTML = '';
-  // 배열이거나 루트 weather.json 객체인 경우 모두 지원 및 최대 5일치로 제한
+  // 배열이거나 루트 weather.json 객체인 경우 모두 지원 및 최대 10일치로 제한
   const rawList = Array.isArray(data)
     ? data
     : (data.weekly?.days || data.locations?.[0]?.weekly?.days || []);
-  const limitedData = rawList.slice(0, 5);
+  const limitedData = rawList.slice(0, 10);
   globalForecastData = limitedData;
   currentSelectedDate = null;
 

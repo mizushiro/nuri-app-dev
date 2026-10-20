@@ -1,16 +1,16 @@
 .nr__hourly-forecast {display:flex;width:100%;gap:1rem;flex-direction:column;}
-.nr__hourly-forecast-day {display:flex;gap:0.2rem;}
+.nr__hourly-forecast-days {display:flex;flex-direction:column;gap:0.6rem;width:100%;}
+.nr__hourly-forecast-day {display:flex;gap:0.2rem;width:100%;}
 .nr__weather-card-week,
 .nr__weather-card.active .nr__weather-card-body-btype, 
 .nr__weather-card-body-atype {display:none;}
 .nr__weather-card.active {
-  flex:5;border-color:var(--color-primary);
+  flex:5;border-color:var(--color-primary);background-color:var(--bg-theme7);
   .nr__weather-card-week, .nr__weather-card-body-atype {display:flex;}
   .nr__weather-card-header {background-color:var(--color-primary);color:#fff;}
-  .nr__weather-card {background-color:var(--bg-theme7);}
 }
-.nr__weather-card {display:flex;flex:2;flex-direction:column;overflow:hidden;border-radius:0.8rem;border:1px solid var(--border-theme2);transition:all 0.2s ease;}
-.nr__weather-card-header {display:flex;align-items:center;justify-content:center;background-color:var(--bg-theme8);min-height:2.8rem;font-size:1.4rem;font-weight:700;padding:0 0.3rem;}
+.nr__weather-card {display:flex;flex:2;flex-direction:column;overflow:hidden;border-radius:0.8rem;border:1px solid var(--border-theme2);transition:all 0.2s ease;cursor:pointer;}
+.nr__weather-card-header {display:flex;align-items:center;justify-content:center;gap:0.4rem;background-color:var(--bg-theme8);min-height:2.8rem;font-size:1.4rem;font-weight:700;padding:0 0.3rem;}
 .nr__weather-card-body {display:flex;width:100%;height:100%;align-items:center;justify-content:center;background-color:var(--bg-theme9);padding:1.4rem 0.6rem;}
 .nr__weather-card-body-atype {width:100%;gap:0.6rem;justify-content:space-around;}
 .nr__weather-card-body-btype {color:var(--text-theme1);font-size:1.6rem;font-weight:700;}
@@ -22,6 +22,39 @@
 .nr__weather-card-temp-max {color:#EE0000;}
 .nr__weather-card-temp-min {color:#3F85D7;}
 .nr__weather-card-body-atype hr {width:1px;display:block;height:4.4rem;border:0;border-left:1px solid var(--bg-theme10);margin:0;}
+
+/* 최소화 행 (.is-minimized) : 활성 카드가 없는 단기 또는 중기 행 */
+.nr__hourly-forecast-day.is-minimized {gap:0.2rem;}
+.nr__hourly-forecast-day.is-minimized .nr__weather-card {
+  flex:1 !important;
+  min-width:0 !important;
+  height:3.2rem;
+  min-height:3.2rem;
+  border-radius:0.8rem;
+  background-color:var(--bg-theme8);
+  border:1px solid var(--border-theme2);
+  justify-content:center;
+  align-items:center;
+}
+.nr__hourly-forecast-day.is-minimized .nr__weather-card:hover {
+  background-color:var(--bg-theme7);
+}
+.nr__hourly-forecast-day.is-minimized .nr__weather-card-header {
+  height:100%;
+  min-height:unset;
+  background-color:transparent !important;
+  color:var(--text-theme1) !important;
+  font-size:1.4rem;
+  font-weight:700;
+  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.nr__hourly-forecast-day.is-minimized .nr__weather-card-week,
+.nr__hourly-forecast-day.is-minimized .nr__weather-card-body {
+  display:none !important;
+}
 
 .nr__row-time-box {display:flex;justify-content:center;align-items:center;font-size:1.1rem;color:#fff;background-color:var(--color-primary);min-height:1.8rem;border-radius:0.9rem;padding:0 0.8rem;line-height:1;}
 .nr__fixed-row-cell {display:flex;align-items:center;justify-content:flex-start;text-align:left;padding:0;font-size:1.4rem;font-weight:600;color:var(--text-theme2);box-sizing:border-box;}

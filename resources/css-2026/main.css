@@ -2,19 +2,21 @@
 body[data-theme][data-display="dash"] {
   height:100vh;
   height:100dvh;
-  overflow:hidden;
-  .ui-main-wrap {display:flex;flex-direction:column;height:100dvh;overflow:hidden;position:relative;}
-  main {flex:1;min-height:0;position:relative;overflow:hidden;display:flex;flex-direction:column;}
-  main > [data-diaplay-item="dash"] {position:relative;width:100%;height:100%;min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:0;}
+  /* overflow:hidden; */
+  .ui-main-wrap {display:flex;flex-direction:column;position:relative;}
+  main {flex:1;min-height:0;position:relative;display:flex;flex-direction:column;}
+  main > [data-diaplay-item="dash"] {position:relative;width:100%;height:100%;min-height:0;display:flex;flex-direction:column;gap:0;}
   /* 첫화면 풀스크린 날씨 요약 영역 */
-  .nr__main-summary-sticky {position:relative;width:100%;height:100%;flex:1;min-height:0;display:flex;flex-direction:column;z-index:20;border-radius:0;top:0;transition:height 0.38s cubic-bezier(0.22, 1, 0.36, 1), transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);}
-  .nr__main-summary-sticky > .nr__main-summary-area {height:100%;display:flex;flex-direction:column;padding:0.8rem 1.5rem calc(6.8rem + env(safe-area-inset-bottom, 0px));box-sizing:border-box;}
+  .nr__main-summary-sticky {position:sticky;width:100%;height:100%;flex:1;min-height:0;display:flex;flex-direction:column;justify-content:flex-end;z-index:20;border-radius:0;top:calc(-100dvh + 33rem);transition:height 0.38s cubic-bezier(0.22, 1, 0.36, 1), transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);}
+  .nr__main-summary-sticky > .nr__main-summary-area {height:calc(100dvh - 14.8rem);display:flex;flex-direction:column;padding:0.8rem 1.5rem 1.2rem;box-sizing:border-box;}
   .nr__summary-top {flex-shrink:0;min-height:3.2rem;}
   .nr__summary-swiper {flex:1;min-height:0;display:flex;flex-direction:column;position:relative;}
   .nr__summary-swiper .swiper {width:100%;height:100%;padding-bottom:2.2rem;}
   .nr__summary-swiper .swiper-wrapper {height:100%;}
   .nr__summary-swiper .swiper-slide {height:100%;display:flex;flex-direction:column;}
-  .nr__summary-swiper .swiper-slide .nr__main-summary-area {height:100%;display:flex;flex-direction:column;}
+  .nr__summary-swiper .swiper-slide .nr__main-summary-area {height:100%;display:flex;flex-direction:column;justify-content: flex-end;}
+
+  .nr__main-section-group{padding:1.2rem 1.5rem 7.6rem;display: flex;flex-direction: column;gap:1.5rem}
   /* 기온 카드:배경 투명, 시원하고 큰 텍스트 (첫 화면) */
   .nr__summary-card--main {background-color:transparent !important;border:none;box-shadow:none;padding:0;display:flex;flex-direction:column;align-items:flex-start;}
   .nr__summary-card-head {width:100%;border:none;}
@@ -29,7 +31,7 @@ body[data-theme][data-display="dash"] {
   .nr__summary-swiper .swiper-pagination {bottom:0 !important;}
 
   /* 흰색 콘텐츠 박스:첫 화면에서는 화면 아래로 완전히 숨겨짐 (두 번째 이미지의 모달/시트 박스) */
-  .nr__main-section-group {
+  /* .nr__main-section-group {
     position:absolute;
     left:0;
     right:0;
@@ -55,13 +57,14 @@ body[data-theme][data-display="dash"] {
     .nr__main-section-box {background-color:transparent;border:none;padding:0;}
   }
   .nr__main-section-group::-webkit-scrollbar {display:none;}
-  .nr__main-section-box {border-radius:1.6rem;background-color:var(--bg-theme1);border:1px solid var(--border-theme1, rgba(0,0,0,0.06));}
+  .nr__main-section-box {border-radius:1.6rem;background-color:var(--bg-theme1);border:1px solid var(--border-theme1, rgba(0,0,0,0.06));} */
 }
-
+body.is-simple.light-theme .nr__main-summary-sticky > .nr__main-summary-area {background-color:rgba(4,117,244,.8);}
+body.is-simple.dark-theme .nr__main-summary-sticky > .nr__main-summary-area,
+body.is-simple.night-theme .nr__main-summary-sticky > .nr__main-summary-area {background-color:rgba(0,0,0,.5)}
 /* 스크롤 올렸을 때 축소 모드 (두 번째 이미지 상태) */
 body[data-theme][data-display="dash"].is-simple {
-  .nr__main-summary-sticky {height:8rem;flex:0 0 8rem;min-height:8rem;}
-  .nr__main-summary-sticky > .nr__main-summary-area {padding:0.6rem 1.5rem 0.4rem;justify-content:flex-start;}
+  .nr__main-summary-sticky > .nr__main-summary-area {padding:0.6rem 1.5rem 0.5rem;justify-content:flex-start; backdrop-filter: blur(1rem);}
   .nr__summary-top,
   .nr__summary-grid,
   .nr__summary-card--alert {display:none !important;}
@@ -69,7 +72,7 @@ body[data-theme][data-display="dash"].is-simple {
   .nr__summary-swiper .swiper {padding-bottom:0;}
   .nr__summary-card--main {display:flex;flex-wrap:wrap;justify-content:center;align-items:center;width:100%;flex-direction:row}
   .nr__summary-card-head {width:100%;justify-content:center;gap:0.8rem;padding:0;margin-bottom:.2rem;}
-
+  .nr__summary-swiper .nr__main-summary-area {padding-bottom: 2rem;}
   .text-16.nr__loc-name {font-size:1.5rem}
   .nr__summary-weather {margin:0;padding:0;display:inline-flex;align-items:baseline;}
   .nr__summary-temp .text-68 {font-size:2.8rem;font-weight:600;}
@@ -137,13 +140,82 @@ body[data-theme][data-display="info"] {
 [data-diaplay-item="map"]{display:none;}
 [data-theme="true"] {background-color:var(--body-theme)}
 
-body[data-bg] {background-position:50% calc(-4.6rem + env(safe-area-inset-top));background-size:100% auto;background-repeat:no-repeat}
-[data-bg="light-01"] {background-image:url(../images-2026/weather/bg-light-01.jpg);}
+body[data-bg],
+body[data-time] {background-position:50% calc(-4.6rem + env(safe-area-inset-top));background-size:100% auto;background-repeat:no-repeat}
+
+/* 기본 시간대 배경 (Fallback) */
+[data-bg="light-01"],
+body[data-time="day"] {background-image:url(../images-2026/weather/bg-light-01.jpg);}
+
 [data-bg="night-01"],
+body[data-time="night"],
 body.night-theme,
-.night-theme {background-image:url(../images-2026/weather/bg-night-01.jpg) !important;}
+.night-theme {background-image:url(../images-2026/weather/bg-night-01.jpg);}
+
 body.dark-theme,
 .dark-theme {background-image:none !important;}
+
+/* S: 계절 / 시간 / 날씨 조합 배경 (총 48종) */
+/* --- 봄 (Spring) --- */
+[data-season="spring"][data-time="day"][data-weather="clear"] {background-image:url(../images-2026/weather/bg-spring-day-clear.jpg);}
+[data-season="spring"][data-time="day"][data-weather="rain"] {background-image:url(../images-2026/weather/bg-spring-day-rain.jpg);}
+[data-season="spring"][data-time="day"][data-weather="snow"] {background-image:url(../images-2026/weather/bg-spring-day-snow.jpg);}
+[data-season="spring"][data-time="day"][data-weather="fog"] {background-image:url(../images-2026/weather/bg-spring-day-fog.jpg);}
+[data-season="spring"][data-time="day"][data-weather="yellowdust"] {background-image:url(../images-2026/weather/bg-spring-day-yellowdust.jpg);}
+[data-season="spring"][data-time="day"][data-weather="finedust"] {background-image:url(../images-2026/weather/bg-spring-day-finedust.jpg);}
+
+[data-season="spring"][data-time="night"][data-weather="clear"] {background-image:url(../images-2026/weather/bg-spring-night-clear.jpg);}
+[data-season="spring"][data-time="night"][data-weather="rain"] {background-image:url(../images-2026/weather/bg-spring-night-rain.jpg);}
+[data-season="spring"][data-time="night"][data-weather="snow"] {background-image:url(../images-2026/weather/bg-spring-night-snow.jpg);}
+[data-season="spring"][data-time="night"][data-weather="fog"] {background-image:url(../images-2026/weather/bg-spring-night-fog.jpg);}
+[data-season="spring"][data-time="night"][data-weather="yellowdust"] {background-image:url(../images-2026/weather/bg-spring-night-yellowdust.jpg);}
+[data-season="spring"][data-time="night"][data-weather="finedust"] {background-image:url(../images-2026/weather/bg-spring-night-finedust.jpg);}
+
+/* --- 여름 (Summer) --- */
+[data-season="summer"][data-time="day"][data-weather="clear"] {background-image:url(../images-2026/weather/bg-summer-day-clear.jpg);}
+[data-season="summer"][data-time="day"][data-weather="rain"] {background-image:url(../images-2026/weather/bg-summer-day-rain.jpg);}
+[data-season="summer"][data-time="day"][data-weather="snow"] {background-image:url(../images-2026/weather/bg-summer-day-snow.jpg);}
+[data-season="summer"][data-time="day"][data-weather="fog"] {background-image:url(../images-2026/weather/bg-summer-day-fog.jpg);}
+[data-season="summer"][data-time="day"][data-weather="yellowdust"] {background-image:url(../images-2026/weather/bg-summer-day-yellowdust.jpg);}
+[data-season="summer"][data-time="day"][data-weather="finedust"] {background-image:url(../images-2026/weather/bg-summer-day-finedust.jpg);}
+
+[data-season="summer"][data-time="night"][data-weather="clear"] {background-image:url(../images-2026/weather/bg-summer-night-clear.jpg);}
+[data-season="summer"][data-time="night"][data-weather="rain"] {background-image:url(../images-2026/weather/bg-summer-night-rain.jpg);}
+[data-season="summer"][data-time="night"][data-weather="snow"] {background-image:url(../images-2026/weather/bg-summer-night-snow.jpg);}
+[data-season="summer"][data-time="night"][data-weather="fog"] {background-image:url(../images-2026/weather/bg-summer-night-fog.jpg);}
+[data-season="summer"][data-time="night"][data-weather="yellowdust"] {background-image:url(../images-2026/weather/bg-summer-night-yellowdust.jpg);}
+[data-season="summer"][data-time="night"][data-weather="finedust"] {background-image:url(../images-2026/weather/bg-summer-night-finedust.jpg);}
+
+/* --- 가을 (Autumn) --- */
+[data-season="autumn"][data-time="day"][data-weather="clear"] {background-image:url(../images-2026/weather/bg-autumn-day-clear.jpg);}
+[data-season="autumn"][data-time="day"][data-weather="rain"] {background-image:url(../images-2026/weather/bg-autumn-day-rain.jpg);}
+[data-season="autumn"][data-time="day"][data-weather="snow"] {background-image:url(../images-2026/weather/bg-autumn-day-snow.jpg);}
+[data-season="autumn"][data-time="day"][data-weather="fog"] {background-image:url(../images-2026/weather/bg-autumn-day-fog.jpg);}
+[data-season="autumn"][data-time="day"][data-weather="yellowdust"] {background-image:url(../images-2026/weather/bg-autumn-day-yellowdust.jpg);}
+[data-season="autumn"][data-time="day"][data-weather="finedust"] {background-image:url(../images-2026/weather/bg-autumn-day-finedust.jpg);}
+
+[data-season="autumn"][data-time="night"][data-weather="clear"] {background-image:url(../images-2026/weather/bg-autumn-night-clear.jpg);}
+[data-season="autumn"][data-time="night"][data-weather="rain"] {background-image:url(../images-2026/weather/bg-autumn-night-rain.jpg);}
+[data-season="autumn"][data-time="night"][data-weather="snow"] {background-image:url(../images-2026/weather/bg-autumn-night-snow.jpg);}
+[data-season="autumn"][data-time="night"][data-weather="fog"] {background-image:url(../images-2026/weather/bg-autumn-night-fog.jpg);}
+[data-season="autumn"][data-time="night"][data-weather="yellowdust"] {background-image:url(../images-2026/weather/bg-autumn-night-yellowdust.jpg);}
+[data-season="autumn"][data-time="night"][data-weather="finedust"] {background-image:url(../images-2026/weather/bg-autumn-night-finedust.jpg);}
+
+/* --- 겨울 (Winter) --- */
+[data-season="winter"][data-time="day"][data-weather="clear"] {background-image:url(../images-2026/weather/bg-winter-day-clear.jpg);}
+[data-season="winter"][data-time="day"][data-weather="rain"] {background-image:url(../images-2026/weather/bg-winter-day-rain.jpg);}
+[data-season="winter"][data-time="day"][data-weather="snow"] {background-image:url(../images-2026/weather/bg-winter-day-snow.jpg);}
+[data-season="winter"][data-time="day"][data-weather="fog"] {background-image:url(../images-2026/weather/bg-winter-day-fog.jpg);}
+[data-season="winter"][data-time="day"][data-weather="yellowdust"] {background-image:url(../images-2026/weather/bg-winter-day-yellowdust.jpg);}
+[data-season="winter"][data-time="day"][data-weather="finedust"] {background-image:url(../images-2026/weather/bg-winter-day-finedust.jpg);}
+
+[data-season="winter"][data-time="night"][data-weather="clear"] {background-image:url(../images-2026/weather/bg-winter-night-clear.jpg);}
+[data-season="winter"][data-time="night"][data-weather="rain"] {background-image:url(../images-2026/weather/bg-winter-night-rain.jpg);}
+[data-season="winter"][data-time="night"][data-weather="snow"] {background-image:url(../images-2026/weather/bg-winter-night-snow.jpg);}
+[data-season="winter"][data-time="night"][data-weather="fog"] {background-image:url(../images-2026/weather/bg-winter-night-fog.jpg);}
+[data-season="winter"][data-time="night"][data-weather="yellowdust"] {background-image:url(../images-2026/weather/bg-winter-night-yellowdust.jpg);}
+[data-season="winter"][data-time="night"][data-weather="finedust"] {background-image:url(../images-2026/weather/bg-winter-night-finedust.jpg);}
+/* E: 계절 / 시간 / 날씨 조합 배경 */
 
 /* S :메인 요약 영역 (상단 날씨) */
 .nr__main-summary-area {display:flex;flex-direction:column;gap:1rem;padding:1rem 1.5rem 2rem;}
@@ -342,6 +414,7 @@ body:not([data-display="dash"]) .nr__main-section-group {display:flex;flex-direc
 /* 큰글씨 모드 */
 body[data-zoom="2"] {
   .nr__summary-card--main {padding-bottom:3.2rem}
+  .nr__weather-card-header {font-size: 1.1rem;}
   .nr__summary-weather {margin-top:3.2rem}
   .nr__summary-weather [data-size="80"] {width:7.2rem}
   .nr__summary-sub-val {gap:.2rem}
@@ -363,6 +436,6 @@ body[data-zoom="2"] {
   .nr__legend-gauge-num {font-size:1rem}
   .nr__main-section-box  > .px-20 {padding-left:1.2rem;padding-right:1.2rem}
 
-  &[data-display="dash"] .nr__main-summary-sticky {min-height:51.6rem;top:-33.8rem;}
+  /* &[data-display="dash"] .nr__main-summary-sticky {min-height:51.6rem;top:-33.8rem;} */
   .nr__weather-card.active {min-width:12rem;}
 }

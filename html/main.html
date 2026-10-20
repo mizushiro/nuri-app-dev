@@ -24,24 +24,32 @@
 
 </head>
 
-<body class="light-theme" data-theme="true" data-bg="light-01" data-display="dash" data-zoom="1">
+<body class="light-theme" data-theme="true" data-season="spring" data-time="day" data-weather="clear" data-display="dash" data-zoom="1">
   <script>
-    (function() {
-      const hour = new Date().getHours();
-      const isNight = hour >= 18 || hour < 6;
-      if (isNight) {
-        document.body.classList.remove('light-theme');
-        document.body.classList.add('night-theme');
-        document.body.setAttribute('data-bg', 'night-01');
-      } else {
-        document.body.classList.remove('night-theme');
-        document.body.classList.add('light-theme');
-        document.body.setAttribute('data-bg', 'light-01');
-      }
+    (function () {
       try {
+        // 1. 저장된 사용자 테마가 있으면 우선 적용, 없으면 시간 기준 적용
+        const savedTheme = sessionStorage.getItem('nr_theme');
+        let theme = savedTheme;
+        if (!theme) {
+          const hour = new Date().getHours();
+          theme = (hour >= 18 || hour < 6) ? 'night' : 'light';
+        }
+        document.body.classList.remove('light-theme', 'night-theme', 'dark-theme');
+        document.body.classList.add(theme + '-theme');
+        if (theme === 'night') {
+          document.body.setAttribute('data-time', 'night');
+          document.body.setAttribute('data-bg', 'night-01');
+        } else if (theme === 'light') {
+          document.body.setAttribute('data-time', 'day');
+          document.body.setAttribute('data-bg', 'light-01');
+        } else {
+          document.body.removeAttribute('data-bg');
+        }
+        // 2. 저장된 줌 배율 복원
         const savedZoom = sessionStorage.getItem('nr_zoom');
         if (savedZoom) document.body.setAttribute('data-zoom', savedZoom);
-      } catch (e) {}
+      } catch (e) { }
     })();
   </script>
   <div class="ui-main-wrap">
@@ -77,9 +85,12 @@
                     <strong class="nr__allmenu-cat-name">전국</strong>
                   </div>
                   <div class="nr__allmenu-sub-wrap">
-                    <a href="#" class="nr__allmenu-sub-link">주요도시<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
-                    <a href="#" class="nr__allmenu-sub-link">지역별 상세관측<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
-                    <a href="#" class="nr__allmenu-sub-link">과거관측<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">주요도시<span class="nr__allmenu-sub-link-icon"><i
+                          class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">지역별 상세관측<span class="nr__allmenu-sub-link-icon"><i
+                          class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">과거관측<span class="nr__allmenu-sub-link-icon"><i
+                          class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
                   </div>
                 </li>
 
@@ -92,8 +103,10 @@
                     <strong class="nr__allmenu-cat-name">예보</strong>
                   </div>
                   <div class="nr__allmenu-sub-wrap">
-                    <a href="#" class="nr__allmenu-sub-link">단기예보<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
-                    <a href="#" class="nr__allmenu-sub-link">중기예보<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">단기예보<span class="nr__allmenu-sub-link-icon"><i
+                          class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">중기예보<span class="nr__allmenu-sub-link-icon"><i
+                          class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
                   </div>
                 </li>
 
@@ -106,10 +119,14 @@
                     <strong class="nr__allmenu-cat-name">영상</strong>
                   </div>
                   <div class="nr__allmenu-sub-wrap">
-                    <a href="#" class="nr__allmenu-sub-link">날씨지도<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
-                    <a href="#" class="nr__allmenu-sub-link">분석일기도<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
-                    <a href="#" class="nr__allmenu-sub-link">위성<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
-                    <a href="#" class="nr__allmenu-sub-link">낙뢰<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">날씨지도<span class="nr__allmenu-sub-link-icon"><i
+                          class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">분석일기도<span class="nr__allmenu-sub-link-icon"><i
+                          class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">위성<span class="nr__allmenu-sub-link-icon"><i
+                          class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">낙뢰<span class="nr__allmenu-sub-link-icon"><i
+                          class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
                   </div>
                 </li>
 
@@ -122,10 +139,14 @@
                     <strong class="nr__allmenu-cat-name">바다</strong>
                   </div>
                   <div class="nr__allmenu-sub-wrap">
-                    <a href="#" class="nr__allmenu-sub-link">일일예보<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
-                    <a href="#" class="nr__allmenu-sub-link">중기예보<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
-                    <a href="#" class="nr__allmenu-sub-link">너울 예측<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
-                    <a href="#" class="nr__allmenu-sub-link">이안류 예측<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">일일예보<span class="nr__allmenu-sub-link-icon"><i
+                          class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">중기예보<span class="nr__allmenu-sub-link-icon"><i
+                          class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">너울 예측<span class="nr__allmenu-sub-link-icon"><i
+                          class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">이안류 예측<span class="nr__allmenu-sub-link-icon"><i
+                          class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
                   </div>
                 </li>
 
@@ -138,8 +159,10 @@
                     <strong class="nr__allmenu-cat-name">항공</strong>
                   </div>
                   <div class="nr__allmenu-sub-wrap">
-                    <a href="#" class="nr__allmenu-sub-link">공항날씨<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
-                    <a href="#" class="nr__allmenu-sub-link">실시간 운항정보<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">공항날씨<span class="nr__allmenu-sub-link-icon"><i
+                          class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">실시간 운항정보<span class="nr__allmenu-sub-link-icon"><i
+                          class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
                   </div>
                 </li>
 
@@ -152,10 +175,14 @@
                     <strong class="nr__allmenu-cat-name">지진</strong>
                   </div>
                   <div class="nr__allmenu-sub-wrap">
-                    <a href="#" class="nr__allmenu-sub-link">실시간 지진감시<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
-                    <a href="#" class="nr__allmenu-sub-link">최근 지진<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
-                    <a href="#" class="nr__allmenu-sub-link">지진해일 조회<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
-                    <a href="#" class="nr__allmenu-sub-link">화산 조회<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">실시간 지진감시<span class="nr__allmenu-sub-link-icon"><i
+                          class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">최근 지진<span class="nr__allmenu-sub-link-icon"><i
+                          class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">지진해일 조회<span class="nr__allmenu-sub-link-icon"><i
+                          class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">화산 조회<span class="nr__allmenu-sub-link-icon"><i
+                          class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
                   </div>
                 </li>
 
@@ -168,8 +195,10 @@
                     <strong class="nr__allmenu-cat-name">태풍</strong>
                   </div>
                   <div class="nr__allmenu-sub-wrap">
-                    <a href="#" class="nr__allmenu-sub-link">태풍 통보문<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
-                    <a href="#" class="nr__allmenu-sub-link">열대감시<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">태풍 통보문<span class="nr__allmenu-sub-link-icon"><i
+                          class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">열대감시<span class="nr__allmenu-sub-link-icon"><i
+                          class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
                   </div>
                 </li>
 
@@ -182,7 +211,8 @@
                     <strong class="nr__allmenu-cat-name">산악</strong>
                   </div>
                   <div class="nr__allmenu-sub-wrap">
-                    <a href="#" class="nr__allmenu-sub-link">산악날씨<span class="nr__allmenu-sub-link-icon"><i class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
+                    <a href="#" class="nr__allmenu-sub-link">산악날씨<span class="nr__allmenu-sub-link-icon"><i
+                          class="icon-mask-arrow2" aria-hidden="true"></i></span></a>
                   </div>
                 </li>
               </ul>
@@ -626,7 +656,7 @@
       <nav class="nr__footer-nav" aria-label="하단 메뉴">
         <ul class="nr__footer-list">
           <li class="nr__footer-item">
-            <button type="button" class="nr__footer-btn is-active" data-target="#section-hourly" aria-current="page">
+            <button type="button" class="nr__footer-btn" data-target="#section-hourly">
               <i class="icon-aspect-main-nav1-theme" data-size="28" aria-hidden="true"></i>
               <span class="nr__footer-text">시간별예보</span>
             </button>
