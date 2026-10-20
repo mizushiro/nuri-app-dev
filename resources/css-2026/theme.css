@@ -33,13 +33,14 @@
   --bg-theme13:#F8F8F8;
   --bg-theme14:#DBE3F7;
   --bg-theme15:#fff;
-  --bg-theme16:#0000001A;
+  --bg-theme16:#00000040;
   --bg-theme17:#fff;
   --bg-theme18:#EAF4FF;
   --bg-theme19:#0475F4;
   --bg-theme20:#00000099;
   --bg-theme21:#fff;
   --bg-theme22:#FAFBFD;
+  --bg-theme23:#0000001A;
 
   --border-theme1:#E9EDF9;
   --border-theme2:#E8ECEF;
@@ -97,7 +98,7 @@
   --bg-theme13:#FFFFFF1A;
   --bg-theme14:#353D50;
   --bg-theme15:#2C364F;
-  --bg-theme16:#FFFFFF1A;
+  --bg-theme16:#FFFFFF40;
   --bg-theme17:#0B0F19;
 
   --bg-theme18:#0475F433;
@@ -105,6 +106,7 @@
   --bg-theme20:#00000099;
   --bg-theme21:#121725;
   --bg-theme22:#191F2C;
+  --bg-theme23:#FFFFFF1A;
 
   --border-theme1:#2A3141;
   --border-theme2:#2C364F;
@@ -162,7 +164,7 @@
   --bg-theme13:#FFFFFF1A;
   --bg-theme14:#353D50;
   --bg-theme15:#2C364F;
-  --bg-theme16:#FFFFFF1A;
+  --bg-theme16:#FFFFFF40;
   --bg-theme17:#0B0F19;
 
   --bg-theme18:#0475F433;
@@ -170,6 +172,7 @@
   --bg-theme20:#00000099;
   --bg-theme21:#121725;
   --bg-theme22:#191F2C;
+  --bg-theme23:#FFFFFF1A;
 
   --border-theme1:#2A3141;
   --border-theme2:#2C364F;

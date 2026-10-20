@@ -175,8 +175,8 @@
 [class*="icon-mask-"][data-color="theme8"] {color:var(--text-theme8) !important}
 
 
-.icon-mask-youtube {width:2.8rem;height:2.8rem;-webkit-mask-image:url(../images-2026/icon/icon-aspect-youtube-w.svg);mask-image:url(../images-2026/icon/icon-aspect-youtube-w.svg);color:#fff}
-.icon-mask-refresh {width:2.8rem;height:2.8rem;-webkit-mask-image:url(../images-2026/icon/icon-aspect-refresh-w.svg);mask-image:url(../images-2026/icon/icon-aspect-refresh-w.svg);color:#fff}
+.icon-mask-youtube {width:2.4rem;height:2.4rem;-webkit-mask-image:url(../images-2026/icon/icon-aspect-youtube-w.svg);mask-image:url(../images-2026/icon/icon-aspect-youtube-w.svg);color:#fff}
+.icon-mask-refresh {width:2.4rem;height:2.4rem;-webkit-mask-image:url(../images-2026/icon/icon-aspect-refresh-w.svg);mask-image:url(../images-2026/icon/icon-aspect-refresh-w.svg);color:#fff}
 
 /* 헤더 및 공통 마스크 아이콘 */
 .icon-mask-my {width:3.4rem;height:3.4rem;-webkit-mask-image:url(../images-2026/icon/icon-mask-my.svg);mask-image:url(../images-2026/icon/icon-mask-my.svg);background-color:var(--text-theme1)}
@@ -185,7 +185,7 @@
 .icon-mask-arrow {width:2.4rem;height:2.4rem;-webkit-mask-image:url(../images-2026/icon/icon-mask-arrow.svg);mask-image:url(../images-2026/icon/icon-mask-arrow.svg);background-color:var(--text-theme2)}
 .icon-mask-arrow2 {width:1.8rem;height:1.8rem;-webkit-mask-image:url(../images-2026/icon/icon-mask-arrow2.svg);mask-image:url(../images-2026/icon/icon-mask-arrow2.svg);background-color:var(--text-theme2)}
 .icon-mask-search {width:2.4rem;height:2.4rem;-webkit-mask-image:url(../images-2026/icon/icon-mask-search.svg);mask-image:url(../images-2026/icon/icon-mask-search.svg);background-color:var(-text-theme1)}
-.icon-mask-allmenu {width:2rem;height:1.8rem;-webkit-mask-image:url(../images-2026/icon/icon-aspect-menu-w.svg);mask-image:url(../images-2026/icon/icon-aspect-menu-w.svg);background-color:#fff}
+.icon-mask-allmenu {width:1.6rem;height:1.4rem;-webkit-mask-image:url(../images-2026/icon/icon-aspect-menu-w.svg);mask-image:url(../images-2026/icon/icon-aspect-menu-w.svg);background-color:#fff}
 .icon-mask-star {width:2.2rem;height:2.2rem;-webkit-mask-image:url(../images-2026/icon/icon-aspect-star.svg);mask-image:url(../images-2026/icon/icon-aspect-star.svg); background-color:#fff}
 :checked + label .icon-mask-star{background-color:#FFCC00}
 .icon-mask-arrow-wind {width:1.3rem;height:1.3rem;-webkit-mask-image:url(../images-2026/icon/icon-mask-arrow-wind.svg);mask-image:url(../images-2026/icon/icon-mask-arrow-wind.svg);}

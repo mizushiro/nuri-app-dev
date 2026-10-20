@@ -86,17 +86,17 @@ export const WeatherMainManager = {
             <div class="nr__summary-card nr__summary-card--main nr__weather-detail-card" data-diaplay-item="info">
               <div class="nr__summary-card-head">
                 <div class="nr__summary-location">
-                  <i class="icon-aspect-location-w" data-size="22" aria-hidden="true"></i>
-                  <strong class="text-16 nr__loc-name" data-weight="600" data-text-shadow="true">${loc.location.fullName}</strong>
-                </div>
-                <div class="nr__summary-actions">
-                  <input type="checkbox" id="place_favorites_${loc.id}" class="sr_only nr__fav-checkbox" data-location-id="${loc.id}" ${loc.location.isFavorite ? "checked" : ""}>
-                  <label for="place_favorites_${loc.id}" aria-label="즐겨찾기" class="nr__summary-circle-btn nr__btn-star">
-                    <i class="icon-mask-star" data-size="22" aria-hidden="true"></i>
-                  </label>
-                  <button type="button" class="nr__summary-circle-btn" aria-label="검색">
-                    <i class="icon-aspect-search-w" data-size="16" aria-hidden="true"></i>
-                  </button>
+                  <i class="icon-aspect-location-w" data-size="16" aria-hidden="true"></i>
+                  <strong class="text-14 nr__loc-name" data-weight="600" data-text-shadow="true">${loc.location.fullName}</strong>
+                  <div class="nr__summary-actions">
+                    <input type="checkbox" id="place_favorites_${loc.id}" class="sr_only nr__fav-checkbox" data-location-id="${loc.id}" ${loc.location.isFavorite ? "checked" : ""}>
+                    <label for="place_favorites_${loc.id}" aria-label="즐겨찾기" class="nr__summary-circle-btn nr__btn-star">
+                      <i class="icon-mask-star" data-size="22" aria-hidden="true"></i>
+                    </label>
+                    <button type="button" class="nr__summary-circle-btn" aria-label="검색">
+                      <i class="icon-aspect-search-w" data-size="16" aria-hidden="true"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
               <div class="nr__summary-weather">
@@ -107,7 +107,7 @@ export const WeatherMainManager = {
                 </div>
               </div>
               <div class="nr__summary-feel text-18" data-weight="500" data-text-shadow="true">
-                <span>체감 <strong data-weight="600">${cur.feelTemp}°</strong></span>
+                <span>체감온도 <strong data-weight="600">${cur.feelTemp}°</strong></span>
                 <span class="nr__summary-slash" aria-hidden="true">/</span>
                 <span>${cur.tempDiffText}</span>
               </div>
