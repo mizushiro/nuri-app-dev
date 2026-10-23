@@ -224,8 +224,10 @@ export const WeatherMainManager = {
           clickable: true,
         },
         on: {
-          slideChange: function () {
+          realIndexChange: function () {
             const index = this.realIndex;
+            if (typeof index !== "number" || isNaN(index)) return;
+            if (index === WeatherMainManager.currentLocationIndex) return;
             WeatherMainManager.renderLocation(index);
           },
         },
@@ -236,13 +238,22 @@ export const WeatherMainManager = {
   /**
    * 특정 지역 인덱스의 전체 날씨 정보를 화면에 렌더링
    * @param {number} index - 위치 배열 인덱스
+   * @param {boolean} [force=false] - 동일 인덱스여도 강제 재렌더링 여부
    */
-  renderLocation: (index) => {
+  renderLocation: (index, force = false) => {
     if (
       !WeatherMainManager.data ||
       !Array.isArray(WeatherMainManager.data.locations)
     )
       return;
+    if (
+      !force &&
+      WeatherMainManager._isRendered &&
+      WeatherMainManager.currentLocationIndex === index
+    ) {
+      return;
+    }
+    WeatherMainManager._isRendered = true;
     WeatherMainManager.currentLocationIndex = index;
     const loc = WeatherMainManager.data.locations[index];
     if (!loc) return;

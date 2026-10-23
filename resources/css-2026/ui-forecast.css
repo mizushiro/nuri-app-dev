@@ -1,150 +1,438 @@
-.nr__hourly-forecast {display:flex;width:100%;gap:1rem;flex-direction:column;}
-.nr__hourly-forecast-days {display:flex;flex-direction:column;gap:0.6rem;width:100%;}
-.nr__hourly-forecast-day {display:flex;gap:0.2rem;width:100%;}
-.nr__weather-card-week,
-.nr__weather-card.active .nr__weather-card-body-btype, 
-.nr__weather-card-body-atype {display:none;}
-.nr__weather-card.active {
-  flex:5;border-color:var(--color-primary);background-color:var(--bg-theme7);
-  .nr__weather-card-week, .nr__weather-card-body-atype {display:flex;}
-  .nr__weather-card-header {background-color:var(--color-primary);color:#fff;}
-}
-.nr__weather-card {display:flex;flex:2;flex-direction:column;overflow:hidden;border-radius:0.8rem;border:1px solid var(--border-theme2);transition:all 0.2s ease;cursor:pointer;}
-.nr__weather-card-header {display:flex;align-items:center;justify-content:center;gap:0.4rem;background-color:var(--bg-theme8);min-height:2.8rem;font-size:1.4rem;font-weight:700;padding:0 0.3rem;}
-.nr__weather-card-body {display:flex;width:100%;height:100%;align-items:center;justify-content:center;background-color:var(--bg-theme9);padding:1.4rem 0.6rem;}
-.nr__weather-card-body-atype {width:100%;gap:0.6rem;justify-content:space-around;}
-.nr__weather-card-body-btype {color:var(--text-theme1);font-size:1.6rem;font-weight:700;}
-.nr__weather-card-icon {display:flex;width:100%;flex:1;align-items:flex-start;justify-content:space-around;color:var(--text-theme2);font-size:1.2rem;font-weight:600;}
-.nr__weather-card-icon-item {display:flex;flex-direction:column;gap:0.4rem;align-items:center;}
-.nr__weather-card-temp {flex:1;width:100%;display:flex;flex-direction:column;gap:1rem;justify-content:center;align-items:center;font-size:1.6rem;font-weight:700;}
-.nr__weather-card-temp-max,
-.nr__weather-card-temp-min {display:block;min-width:2.6rem;text-align:right;}
-.nr__weather-card-temp-max {color:#EE0000;}
-.nr__weather-card-temp-min {color:#3F85D7;}
-.nr__weather-card-body-atype hr {width:1px;display:block;height:4.4rem;border:0;border-left:1px solid var(--bg-theme10);margin:0;}
+/* ==========================================================================
+   UI Forecast Styles (ui-forecast.css)
+   - 상단 단기예보 일정 / 하단 중기예보 일정 분리 관리
+   - 선택된 일정: 카드 형태(확장되어 날씨 아이콘, 최저/최고 기온 등 상세 정보 표시)
+   - 선택되지 않은 일정: 알약(Pill) 형태로 최소화
+   - 가로스크롤 지원 및 선택 항목 중앙 정렬
+   - 단기예보 텍스트 기반 테이블 (Image 1)
+   - 중기예보 기상 테이블 (Image 2)
+   ========================================================================== */
 
-/* 최소화 행 (.is-minimized) : 활성 카드가 없는 단기 또는 중기 행 */
-.nr__hourly-forecast-day.is-minimized {gap:0.2rem;}
-.nr__hourly-forecast-day.is-minimized .nr__weather-card {
-  flex:1 !important;
-  min-width:0 !important;
-  height:3.2rem;
-  min-height:3.2rem;
-  border-radius:0.8rem;
-  background-color:var(--bg-theme8);
-  border:1px solid var(--border-theme2);
-  justify-content:center;
+.nr__hourly-forecast {display:flex;width:100%;gap:1rem;flex-direction:column;overflow-x:hidden}
+
+/* ==========================================================================
+   예보 일정 영역 (상단 단기예보 / 하단 중기예보 분리)
+   ========================================================================== */
+.nr__forecast-schedules {display:flex;flex-direction:column;gap:0.8rem;width:100%;margin-bottom:0.8rem;}
+.nr__schedule-row {
+  width:100%;
+  position:relative;
+  transition:min-height 0.25s ease;
+}
+.nr__schedule-row.is-minimized {min-height:3.2rem;}
+.nr__schedule-row.is-expanded {min-height:9.2rem;}
+
+.nr__schedule-scroll {
+  display:flex;
+  gap:0.6rem;
+  width:100%;
+  overflow-x:auto;
+  overflow-y:hidden;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+  -webkit-overflow-scrolling:touch;
+  padding:0.2rem 0;
   align-items:center;
+  cursor:grab;
 }
-.nr__hourly-forecast-day.is-minimized .nr__weather-card:hover {
-  background-color:var(--bg-theme7);
-}
-.nr__hourly-forecast-day.is-minimized .nr__weather-card-header {
-  height:100%;
-  min-height:unset;
-  background-color:transparent !important;
-  color:var(--text-theme1) !important;
+.nr__schedule-scroll::-webkit-scrollbar {display:none;}
+.nr__schedule-scroll.grabbing {cursor:grabbing;}
+
+/* ==========================================================================
+   최소화 일정 알약(Pill) 버튼 (비활성 행에 표시)
+   ========================================================================== */
+.nr__schedule-pill {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  height:3.2rem;
+  padding:0 1.6rem;
+  border-radius:9999px;
+  border:1px solid var(--border-theme2);
+  background-color:var(--bg-theme8);
   font-size:1.4rem;
   font-weight:700;
-  padding:0;
+  color:var(--text-theme1);
+  white-space:nowrap;
+  flex-shrink:0;
+  cursor:pointer;
+  transition:all 0.2s ease;
+}
+.nr__schedule-pill:hover {
+  background-color:var(--bg-theme7);
+  border-color:var(--border-theme3);
+}
+.nr__schedule-pill.active {
+  background-color:var(--color-primary);
+  color:#fff;
+  border-color:var(--color-primary);
+  box-shadow:0 2px 8px rgba(37, 117, 240, 0.25);
+}
+
+/* ==========================================================================
+   상세 일정 카드 (활성화 행에 표시: 단기 또는 중기)
+   ========================================================================== */
+.nr__schedule-row .nr__weather-card {
+  display:flex;
+  flex-direction:column;
+  height:9.2rem;
+  min-width:6.4rem;
+  width:6.4rem;
+  flex-shrink:0;
+  border-radius:0.8rem;
+  border:1px solid var(--border-theme2);
+  overflow:hidden;
+  background-color:var(--bg-theme9);
+  cursor:pointer;
+  transition:width 0.25s ease, min-width 0.25s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+.nr__schedule-row .nr__weather-card:hover {
+  border-color:var(--border-theme3);
+}
+.nr__schedule-row .nr__weather-card.active {
+  min-width:14.8rem;
+  width:14.8rem;
+  border-color:var(--color-primary);
+  background-color:var(--bg-theme7);
+}
+.nr__schedule-row .nr__weather-card-header {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:0.4rem;
+  min-height:2.8rem;
+  height:2.8rem;
+  background-color:var(--bg-theme8);
+  color:var(--text-theme1);
+  font-size:1.4rem;
+  font-weight:700;
+  padding:0 0.4rem;
+  white-space:nowrap;
+}
+.nr__schedule-row .nr__weather-card.active .nr__weather-card-header {
+  background-color:var(--color-primary);
+  color:#fff;
+}
+.nr__schedule-row .nr__weather-card-body {
+  display:flex;
+  width:100%;
+  flex:1;
+  align-items:center;
+  justify-content:center;
+  padding:0.8rem 0.6rem;
+}
+.nr__schedule-row .nr__weather-card-body-btype {
+  color:var(--text-theme1);
+  font-size:1.6rem;
+  font-weight:700;
   display:flex;
   align-items:center;
   justify-content:center;
 }
-.nr__hourly-forecast-day.is-minimized .nr__weather-card-week,
-.nr__hourly-forecast-day.is-minimized .nr__weather-card-body {
-  display:none !important;
+.nr__schedule-row .nr__weather-card-week,
+.nr__schedule-row .nr__weather-card-body-atype {
+  display:none;
+}
+.nr__schedule-row .nr__weather-card.active .nr__weather-card-week,
+.nr__schedule-row .nr__weather-card.active .nr__weather-card-body-atype {
+  display:flex;
+}
+.nr__schedule-row .nr__weather-card.active .nr__weather-card-body-btype {
+  display:none;
+}
+.nr__schedule-row .nr__weather-card-body-atype {
+  width:100%;
+  gap:0.6rem;
+  justify-content:space-around;
+  align-items:center;
+}
+.nr__schedule-row .nr__weather-card-icon {
+  display:flex;
+  flex:1;
+  align-items:center;
+  justify-content:space-around;
+  color:var(--text-theme2);
+  font-size:1.1rem;
+  font-weight:600;
+}
+.nr__schedule-row .nr__weather-card-icon-item {
+  display:flex;
+  flex-direction:column;
+  gap:0.2rem;
+  align-items:center;
+}
+.nr__schedule-row .nr__weather-card-temp {
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:0.6rem;
+  justify-content:center;
+  align-items:center;
+  font-size:1.6rem;
+  font-weight:700;
+}
+.nr__schedule-row .nr__weather-card-temp-max {color:#EE0000;}
+.nr__schedule-row .nr__weather-card-temp-min {color:#3F85D7;}
+.nr__schedule-row .nr__weather-card-body-atype hr {
+  width:1px;
+  display:block;
+  height:3.6rem;
+  border:0;
+  border-left:1px solid var(--bg-theme10);
+  margin:0;
 }
 
-.nr__row-time-box {display:flex;justify-content:center;align-items:center;font-size:1.1rem;color:#fff;background-color:var(--color-primary);min-height:1.8rem;border-radius:0.9rem;padding:0 0.8rem;line-height:1;}
-.nr__fixed-row-cell {display:flex;align-items:center;justify-content:flex-start;text-align:left;padding:0;font-size:1.4rem;font-weight:600;color:var(--text-theme2);box-sizing:border-box;}
-.nr__cell {display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.4rem;border-bottom:1px solid var(--border-theme5);font-size:1.4rem;color:var(--text-theme1);font-weight:600;box-sizing:border-box;}
+/* ==========================================================================
+   시간별 / 중기 예보 통합 그리드 컨테이너
+   ========================================================================== */
+.nr__hourly-grid-container {
+  display:flex;
+  width:100%;
+  border-top:1px solid var(--border-theme3);
+  border-bottom:1px solid var(--border-theme3);
+  overflow:hidden;
+  position:relative;
+  background:var(--bg-theme1);
+}
 
-.nr__hourly-grid-container {display:flex;width:100%;border-top:1px solid var(--border-theme3);border-bottom:1px solid var(--border-theme3);overflow:hidden;position:relative;}
+.nr__hourly-fixed-column {
+  width:6.4rem;
+  flex-shrink:0;
+  background:var(--bg-theme1);
+  border-right:1px solid var(--border-theme3);
+  z-index:10;
+}
 
-.nr__cell.nr__cell-weather {position: relative;justify-content:flex-start;height:4.7rem;padding:0;background-color:var(--bg-theme11);border-top:1px solid var(--border-theme6);border-right:0 !important;border-bottom:1px solid var(--border-theme6);}
-.nr__hourly-col:first-child .nr__cell.nr__cell-weather [class*="icon-aspect-"] {border-left:1px solid var(--border-theme14);}
-.nr__hourly-col:first-child .nr__cell.nr__cell-weather::before{content:"";display:block;width:50%;height:100%;background-color:var(--bg-theme11);left:0;position: absolute;}
-.nr__cell.nr__cell-weather [class*="icon-aspect-"] {width:100%;height:4.5rem;background-size:2.8rem;background-repeat:no-repeat;background-position:center;transform:translateX(50%);background-color:var(--bg-theme11);border-right:1px solid var(--border-theme14);position:relative;z-index:2;}
+.nr__hourly-scroll-viewport {
+  flex:1;
+  overflow-x:auto;
+  overflow-y:hidden;
+  position:relative;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+  cursor:grab;
+  user-select:none;
+}
+.nr__hourly-scroll-viewport::-webkit-scrollbar {display:none;}
+.nr__hourly-scroll-viewport.grabbing {cursor:grabbing;}
 
-.nr__hourly-fixed-column {width:5.5rem;flex-shrink:0;background:var(--bg-theme1);border-right:1px solid var(--border-theme3);z-index:10;}
+.nr__hourly-dates-wrapper {
+  display:flex;
+  width:max-content;
+  min-width:100%;
+  position:relative;
+}
 
-/* Hourly Columns Container */
+.nr__date-group {
+  display:flex;
+  flex-direction:column;
+  border-right:1px dotted var(--border-theme7);
+  position:relative;
+}
+.nr__date-group:last-child {border-right:none;}
+
 .nr__hourly-columns-row {display:flex;flex-direction:row;}
-.nr__hourly-col {position:relative;width:5.6rem;flex-shrink:0;display:flex;flex-direction:column;box-sizing:border-box;text-align:center;}
+.nr__hourly-col {
+  position:relative;
+  width:5.6rem;
+  flex-shrink:0;
+  display:flex;
+  flex-direction:column;
+  box-sizing:border-box;
+  text-align:center;
+}
 .nr__hourly-col > .nr__cell {border-right:1px dotted var(--border-theme7);}
 .nr__hourly-col:last-child > .nr__cell {border-right:none;}
 
-.nr__hourly-col:first-child .nr__cell-weather [data-icon-weather] {border-left:1px solid var(--border-theme14);}
+/* 고정 열 셀 기본 */
+.nr__fixed-row-cell {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:0 0.4rem;
+  font-size:1.3rem;
+  font-weight:600;
+  color:var(--text-theme2);
+  box-sizing:border-box;
+  border-bottom:1px solid var(--border-theme5);
+  white-space:nowrap;
+}
 
-/* Chart Space Reserved Placeholder */
-.nr__cell.nr__cell-temp-chart {position:relative;justify-content:space-between;padding:1.2rem 0;border-bottom:0;}
-.nr__cell.nr__cell-sensory {font-weight:600;}
+/* 스크롤 열 셀 기본 */
+.nr__cell {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:0.4rem;
+  border-bottom:1px solid var(--border-theme5);
+  font-size:1.4rem;
+  color:var(--text-theme1);
+  font-weight:600;
+  box-sizing:border-box;
+  white-space:nowrap;
+}
 
-.nr__date-group:last-child .nr__hourly-col:last-child .nr__cell-rain-prob-value,
-.nr__date-group:last-child .nr__hourly-col:last-child .nr__cell-precip-value {display:none !important;}
+/* 시각 행 뱃지 */
+.nr__row-time-box {
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  font-size:1.1rem;
+  font-weight:700;
+  color:#fff;
+  background-color:var(--color-primary);
+  min-height:2.0rem;
+  border-radius:1.0rem;
+  padding:0 0.8rem;
+  line-height:1;
+}
 
-.nr__hourly-col:first-child .nr__cell-rain-prob .nr__cell-rain-prob-value,
-.nr__hourly-col:first-child .nr__cell-precip .nr__cell-precip-value {border-left:1px solid var(--border-theme14);}
-.nr__hourly-col:first-child .nr__cell.nr__cell-precip::before{content:"";display:block;width:50%;height:100%;background-color:var(--bg-theme12);left:0;position: absolute;}
-.nr__hourly-col:first-child .nr__cell.nr__cell-rain-prob::before{content:"";display:block;width:50%;height:100%;background-color:var(--bg-theme13);left:0;position: absolute;}
-.nr__hourly-col.nr__empty-col {width:2.7rem;}
+/* ==========================================================================
+   공통 행 높이 및 스타일 (단기예보 Image 1)
+   ========================================================================== */
+.nr__row-time {height:4.4rem;}
+.nr__row-weather {height:4.8rem;}
+.nr__row-temp {height:4.2rem;}
+.nr__row-sensory {height:4.0rem;}
+.nr__row-precip {height:4.0rem;}
+.nr__row-snow {height:4.0rem;}
+.nr__row-rain-prob {height:3.8rem;}
+.nr__row-wind {height:9.6rem;}
+.nr__row-humidity {height:4.0rem;}
+.nr__row-heat {height:3.4rem;}
 
-.nr__cell.nr__cell-precip {position: relative; font-weight:600;background-color:var(--bg-theme12);border-top:1px solid var(--border-theme8);border-bottom:1px solid var(--border-theme9);padding:0;border-right:0 !important;}
-.nr__cell-rain-prob {position: relative;padding:0;font-weight:600;background-color:var(--bg-theme13);border-bottom:0 !important;border-right:0 !important;}
+/* 단기예보 기온 텍스트 (챠트선 대신 텍스트) */
+.nr__cell.nr__cell-temp {
+  font-size:1.4rem;
+  font-weight:600;
+  color:var(--text-theme1);
+}
 
-.nr__cell-rain-prob-value,
-.nr__cell-precip-value {display:flex;width:100%;height:100%;justify-content:center;align-items:center;transform:translateX(50%);background-color:var(--bg-theme12);border-right:1px solid var(--border-theme14);position:relative;z-index:1;}
-.nr__cell-rain-prob-value {background-color:var(--bg-theme13);}
+/* 날씨 / 하늘상태 배경 */
+.nr__fixed-row-cell.nr__row-weather,
+.nr__cell.nr__cell-weather {
+  background-color:var(--bg-theme11);
+  border-top:1px solid var(--border-theme6);
+  border-bottom:1px solid var(--border-theme6);
+}
+.nr__cell.nr__cell-weather [class*="icon-aspect-"] {
+  width:100%;
+  height:4.4rem;
+  background-size:2.8rem;
+  background-repeat:no-repeat;
+  background-position:center;
+}
 
-.nr__cell.nr__cell-humidity {border-top:1px solid var(--border-theme10);border-bottom:0 !important;}
-.nr__cell-heat {background-color:var(--bg-theme13);border-bottom:0 !important;}
-
+/* 강수량 / 적설량 배경 */
+.nr__fixed-row-cell.nr__row-precip,
 .nr__cell.nr__cell-precip,
-.nr__cell.nr__cell-rain-prob,
-.nr__cell.nr__cell-humidity,
-.nr__cell.nr__cell-heat {font-size:1.3rem;}
+.nr__fixed-row-cell.nr__row-snow,
+.nr__cell.nr__cell-snow {
+  background-color:var(--bg-theme12);
+  font-size:1.3rem;
+  font-weight:600;
+}
 
-/* Mode 2: Chart Placeholders */
-.nr__mode-bar-chart .nr__cell.has-chart,
-.nr__cell.nr__cell-rain-chart,
-.nr__cell.nr__cell-wind-chart,
-.nr__cell.nr__cell-humidity-chart {position:relative;background-color:transparent;padding:0;box-sizing:border-box;}
+/* 강수확률 배경 */
+.nr__fixed-row-cell.nr__row-rain-prob,
+.nr__cell.nr__cell-rain-prob {
+  background-color:var(--bg-theme13);
+  font-size:1.3rem;
+  font-weight:600;
+}
 
-/* Wind Cell with direction arrow */
-.nr__cell.nr__cell-wind {display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.6rem;border-bottom:0 !important;}
+/* 바람 셀 */
+.nr__fixed-row-cell.nr__row-wind,
+.nr__cell.nr__cell-wind {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:0.4rem;
+}
 .nr__wind-arrow {line-height:1;}
-.nr__wind-strength {font-size:1.4rem;font-weight:600;color:var(--text-theme1);line-height:1.2;}
-.nr__wind-text {font-size:1.4rem;font-weight:600;color:var(--text-theme1);line-height:1.2;}
+.nr__wind-strength {font-size:1.3rem;font-weight:600;color:var(--text-theme1);line-height:1.2;}
+.nr__wind-text {font-size:1.3rem;font-weight:600;color:var(--text-theme1);line-height:1.2;}
 
-/* Fixed Left Column */
-.nr__fixed-header-cell {display:none;}
+/* 습도 및 폭염 */
+.nr__cell.nr__cell-humidity {font-size:1.3rem;}
+.nr__cell.nr__cell-heat {font-size:1.3rem;background-color:var(--bg-theme13);border-bottom:0 !important;}
 
-/* Custom row heights to match content & chart areas */
-.nr__row-time, .row-time {height:4.6rem;}
-.nr__row-weather, .row-weather {height:4.7rem;}
-.nr__row-temp-chart, .row-temp-chart {height:14.8rem;}
-.nr__row-sensory, .row-sensory {height:4rem;}
-.nr__row-precip, .row-precip {height:4rem;}
-.nr__row-rain-prob, .row-rain-prob {height:3.4rem;}
-.nr__row-rain-prob.has-chart, .nr__mode-bar-chart .nr__row-rain-prob {height:10rem;}
-.nr__row-wind, .row-wind {height:9.6rem;}
-.nr__row-wind.has-chart, .nr__mode-bar-chart .nr__row-wind {height:9.6rem;}
-.nr__row-humidity, .row-humidity {height:4rem;}
-.nr__row-humidity.has-chart, .nr__mode-bar-chart .nr__row-humidity {height:8rem;}
-.nr__map-area .ctrl .layer .close {display:none;}
-.nr__row-heat, .row-heat {height:3rem;}
+/* ==========================================================================
+   중기예보 전용 행 높이 및 스타일 (중기예보 Image 2)
+   ========================================================================== */
+.nr__row-minmax-temp {height:4.4rem;}
+.nr__row-avg-temp {height:4.2rem;}
+.nr__row-rain-possibility {height:4.4rem;}
+.nr__row-rain-trend {height:4.2rem;}
 
-/* Horizontally Scrollable Viewport */
-.nr__hourly-scroll-viewport {flex:1;overflow-x:auto;overflow-y:hidden;position:relative;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none;cursor:grab;user-select:none;}
-.nr__hourly-scroll-viewport::-webkit-scrollbar {display:none;}
-.nr__hourly-scroll-viewport.grabbing {cursor:grabbing;}
-.nr__hourly-dates-wrapper {display:flex;width:max-content;min-width:100%;position:relative;}
+/* 최저/최고기온 */
+.nr__temp-val {font-size:1.4rem;font-weight:700;}
+.nr__temp-val--min {color:#0070EA;}
+.nr__temp-val--max {color:#EE0000;}
 
-/* Hourly Chart Layers */
-.nr__hourly-chart-layer {position:absolute;left:0;width:max-content;pointer-events:none;z-index:3;}
-.nr__hourly-chart-layer svg {display:block;height:100%;overflow:visible;}
+/* 평균기온 */
+.nr__cell-avg-temp {font-size:1.4rem;font-weight:600;color:var(--text-theme1);}
 
-/* Individual Date Group Block */
-.nr__date-group {display:flex;flex-direction:column;border-right:0.1rem dotted var(--border-theme7);position:relative;}
-.nr__date-group:last-child {border-right:none;}
+/* 강수가능성 */
+.nr__fixed-row-cell.nr__row-rain-possibility,
+.nr__cell.nr__cell-rain-possibility {
+  background-color:var(--bg-theme13);
+  padding:0.4rem 0.2rem;
+}
+.nr__rain-badge {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:4.6rem;
+  height:2.6rem;
+  padding:0 0.6rem;
+  border-radius:0.4rem;
+  font-size:1.2rem;
+  font-weight:700;
+  line-height:1;
+  white-space:nowrap;
+}
+.nr__rain-badge.is-high {
+  background-color:#1976D2;
+  color:#ffffff;
+}
+.nr__rain-badge.is-mid {
+  background-color:#DBEAFE;
+  color:#1E40AF;
+}
+.nr__rain-badge.is-low {
+  background-color:#F1F5F9;
+  color:#334155;
+}
+.nr__rain-badge.is-none {
+  background-color:#FFFFFF;
+  color:#64748B;
+  border:1px solid #E2E8F0;
+}
+
+/* 강수가능성 변화추이 */
+.nr__trend-val {font-size:1.3rem;font-weight:700;}
+.nr__trend-val.is-high {color:#EE0000;}
+.nr__trend-val.is-low {color:#0070EA;}
+.nr__trend-val.is-same {color:var(--text-theme1);font-weight:600;}
+
+/* 고정 열 끝 행 테두리 정리 */
+.nr__fixed-row-cell:last-child,
+.nr__hourly-col > .nr__cell:last-child {
+  border-bottom:none;
+}
+
+/* ==========================================================================
+   중기예보 활성 시 3시간/1시간 간격 선택 영역 숨김
+   ========================================================================== */
+#section-hourly.is-mid-term .nr__content-type,
+#section-hourly[data-forecast-type="mid"] .nr__content-type,
+.is-mid-term .nr__content-type:has(input[name="time"]),
+[data-forecast-type="mid"] .nr__content-type:has(input[name="time"]) {
+  display: none !important;
+}
+

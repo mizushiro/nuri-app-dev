@@ -278,457 +278,481 @@
                 "time": 1,
                 "icon": "NB01",
                 "text": "맑음",
-                "temp": 18,
-                "sensoryTemp": 17,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 0,
+                "rainProb": 26,
                 "windDir": 45,
-                "windSpeed": 2,
+                "windSpeed": 6,
                 "windText": [
-                  "북동풍",
+                  "북풍",
                   "약",
-                  2
+                  6
                 ],
-                "humidity": 68,
-                "heatImpact": "-"
+                "humidity": 45,
+                "heatImpact": "-",
+                "snowfall": 3
               },
               {
                 "time": 2,
                 "icon": "NB01",
                 "text": "맑음",
-                "temp": 17,
-                "sensoryTemp": 16,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 0,
+                "rainProb": 26,
                 "windDir": 45,
-                "windSpeed": 2,
+                "windSpeed": 6,
                 "windText": [
-                  "북동풍",
+                  "북풍",
                   "약",
-                  2
+                  6
                 ],
-                "humidity": 70,
-                "heatImpact": "-"
+                "humidity": 45,
+                "heatImpact": "-",
+                "snowfall": 3
               },
               {
                 "time": 3,
                 "icon": "NB01",
                 "text": "맑음",
-                "temp": 17,
-                "sensoryTemp": 16,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 0,
+                "rainProb": 26,
                 "windDir": 45,
-                "windSpeed": 2,
+                "windSpeed": 6,
                 "windText": [
-                  "북동풍",
+                  "북풍",
                   "약",
-                  2
+                  6
                 ],
-                "humidity": 72,
-                "heatImpact": "-"
+                "humidity": 45,
+                "heatImpact": "-",
+                "snowfall": 3
               },
               {
                 "time": 4,
                 "icon": "NB01",
                 "text": "맑음",
-                "temp": 16,
-                "sensoryTemp": 15,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 0,
+                "rainProb": 26,
                 "windDir": 45,
-                "windSpeed": 2,
+                "windSpeed": 6,
                 "windText": [
-                  "북동풍",
+                  "북풍",
                   "약",
-                  2
+                  6
                 ],
-                "humidity": 75,
-                "heatImpact": "-"
+                "humidity": 45,
+                "heatImpact": "-",
+                "snowfall": 3
               },
               {
                 "time": 5,
                 "icon": "NB01",
                 "text": "맑음",
-                "temp": 16,
-                "sensoryTemp": 15,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 0,
+                "rainProb": 26,
                 "windDir": 45,
-                "windSpeed": 2,
+                "windSpeed": 6,
                 "windText": [
-                  "북동풍",
+                  "북풍",
                   "약",
-                  2
+                  6
                 ],
-                "humidity": 76,
-                "heatImpact": "-"
+                "humidity": 45,
+                "heatImpact": "-",
+                "snowfall": 3
               },
               {
                 "time": 6,
                 "icon": "NB01",
                 "text": "맑음",
-                "temp": 16,
-                "sensoryTemp": 15,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 0,
+                "rainProb": 26,
                 "windDir": 45,
-                "windSpeed": 2,
+                "windSpeed": 6,
                 "windText": [
-                  "북동풍",
+                  "북풍",
                   "약",
-                  2
+                  6
                 ],
-                "humidity": 75,
-                "heatImpact": "-"
+                "humidity": 45,
+                "heatImpact": "-",
+                "snowfall": 3
               },
               {
                 "time": 7,
                 "icon": "NB01",
                 "text": "맑음",
-                "temp": 16,
-                "sensoryTemp": 15,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 0,
+                "rainProb": 26,
                 "windDir": 45,
-                "windSpeed": 2,
+                "windSpeed": 6,
                 "windText": [
-                  "북동풍",
+                  "북풍",
                   "약",
-                  2
+                  6
                 ],
-                "humidity": 70,
-                "heatImpact": "-"
+                "humidity": 45,
+                "heatImpact": "-",
+                "snowfall": 3
               },
               {
                 "time": 8,
                 "icon": "NB01",
                 "text": "맑음",
-                "temp": 17,
-                "sensoryTemp": 16,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 0,
+                "rainProb": 26,
                 "windDir": 45,
-                "windSpeed": 2,
+                "windSpeed": 6,
                 "windText": [
-                  "북동풍",
+                  "북풍",
                   "약",
-                  2
+                  6
                 ],
-                "humidity": 65,
-                "heatImpact": "-"
+                "humidity": 45,
+                "heatImpact": "-",
+                "snowfall": 3
               },
               {
                 "time": 9,
                 "icon": "NB01",
                 "text": "맑음",
-                "temp": 18,
-                "sensoryTemp": 17,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 0,
+                "rainProb": 26,
                 "windDir": 45,
-                "windSpeed": 2,
+                "windSpeed": 6,
                 "windText": [
-                  "북동풍",
+                  "북풍",
                   "약",
-                  2
+                  6
                 ],
-                "humidity": 58,
-                "heatImpact": "-"
+                "humidity": 45,
+                "heatImpact": "-",
+                "snowfall": 3
               },
               {
                 "time": 10,
                 "icon": "NB01",
                 "text": "맑음",
-                "temp": 20,
-                "sensoryTemp": 19,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 0,
+                "rainProb": 26,
                 "windDir": 45,
-                "windSpeed": 2,
+                "windSpeed": 6,
                 "windText": [
-                  "북동풍",
+                  "북풍",
                   "약",
-                  2
+                  6
                 ],
-                "humidity": 52,
-                "heatImpact": "-"
+                "humidity": 45,
+                "heatImpact": "-",
+                "snowfall": 3
               },
               {
                 "time": 11,
                 "icon": "NB01",
                 "text": "맑음",
-                "temp": 21,
-                "sensoryTemp": 20,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 0,
+                "rainProb": 26,
                 "windDir": 45,
-                "windSpeed": 2,
+                "windSpeed": 6,
                 "windText": [
-                  "북동풍",
+                  "북풍",
                   "약",
-                  2
+                  6
                 ],
-                "humidity": 48,
-                "heatImpact": "-"
+                "humidity": 45,
+                "heatImpact": "-",
+                "snowfall": 3
               },
               {
                 "time": 12,
                 "icon": "NB02",
                 "text": "구름조금",
-                "temp": 23,
-                "sensoryTemp": 23,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 10,
+                "rainProb": 26,
                 "windDir": 90,
-                "windSpeed": 3,
+                "windSpeed": 6,
                 "windText": [
-                  "동풍",
+                  "북풍",
                   "약",
-                  3
+                  6
                 ],
                 "humidity": 45,
-                "heatImpact": "-"
+                "heatImpact": "-",
+                "snowfall": 3
               },
               {
                 "time": 13,
                 "icon": "NB02",
                 "text": "구름조금",
-                "temp": 24,
-                "sensoryTemp": 24,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 10,
+                "rainProb": 26,
                 "windDir": 90,
-                "windSpeed": 3,
+                "windSpeed": 6,
                 "windText": [
-                  "동풍",
+                  "북풍",
                   "약",
-                  3
+                  6
                 ],
-                "humidity": 42,
-                "heatImpact": "-"
+                "humidity": 45,
+                "heatImpact": "-",
+                "snowfall": 3
               },
               {
                 "time": 14,
                 "icon": "NB02",
                 "text": "구름조금",
-                "temp": 25,
-                "sensoryTemp": 25,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 10,
+                "rainProb": 26,
                 "windDir": 90,
-                "windSpeed": 3,
+                "windSpeed": 6,
                 "windText": [
-                  "동풍",
+                  "북풍",
                   "약",
-                  3
+                  6
                 ],
-                "humidity": 40,
-                "heatImpact": "-"
+                "humidity": 45,
+                "heatImpact": "-",
+                "snowfall": 3
               },
               {
                 "time": 15,
                 "icon": "NB02",
                 "text": "구름조금",
-                "temp": 25,
-                "sensoryTemp": 25,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 10,
+                "rainProb": 26,
                 "windDir": 90,
-                "windSpeed": 3,
+                "windSpeed": 6,
                 "windText": [
-                  "동풍",
+                  "북풍",
                   "약",
-                  3
+                  6
                 ],
-                "humidity": 42,
-                "heatImpact": "-"
+                "humidity": 45,
+                "heatImpact": "-",
+                "snowfall": 3
               },
               {
                 "time": 16,
                 "icon": "NB02",
                 "text": "구름조금",
-                "temp": 25,
-                "sensoryTemp": 25,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 10,
+                "rainProb": 26,
                 "windDir": 90,
-                "windSpeed": 3,
+                "windSpeed": 6,
                 "windText": [
-                  "동풍",
+                  "북풍",
                   "약",
-                  3
+                  6
                 ],
-                "humidity": 46,
-                "heatImpact": "-"
+                "humidity": 45,
+                "heatImpact": "-",
+                "snowfall": 3
               },
               {
                 "time": 17,
                 "icon": "NB02",
                 "text": "구름조금",
-                "temp": 25,
-                "sensoryTemp": 24,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 10,
+                "rainProb": 26,
                 "windDir": 90,
-                "windSpeed": 3,
+                "windSpeed": 6,
                 "windText": [
-                  "동풍",
+                  "북풍",
                   "약",
-                  3
+                  6
                 ],
-                "humidity": 50,
-                "heatImpact": "-"
+                "humidity": 45,
+                "heatImpact": "-",
+                "snowfall": 3
               },
               {
                 "time": 18,
                 "icon": "NB01",
                 "text": "맑음",
-                "temp": 24,
-                "sensoryTemp": 23,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 0,
+                "rainProb": 26,
                 "windDir": 45,
-                "windSpeed": 2,
+                "windSpeed": 6,
                 "windText": [
-                  "북동풍",
+                  "북풍",
                   "약",
-                  2
+                  6
                 ],
-                "humidity": 55,
-                "heatImpact": "-"
+                "humidity": 45,
+                "heatImpact": "-",
+                "snowfall": 3
               },
               {
                 "time": 19,
                 "icon": "NB01",
                 "text": "맑음",
-                "temp": 24,
-                "sensoryTemp": 23,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 0,
+                "rainProb": 26,
                 "windDir": 45,
-                "windSpeed": 2,
+                "windSpeed": 6,
                 "windText": [
-                  "북동풍",
+                  "북풍",
                   "약",
-                  2
+                  6
                 ],
-                "humidity": 58,
-                "heatImpact": "-"
+                "humidity": 45,
+                "heatImpact": "-",
+                "snowfall": 3
               },
               {
                 "time": 20,
                 "icon": "NB01",
                 "text": "맑음",
-                "temp": 23,
-                "sensoryTemp": 22,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 0,
+                "rainProb": 26,
                 "windDir": 45,
-                "windSpeed": 2,
+                "windSpeed": 6,
                 "windText": [
-                  "북동풍",
+                  "북풍",
                   "약",
-                  2
+                  6
                 ],
-                "humidity": 60,
-                "heatImpact": "-"
+                "humidity": 45,
+                "heatImpact": "-",
+                "snowfall": 3
               },
               {
                 "time": 21,
                 "icon": "NB01",
                 "text": "맑음",
-                "temp": 22,
-                "sensoryTemp": 21,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 0,
+                "rainProb": 26,
                 "windDir": 45,
-                "windSpeed": 2,
+                "windSpeed": 6,
                 "windText": [
-                  "북동풍",
+                  "북풍",
                   "약",
-                  2
+                  6
                 ],
-                "humidity": 62,
-                "heatImpact": "-"
+                "humidity": 45,
+                "heatImpact": "-",
+                "snowfall": 3
               },
               {
                 "time": 22,
                 "icon": "NB01",
                 "text": "맑음",
-                "temp": 21,
-                "sensoryTemp": 20,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 0,
+                "rainProb": 26,
                 "windDir": 45,
-                "windSpeed": 2,
+                "windSpeed": 6,
                 "windText": [
-                  "북동풍",
+                  "북풍",
                   "약",
-                  2
+                  6
                 ],
-                "humidity": 64,
-                "heatImpact": "-"
+                "humidity": 45,
+                "heatImpact": "-",
+                "snowfall": 3
               },
               {
                 "time": 23,
                 "icon": "NB01",
                 "text": "맑음",
-                "temp": 20,
-                "sensoryTemp": 19,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 0,
+                "rainProb": 26,
                 "windDir": 45,
-                "windSpeed": 2,
+                "windSpeed": 6,
                 "windText": [
-                  "북동풍",
+                  "북풍",
                   "약",
-                  2
+                  6
                 ],
-                "humidity": 65,
-                "heatImpact": "-"
+                "humidity": 45,
+                "heatImpact": "-",
+                "snowfall": 3
               },
               {
                 "time": 24,
                 "icon": "NB01",
                 "text": "맑음",
-                "temp": 19,
-                "sensoryTemp": 18,
-                "precip": "-",
+                "temp": 12,
+                "sensoryTemp": 10,
+                "precip": 8,
                 "precipIntensity": "-",
-                "rainProb": 0,
+                "rainProb": 26,
                 "windDir": 45,
-                "windSpeed": 2,
+                "windSpeed": 6,
                 "windText": [
-                  "북동풍",
+                  "북풍",
                   "약",
-                  2
+                  6
                 ],
-                "humidity": 66,
-                "heatImpact": "-"
+                "humidity": 45,
+                "heatImpact": "-",
+                "snowfall": 3
               }
             ]
           },
@@ -1688,8 +1712,8 @@
             "forecastType": "중기예보",
             "isToday": false,
             "active": false,
-            "minTemp": 14,
-            "maxTemp": 22,
+            "minTemp": 8,
+            "maxTemp": 32,
             "amIcon": "NB02",
             "amText": "구름조금",
             "amRain": 30,
@@ -1739,13 +1763,13 @@
               },
               {
                 "time": 3,
-                "icon": "NB02",
+                "icon": "NB12",
                 "text": "구름조금",
-                "temp": 16,
+                "temp": 12,
                 "sensoryTemp": 15,
                 "precip": "-",
                 "precipIntensity": "-",
-                "rainProb": 30,
+                "rainProb": 20,
                 "windDir": 45,
                 "windSpeed": 2,
                 "windText": [
@@ -1754,7 +1778,9 @@
                   2
                 ],
                 "humidity": 65,
-                "heatImpact": "-"
+                "heatImpact": "-",
+                "rainPossibility": "조금",
+                "rainTrend": "높음"
               },
               {
                 "time": 4,
@@ -1796,13 +1822,13 @@
               },
               {
                 "time": 6,
-                "icon": "NB02",
+                "icon": "NB01",
                 "text": "구름조금",
-                "temp": 14,
+                "temp": 10,
                 "sensoryTemp": 13,
                 "precip": "-",
                 "precipIntensity": "-",
-                "rainProb": 30,
+                "rainProb": 20,
                 "windDir": 45,
                 "windSpeed": 2,
                 "windText": [
@@ -1811,7 +1837,9 @@
                   2
                 ],
                 "humidity": 65,
-                "heatImpact": "-"
+                "heatImpact": "-",
+                "rainPossibility": "조금",
+                "rainTrend": "낮음"
               },
               {
                 "time": 7,
@@ -1853,13 +1881,13 @@
               },
               {
                 "time": 9,
-                "icon": "NB02",
+                "icon": "NB01",
                 "text": "구름조금",
-                "temp": 17,
+                "temp": 10,
                 "sensoryTemp": 16,
                 "precip": "-",
                 "precipIntensity": "-",
-                "rainProb": 30,
+                "rainProb": 45,
                 "windDir": 45,
                 "windSpeed": 2,
                 "windText": [
@@ -1868,7 +1896,9 @@
                   2
                 ],
                 "humidity": 65,
-                "heatImpact": "-"
+                "heatImpact": "-",
+                "rainPossibility": "보통",
+                "rainTrend": "비슷"
               },
               {
                 "time": 10,
@@ -1910,13 +1940,13 @@
               },
               {
                 "time": 12,
-                "icon": "NB15",
+                "icon": "NB01",
                 "text": "흐리고 비",
                 "temp": 20,
                 "sensoryTemp": 19,
                 "precip": "-",
                 "precipIntensity": "-",
-                "rainProb": 70,
+                "rainProb": 80,
                 "windDir": 90,
                 "windSpeed": 2,
                 "windText": [
@@ -1925,7 +1955,9 @@
                   2
                 ],
                 "humidity": 50,
-                "heatImpact": "-"
+                "heatImpact": "-",
+                "rainPossibility": "높음",
+                "rainTrend": "높음"
               },
               {
                 "time": 13,
@@ -1967,13 +1999,13 @@
               },
               {
                 "time": 15,
-                "icon": "NB15",
+                "icon": "NB01",
                 "text": "흐리고 비",
-                "temp": 21,
+                "temp": 24,
                 "sensoryTemp": 20,
                 "precip": 5,
                 "precipIntensity": "보통",
-                "rainProb": 70,
+                "rainProb": 20,
                 "windDir": 90,
                 "windSpeed": 2,
                 "windText": [
@@ -1982,7 +2014,9 @@
                   2
                 ],
                 "humidity": 50,
-                "heatImpact": "-"
+                "heatImpact": "-",
+                "rainPossibility": "조금",
+                "rainTrend": "높음"
               },
               {
                 "time": 16,
@@ -2024,13 +2058,13 @@
               },
               {
                 "time": 18,
-                "icon": "NB15",
+                "icon": "NB02",
                 "text": "흐리고 비",
-                "temp": 19,
+                "temp": 18,
                 "sensoryTemp": 18,
                 "precip": 5,
                 "precipIntensity": "보통",
-                "rainProb": 70,
+                "rainProb": 5,
                 "windDir": 90,
                 "windSpeed": 2,
                 "windText": [
@@ -2039,7 +2073,9 @@
                   2
                 ],
                 "humidity": 50,
-                "heatImpact": "-"
+                "heatImpact": "-",
+                "rainPossibility": "거의없음",
+                "rainTrend": "비슷"
               },
               {
                 "time": 19,
@@ -2081,13 +2117,13 @@
               },
               {
                 "time": 21,
-                "icon": "NB15",
+                "icon": "NB12",
                 "text": "흐리고 비",
-                "temp": 17,
+                "temp": 16,
                 "sensoryTemp": 16,
                 "precip": "-",
                 "precipIntensity": "-",
-                "rainProb": 70,
+                "rainProb": 20,
                 "windDir": 90,
                 "windSpeed": 2,
                 "windText": [
@@ -2096,7 +2132,9 @@
                   2
                 ],
                 "humidity": 50,
-                "heatImpact": "-"
+                "heatImpact": "-",
+                "rainPossibility": "조금",
+                "rainTrend": "높음"
               },
               {
                 "time": 22,
@@ -2138,13 +2176,13 @@
               },
               {
                 "time": 24,
-                "icon": "NB15",
+                "icon": "NB13",
                 "text": "흐리고 비",
-                "temp": 15,
+                "temp": 12,
                 "sensoryTemp": 14,
                 "precip": "-",
                 "precipIntensity": "-",
-                "rainProb": 70,
+                "rainProb": 5,
                 "windDir": 90,
                 "windSpeed": 2,
                 "windText": [
@@ -2153,7 +2191,9 @@
                   2
                 ],
                 "humidity": 50,
-                "heatImpact": "-"
+                "heatImpact": "-",
+                "rainPossibility": "거의없음",
+                "rainTrend": "낮음"
               }
             ]
           },
@@ -2163,7 +2203,7 @@
             "forecastType": "중기예보",
             "isToday": false,
             "active": false,
-            "minTemp": 12,
+            "minTemp": 8,
             "maxTemp": 21,
             "amIcon": "NB04",
             "amText": "흐림",
@@ -2214,13 +2254,13 @@
               },
               {
                 "time": 3,
-                "icon": "NB04",
+                "icon": "NB12",
                 "text": "흐림",
-                "temp": 14,
+                "temp": 12,
                 "sensoryTemp": 13,
                 "precip": "-",
                 "precipIntensity": "-",
-                "rainProb": 60,
+                "rainProb": 20,
                 "windDir": 45,
                 "windSpeed": 2,
                 "windText": [
@@ -2229,7 +2269,9 @@
                   2
                 ],
                 "humidity": 65,
-                "heatImpact": "-"
+                "heatImpact": "-",
+                "rainPossibility": "조금",
+                "rainTrend": "높음"
               },
               {
                 "time": 4,
@@ -2271,13 +2313,13 @@
               },
               {
                 "time": 6,
-                "icon": "NB04",
+                "icon": "NB01",
                 "text": "흐림",
-                "temp": 12,
+                "temp": 10,
                 "sensoryTemp": 11,
                 "precip": "-",
                 "precipIntensity": "-",
-                "rainProb": 60,
+                "rainProb": 20,
                 "windDir": 45,
                 "windSpeed": 2,
                 "windText": [
@@ -2286,7 +2328,9 @@
                   2
                 ],
                 "humidity": 65,
-                "heatImpact": "-"
+                "heatImpact": "-",
+                "rainPossibility": "조금",
+                "rainTrend": "낮음"
               },
               {
                 "time": 7,
