@@ -1,429 +1,2324 @@
 /* ==========================================================================
-   UI Forecast Styles (ui-forecast.css)
-   - 상단 단기예보 일정 / 하단 중기예보 일정 분리 관리
-   - 선택된 일정: 카드 형태(확장되어 날씨 아이콘, 최저/최고 기온 등 상세 정보 표시)
-   - 선택되지 않은 일정: 알약(Pill) 형태로 최소화
-   - 가로스크롤 지원 및 선택 항목 중앙 정렬
-   - 단기예보 텍스트 기반 테이블 (Image 1)
-   - 중기예보 기상 테이블 (Image 2)
+   UI Forecast Unified Styles (ui-forecast.css)
+   - nuri-web (forecast.css) 기준 시간별/중기예보 컴포넌트 및 차트 스타일 100% 동기화
+   - 상단 단기예보 일정 / 하단 중기예보 일정 분리 관리 (.nr__forecast-schedules)
+   - 하단 시간별 예보 그리드 & SVG 차트 (Mode 1:선형 차트, Mode 2:막대 차트, Mode 3:리스트/표)
+   - 다크모드 (.dark-theme, .night-theme, [data-theme="dark"], .theme-dark) 완벽 대응
    ========================================================================== */
 
-.nr__hourly-forecast {display:flex;width:100%;gap:1rem;flex-direction:column;overflow-x:hidden}
+:root {
+	/* 1. 배경 색상 (Backgrounds) */
+	--nr-fc-bg-card:#ffffff;
+	--nr-fc-bg-subtle:#F4F5F6;
+	--nr-fc-bg-muted:#EEF2F7;
+	--nr-fc-bg-hover:#f8f9fa;
+	--nr-fc-bg-active:#F0F8FF;
+	--nr-fc-bg-interval:#f1f3f5;
+	--nr-fc-bg-col-hover:#f1f1f1;
+	--nr-fc-bg-pill-icon:#f2fafd;
+	--nr-fc-bg-input:#ffffff;
+	--nr-fc-bg-item-hover:#F1F5F9;
+	--nr-fc-bg-test-panel:#f8fafc;
+
+	/* 2. 텍스트 색상 (Text Colors) */
+	--nr-fc-text-primary:#111111;
+	--nr-fc-text-secondary:#333333;
+	--nr-fc-text-tertiary:#666666;
+	--nr-fc-text-muted:#727272;
+	--nr-fc-text-subtle:#767676;
+	--nr-fc-text-light:#ffffff;
+	--nr-fc-temp-range:#555555;
+	--nr-fc-divider:#cccccc;
+	--nr-fc-text-sensory-sub:#777777;
+
+	/* 3. 테두리 및 구분선 (Borders & Dividers) */
+	--nr-fc-border-light:#e5e8eb;
+	--nr-fc-border-subtle:#f0f0f0;
+	--nr-fc-border-muted:#D4D4D4;
+	--nr-fc-border-dark:#000000;
+	--nr-fc-border-radio:#adb5bd;
+	--nr-fc-border-btn:#ced4da;
+	--nr-fc-border-divider:#E2E8F0;
+	--nr-fc-border-row:#F0F0F5;
+	--nr-fc-border-menu:#79828f;
+	--nr-fc-border-sky:#E0E6EF;
+	--nr-fc-cell-border-white:#ffffff;
+	--nr-fc-intensity-snow-border:#F3F3F3;
+	--nr-fc-tab-border-active:#201F3B;
+
+	/* 4. 브랜드 및 상태 포인트 색상 (Primary & Accent Colors) */
+	--nr-fc-primary:#0088ff;
+	--nr-fc-primary-accent:#009AE1;
+	--nr-fc-primary-hover-bg:#EEF7FC;
+	--nr-fc-info-icon-hover:#0b78cb;
+
+	/* 5. 날씨 및 기온 관련 색상 (Weather & Temperature) */
+	--nr-fc-temp-min:#009AE1;
+	--nr-fc-temp-min-alt:#009AE1;
+	--nr-fc-temp-max:#E83828;
+	--nr-fc-temp-max-alt:#E83828;
+	--nr-fc-temp-pm:#DC143C;
+	--nr-fc-temp-line:#003763;
+	--nr-fc-sensory-line:#727272;
+	--nr-fc-subcard-temp:#809BB1;
+
+	/* 6. 강수 / 적설 / 강수가능성 / 차트 보조 색상 */
+	--nr-fc-precip-bg:#E6F5FC;
+	--nr-fc-precip-border:#CFECF9;
+	--nr-fc-precip-border-top:rgba(0, 154, 255, 0.6);
+	--nr-fc-precip-bar:#8DC0FD;
+	--nr-fc-snow-bar:#D7E2EF;
+	--nr-fc-possibility-high:#338CED;
+	--nr-fc-possibility-normal:#D0E6FF;
+	--nr-fc-possibility-low:#EEF6FE;
+	--nr-fc-chart-wind-bar-bg:#E6E7EE;
+	--nr-fc-chart-wind-pill:#0C305B;
+	--nr-fc-chart-humidity-bar-bg:#C1DBFE;
+
+	/* 7. 그림자 (Shadows) */
+	--nr-fc-shadow-card:rgba(0, 0, 0, 0.08);
+	--nr-fc-shadow-card-hover:rgba(0, 136, 255, 0.1);
+	--nr-fc-shadow-card-active:rgba(0, 136, 255, 0.15);
+	--nr-fc-shadow-popup:rgba(0, 0, 0, 0.16);
+	--nr-fc-shadow-menu:rgba(0, 0, 0, 0.12);
+	--nr-fc-shadow-btn:rgba(0, 0, 0, 0.04);
+	--nr-fc-shadow-chart-point:rgba(0, 0, 0, 0.2);
+
+	/* 8. 테스트 패널 색상 (Test Panel) */
+	--nr-fc-border-test:#94a3b8;
+	--nr-fc-badge-blue:#2563eb;
+	--nr-fc-badge-bg:#eff6ff;
+	--nr-fc-badge-border:#bfdbfe;
+	--nr-fc-test-title:#1e293b;
+	--nr-fc-test-btn-text:#475569;
+	--nr-fc-test-btn-border:#cbd5e1;
+	--nr-fc-test-title-hover:#0f172a;
+	--nr-fc-test-label:#334155;
+	--nr-fc-test-checked:#1d4ed8;
+}
+
+/* 다크모드 테마 변수 (Dark Mode Overrides - nuri-app & nuri-web 통합) */
+[data-theme="dark"],
+.theme-dark,
+.dark-theme,
+.night-theme {
+	/* 1. 배경 색상 */
+	--nr-fc-bg-card:var(--bg-theme1, #1c222c);
+	--nr-fc-bg-subtle:#373B47;
+	--nr-fc-bg-muted:#2a3342;
+	--nr-fc-bg-hover:#323d4e;
+	--nr-fc-bg-active:#1e355b;
+	--nr-fc-bg-interval:#283241;
+	--nr-fc-bg-col-hover:#293444;
+	--nr-fc-bg-pill-icon:#233041;
+	--nr-fc-bg-input:#1c222c;
+	--nr-fc-bg-item-hover:#283241;
+	--nr-fc-bg-test-panel:#202733;
+
+	/* 2. 텍스트 색상 */
+	--nr-fc-text-primary:var(--text-theme1, #f8fafc);
+	--nr-fc-text-secondary:var(--text-theme2, #e2e8f0);
+	--nr-fc-text-tertiary:#cbd5e1;
+	--nr-fc-text-muted:#94a3b8;
+	--nr-fc-text-subtle:#a0aec0;
+	--nr-fc-text-light:#ffffff;
+	--nr-fc-temp-range:#cbd5e1;
+	--nr-fc-divider:#475569;
+	--nr-fc-text-sensory-sub:#94a3b8;
+
+	/* 3. 테두리 및 구분선 */
+	--nr-fc-border-light:var(--border-theme2, #334155);
+	--nr-fc-border-subtle:var(--border-theme5, #2d3748);
+	--nr-fc-border-muted:#FFFFFF26;;
+	--nr-fc-border-dark:var(--border-theme3, #64748b);
+	--nr-fc-border-radio:#64748b;
+	--nr-fc-border-btn:#475569;
+	--nr-fc-border-divider:#334155;
+	--nr-fc-border-row:#2d3748;
+	--nr-fc-border-menu:#475569;
+	--nr-fc-border-sky:#2d3748;
+	--nr-fc-cell-border-white:#242c38;
+	--nr-fc-intensity-snow-border:#373B47;
+	--nr-fc-tab-border-active:#38bdf8;
+
+	/* 4. 브랜드 및 상태 포인트 색상 */
+	--nr-fc-primary:#38bdf8;
+	--nr-fc-primary-accent:#0ea5e9;
+	--nr-fc-primary-hover-bg:#1e3a5f;
+	--nr-fc-info-icon-hover:#38bdf8;
+
+	/* 5. 날씨 및 기온 관련 색상 */
+	--nr-fc-temp-min:#1787FF;
+	--nr-fc-temp-min-alt:#38bdf8;
+	--nr-fc-temp-max:#FF0000;
+	--nr-fc-temp-max-alt:#ef4444;
+	--nr-fc-temp-pm:#f87171;
+	--nr-fc-temp-line:#60a5fa;
+	--nr-fc-sensory-line:#94a3b8;
+	--nr-fc-subcard-temp:#475569;
+
+	/* 6. 강수 / 적설 / 강수가능성 / 차트 보조 색상 */
+	--nr-fc-precip-bg:#1e324d;
+	--nr-fc-precip-border:#2b4566;
+	--nr-fc-precip-border-top:rgba(56, 189, 248, 0.4);
+	--nr-fc-precip-bar:#8DC0FD;
+	--nr-fc-snow-bar:#D7E2EF;
+	--nr-fc-possibility-high:#2563eb;
+	--nr-fc-possibility-normal:#1d4ed8;
+	--nr-fc-possibility-low:#1e3a5f;
+	--nr-fc-chart-wind-bar-bg:#334155;
+	--nr-fc-chart-wind-pill:#2563eb;
+	--nr-fc-chart-humidity-bar-bg:#1e40af;
+
+	/* 7. 그림자 */
+	--nr-fc-shadow-card:rgba(0, 0, 0, 0.3);
+	--nr-fc-shadow-card-hover:rgba(56, 189, 248, 0.2);
+	--nr-fc-shadow-card-active:rgba(56, 189, 248, 0.3);
+	--nr-fc-shadow-popup:rgba(0, 0, 0, 0.45);
+	--nr-fc-shadow-menu:rgba(0, 0, 0, 0.4);
+	--nr-fc-shadow-btn:rgba(0, 0, 0, 0.2);
+	--nr-fc-shadow-chart-point:rgba(0, 0, 0, 0.5);
+
+	/* 8. 테스트 패널 색상 */
+	--nr-fc-border-test:#475569;
+	--nr-fc-badge-blue:#60a5fa;
+	--nr-fc-badge-bg:#1e3a8a;
+	--nr-fc-badge-border:#3b82f6;
+	--nr-fc-test-title:#f1f5f9;
+	--nr-fc-test-btn-text:#cbd5e1;
+	--nr-fc-test-btn-border:#475569;
+	--nr-fc-test-title-hover:#ffffff;
+	--nr-fc-test-label:#cbd5e1;
+	--nr-fc-test-checked:#93c5fd;
+}
 
 /* ==========================================================================
-   예보 일정 영역 (상단 단기예보 / 하단 중기예보 분리)
+   접근성 숨김 텍스트 (.sr-only / .sr_only 호환) 및 기본 타이포그래피 보정
+   - nuri-app의 ui.common.css는 .sr_only만 정의하고 body { line-height:1 },
+     strong, b { font-weight:normal }로 리셋하므로 nuri-web 기준 스타일을 보장함
    ========================================================================== */
-.nr__forecast-schedules {display:flex;flex-direction:column;gap:0.8rem;width:100%;margin-bottom:0.8rem;}
-.nr__schedule-row {
-  width:100%;
-  position:relative;
-  transition:min-height 0.25s ease;
+.sr-only,
+.sr_only,
+.nr__sr-only {
+	position:absolute !important;
+	width:1px !important;
+	height:1px !important;
+	padding:0 !important;
+	margin:-1px !important;
+	overflow:hidden !important;
+	clip:rect(0, 0, 0, 0) !important;
+	white-space:nowrap !important;
+	border:0 !important;
 }
-.nr__schedule-row.is-minimized {min-height:3.2rem;}
-.nr__schedule-row.is-expanded {min-height:9.2rem;}
 
-.nr__schedule-scroll {
-  display:flex;
-  gap:0.6rem;
-  width:100%;
-  overflow-x:auto;
-  overflow-y:hidden;
-  scrollbar-width:none;
-  -ms-overflow-style:none;
-  -webkit-overflow-scrolling:touch;
-  padding:0.2rem 0;
-  align-items:center;
-  cursor:grab;
+.nr__hourly-forecast {
+	display:flex;
+	width:100%;
+	gap:1rem;
+	flex-direction:column;
+	overflow-x:hidden;
 }
-.nr__schedule-scroll::-webkit-scrollbar {display:none;}
-.nr__schedule-scroll.grabbing {cursor:grabbing;}
+
+.nr__hourly-forecast-container,
+#hourly-forecast-content {
+	width:100%;
+	box-sizing:border-box;
+	line-height:1.5;
+}
+
+.nr__hourly-forecast-container strong,
+.nr__hourly-forecast-container b,
+#hourly-forecast-content strong,
+#hourly-forecast-content b {
+	font-weight:700;
+}
+
+/* ==========================================================================
+   Nuri-App 아이콘 호환 매핑 ([data-icon-weather], [data-icon], .icon-aspect-*)
+   ========================================================================== */
+[data-icon-weather] {
+	display:flex;
+	background-position:center;
+	background-repeat:no-repeat;
+	background-size:contain;
+}
+.nr__schedule-row .nr__weather-card-icon-item [data-icon-weather] {
+	width:2.8rem;
+	height:2.8rem;
+	background-size:contain;
+}
+[data-icon-weather="NB01"] { background-image:url("../images-2026/weather/NB01.png"); }
+[data-icon-weather="NB02"] { background-image:url("../images-2026/weather/NB02.png"); }
+[data-icon-weather="NB03"] { background-image:url("../images-2026/weather/NB03.png"); }
+[data-icon-weather="NB04"] { background-image:url("../images-2026/weather/NB04.png"); }
+[data-icon-weather="NB05"] { background-image:url("../images-2026/weather/NB05.png"); }
+[data-icon-weather="NB06"] { background-image:url("../images-2026/weather/NB06.png"); }
+[data-icon-weather="NB07"] { background-image:url("../images-2026/weather/NB07.png"); }
+[data-icon-weather="NB08"] { background-image:url("../images-2026/weather/NB08.png"); }
+[data-icon-weather="NB09"] { background-image:url("../images-2026/weather/NB09.png"); }
+[data-icon-weather="NB10"] { background-image:url("../images-2026/weather/NB10.png"); }
+[data-icon-weather="NB11"] { background-image:url("../images-2026/weather/NB11.png"); }
+[data-icon-weather="NB12"] { background-image:url("../images-2026/weather/NB12.png"); }
+[data-icon-weather="NB13"] { background-image:url("../images-2026/weather/NB13.png"); }
+[data-icon-weather="NB14"] { background-image:url("../images-2026/weather/NB14.png"); }
+[data-icon-weather="NB15"] { background-image:url("../images-2026/weather/NB15.png"); }
+[data-icon-weather="NB16"] { background-image:url("../images-2026/weather/NB16.png"); }
+[data-icon-weather="NB17"] { background-image:url("../images-2026/weather/NB17.png"); }
+[data-icon-weather="NB18"] { background-image:url("../images-2026/weather/NB18.png"); }
+[data-icon-weather="NB19"] { background-image:url("../images-2026/weather/NB19.png"); }
+[data-icon-weather="NB20"] { background-image:url("../images-2026/weather/NB20.png"); }
+[data-icon-weather="NB21"] { background-image:url("../images-2026/weather/NB21.png"); }
+
+[data-icon="wind-arrow"] {
+	color:var(--nr-fc-text-primary);
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	width:1rem;
+	height:1.3rem;
+	background-color:currentColor;
+	-webkit-mask-image:url("../images-2026/icon/icon-mask-arrow-wind.svg");
+	mask-image:url("../images-2026/icon/icon-mask-arrow-wind.svg");
+	-webkit-mask-repeat:no-repeat;
+	mask-repeat:no-repeat;
+	-webkit-mask-size:contain;
+	mask-size:contain;
+	-webkit-mask-position:center;
+	mask-position:center;
+}
+
+[data-icon="calendar-check"] {
+	color:var(--nr-fc-primary-accent);
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	width:2rem;
+	height:2rem;
+	background-color:currentColor;
+	-webkit-mask-image:url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='3.5' y='4.5' width='13' height='12' rx='1.5' stroke='black'/%3E%3Cpath d='M8.46763 11.7154L9.22344 12.6987L11.2641 10.0154C11.3565 9.89314 11.4615 9.83203 11.5791 9.83203C11.6966 9.83203 11.8016 9.89314 11.894 10.0154C11.9864 10.1376 12.0326 10.2793 12.0326 10.4404C12.0326 10.6015 11.9864 10.7431 11.894 10.8654L9.53837 13.982C9.44599 14.1043 9.34101 14.1654 9.22344 14.1654C9.10587 14.1654 9.0009 14.1043 8.90852 13.982L7.83778 12.5654C7.74541 12.4431 7.69922 12.3015 7.69922 12.1404C7.69922 11.9793 7.74541 11.8376 7.83778 11.7154C7.93016 11.5931 8.03514 11.532 8.15271 11.532C8.27028 11.532 8.37525 11.5931 8.46763 11.7154Z' fill='black'/%3E%3Cline x1='4' y1='7.5' x2='16' y2='7.5' stroke='black'/%3E%3Cline x1='6.5' y1='4.5' x2='6.5' y2='3.5' stroke='black' stroke-linecap='round'/%3E%3Cline x1='13.5' y1='4.5' x2='13.5' y2='3.5' stroke='black' stroke-linecap='round'/%3E%3C/svg%3E");
+	mask-image:url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='3.5' y='4.5' width='13' height='12' rx='1.5' stroke='black'/%3E%3Cpath d='M8.46763 11.7154L9.22344 12.6987L11.2641 10.0154C11.3565 9.89314 11.4615 9.83203 11.5791 9.83203C11.6966 9.83203 11.8016 9.89314 11.894 10.0154C11.9864 10.1376 12.0326 10.2793 12.0326 10.4404C12.0326 10.6015 11.9864 10.7431 11.894 10.8654L9.53837 13.982C9.44599 14.1043 9.34101 14.1654 9.22344 14.1654C9.10587 14.1654 9.0009 14.1043 8.90852 13.982L7.83778 12.5654C7.74541 12.4431 7.69922 12.3015 7.69922 12.1404C7.69922 11.9793 7.74541 11.8376 7.83778 11.7154C7.93016 11.5931 8.03514 11.532 8.15271 11.532C8.27028 11.532 8.37525 11.5931 8.46763 11.7154Z' fill='black'/%3E%3Cline x1='4' y1='7.5' x2='16' y2='7.5' stroke='black'/%3E%3Cline x1='6.5' y1='4.5' x2='6.5' y2='3.5' stroke='black' stroke-linecap='round'/%3E%3Cline x1='13.5' y1='4.5' x2='13.5' y2='3.5' stroke='black' stroke-linecap='round'/%3E%3C/svg%3E");
+	-webkit-mask-repeat:no-repeat;
+	mask-repeat:no-repeat;
+	-webkit-mask-size:contain;
+	mask-size:contain;
+	-webkit-mask-position:center;
+	mask-position:center;
+}
+
+[data-icon="legend-1"],
+[data-icon="legend-2"],
+[data-icon="legend-3"] {
+	color:var(--nr-fc-text-muted);
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	width:2rem;
+	height:2rem;
+	background-color:currentColor;
+	-webkit-mask-repeat:no-repeat;
+	mask-repeat:no-repeat;
+	-webkit-mask-size:2rem;
+	mask-size:2rem;
+	-webkit-mask-position:center;
+	mask-position:center;
+}
+[data-icon="legend-1"] {
+	-webkit-mask-image:url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.25 18.6351V17.1353H19.75V18.6351H4.25ZM4.25 14.7506V13.2506H19.75V14.7506H4.25ZM4.25 10.6736V8.91031L9.9905 5.41406L15 8.97356L19.75 5.59681V7.44106L15 10.8083L9.9345 7.21781L4.25 10.6736Z' fill='black'/%3E%3C/svg%3E");
+	mask-image:url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.25 18.6351V17.1353H19.75V18.6351H4.25ZM4.25 14.7506V13.2506H19.75V14.7506H4.25ZM4.25 10.6736V8.91031L9.9905 5.41406L15 8.97356L19.75 5.59681V7.44106L15 10.8083L9.9345 7.21781L4.25 10.6736Z' fill='black'/%3E%3C/svg%3E");
+}
+[data-icon="legend-2"] {
+	-webkit-mask-image:url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M16 19V14.1923H19V19H16ZM10.5 19V5H13.5V19H10.5ZM5 19V9.80775H8V19H5Z' fill='black'/%3E%3C/svg%3E");
+	mask-image:url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M16 19V14.1923H19V19H16ZM10.5 19V5H13.5V19H10.5ZM5 19V9.80775H8V19H5Z' fill='black'/%3E%3C/svg%3E");
+}
+[data-icon="legend-3"] {
+	-webkit-mask-image:url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7.327 9.05775V7.55775H20.5V9.05775H7.327ZM7.327 12.75V11.25H20.5V12.75H7.327ZM7.327 16.4423V14.9423H20.5V16.4423H7.327ZM4.30775 9.1155C4.07892 9.1155 3.88708 9.03717 3.73225 8.8805C3.57742 8.72383 3.5 8.52967 3.5 8.298C3.5 8.072 3.57742 7.8825 3.73225 7.7295C3.88708 7.5765 4.07892 7.5 4.30775 7.5C4.53658 7.5 4.72842 7.5765 4.88325 7.7295C5.03808 7.8825 5.1155 8.072 5.1155 8.298C5.1155 8.52967 5.03808 8.72383 4.88325 8.8805C4.72842 9.03717 4.53658 9.1155 4.30775 9.1155ZM4.30775 12.798C4.07892 12.798 3.88708 12.7215 3.73225 12.5685C3.57742 12.4157 3.5 12.2262 3.5 12C3.5 11.7615 3.57742 11.5657 3.73225 11.4125C3.88708 11.2593 4.07892 11.1827 4.30775 11.1827C4.53658 11.1827 4.72842 11.2593 4.88325 11.4125C5.03808 11.5657 5.1155 11.7615 5.1155 12C5.1155 12.2262 5.03808 12.4157 4.88325 12.5685C4.72842 12.7215 4.53658 12.798 4.30775 12.798ZM4.30775 16.5C4.07892 16.5 3.88708 16.4217 3.73225 16.265C3.57742 16.1083 3.5 15.9142 3.5 15.6827C3.5 15.4566 3.57742 15.267 3.73225 15.114C3.88708 14.961 4.07892 14.8845 4.30775 14.8845C4.53658 14.8845 4.72842 14.961 4.88325 15.114C5.03808 15.267 5.1155 15.4566 5.1155 15.6827C5.1155 15.9142 5.03808 16.1083 4.88325 16.265C4.72842 16.4217 4.53658 16.5 4.30775 16.5Z' fill='black'/%3E%3C/svg%3E");
+	mask-image:url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7.327 9.05775V7.55775H20.5V9.05775H7.327ZM7.327 12.75V11.25H20.5V12.75H7.327ZM7.327 16.4423V14.9423H20.5V16.4423H7.327ZM4.30775 9.1155C4.07892 9.1155 3.88708 9.03717 3.73225 8.8805C3.57742 8.72383 3.5 8.52967 3.5 8.298C3.5 8.072 3.57742 7.8825 3.73225 7.7295C3.88708 7.5765 4.07892 7.5 4.30775 7.5C4.53658 7.5 4.72842 7.5765 4.88325 7.7295C5.03808 7.8825 5.1155 8.072 5.1155 8.298C5.1155 8.52967 5.03808 8.72383 4.88325 8.8805C4.72842 9.03717 4.53658 9.1155 4.30775 9.1155ZM4.30775 12.798C4.07892 12.798 3.88708 12.7215 3.73225 12.5685C3.57742 12.4157 3.5 12.2262 3.5 12C3.5 11.7615 3.57742 11.5657 3.73225 11.4125C3.88708 11.2593 4.07892 11.1827 4.30775 11.1827C4.53658 11.1827 4.72842 11.2593 4.88325 11.4125C5.03808 11.5657 5.1155 11.7615 5.1155 12C5.1155 12.2262 5.03808 12.4157 4.88325 12.5685C4.72842 12.7215 4.53658 12.798 4.30775 12.798ZM4.30775 16.5C4.07892 16.5 3.88708 16.4217 3.73225 16.265C3.57742 16.1083 3.5 15.9142 3.5 15.6827C3.5 15.4566 3.57742 15.267 3.73225 15.114C3.88708 14.961 4.07892 14.8845 4.30775 14.8845C4.53658 14.8845 4.72842 14.961 4.88325 15.114C5.03808 15.267 5.1155 15.4566 5.1155 15.6827C5.1155 15.9142 5.03808 16.1083 4.88325 16.265C4.72842 16.4217 4.53658 16.5 4.30775 16.5Z' fill='black'/%3E%3C/svg%3E");
+}
+
+.icon-aspect-info-round {
+	aspect-ratio:1/1;
+	display:block;
+	width:2.2rem;
+	height:2.2rem;
+	background-position:50% 50%;
+	background-repeat:no-repeat;
+	background-size:contain;
+	flex-shrink:0;
+	background-image:url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 22.5C17.799 22.5 22.4999 17.799 22.5 12C22.5 6.2009 17.7991 1.5 12 1.5C6.20099 1.50011 1.5 6.20096 1.5 12C1.50011 17.7989 6.20106 22.4999 12 22.5Z' fill='white' stroke='%23E9EDF9'/%3E%3Cpath d='M11.8992 9.46085C12.562 9.46085 13.0992 8.90997 13.0992 8.23042C13.0992 7.55088 12.562 7 11.8992 7C11.2365 7 10.6992 7.55088 10.6992 8.23042C10.6992 8.90997 11.2365 9.46085 11.8992 9.46085Z' fill='%2319213D'/%3E%3Cpath d='M10.3659 10.4761C10.2738 10.4761 10.1992 10.5507 10.1992 10.6428V11.5398C10.1992 11.6319 10.2738 11.7065 10.3659 11.7065H11.1341C11.2262 11.7065 11.3008 11.7811 11.3008 11.8732V15.7696H10.1667C10.0746 15.7696 10 15.8442 10 15.9362V16.8333C10 16.9254 10.0746 17 10.1667 17H13.8333C13.9254 17 14 16.9254 14 16.8333V15.9362C14 15.8442 13.9254 15.7696 13.8333 15.7696H13.1008V10.6428C13.1008 10.5507 13.0262 10.4761 12.9341 10.4761H10.3659Z' fill='%2319213D'/%3E%3C/svg%3E");
+}
+
+.nr__fixed-info-btn:hover .icon-aspect-info-round,
+.nr__fixed-info-btn.active .icon-aspect-info-round,
+.nr__fixed-info-btn[aria-expanded="true"] .icon-aspect-info-round,
+.nr__tooltip-wrap:hover .icon-aspect-info-round {
+	background-image:url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 22.5C17.799 22.5 22.4999 17.799 22.5 12C22.5 6.2009 17.7991 1.5 12 1.5C6.20099 1.50011 1.5 6.20096 1.5 12C1.50011 17.7989 6.20106 22.4999 12 22.5Z' fill='%2319213D' stroke='%2319213D'/%3E%3Cpath d='M11.8992 9.46085C12.562 9.46085 13.0992 8.90997 13.0992 8.23042C13.0992 7.55088 12.562 7 11.8992 7C11.2365 7 10.6992 7.55088 10.6992 8.23042C10.6992 8.90997 11.2365 9.46085 11.8992 9.46085Z' fill='white'/%3E%3Cpath d='M10.3659 10.4761C10.2738 10.4761 10.1992 10.5507 10.1992 10.6428V11.5398C10.1992 11.6319 10.2738 11.7065 10.3659 11.7065H11.1341C11.2262 11.7065 11.3008 11.7811 11.3008 11.8732V15.7696H10.1667C10.0746 15.7696 10 15.8442 10 15.9362V16.8333C10 16.9254 10.0746 17 10.1667 17H13.8333C13.9254 17 14 16.9254 14 16.8333V15.9362C14 15.8442 13.9254 15.7696 13.8333 15.7696H13.1008V10.6428C13.1008 10.5507 13.0262 10.4761 12.9341 10.4761H10.3659Z' fill='white'/%3E%3C/svg%3E");
+}
+
+/* ==========================================================================
+   예보 일정 영역 (Nuri-App 상단 단기예보 / 하단 중기예보 분리)
+   ========================================================================== */
+.nr__forecast-schedules {
+	display:flex;
+	flex-direction:column;
+	width:100%;
+	gap:0.4rem;
+}
+.nr__schedule-row {
+	width:100%;
+	position:relative;
+	transition:min-height 0.25s ease;
+}
+.nr__schedule-row.is-minimized {
+	min-height:3.2rem;
+}
+.nr__schedule-row.is-expanded {
+	min-height:9.2rem;
+}
+.nr__schedule-scroll {
+	display:flex;
+	gap:0.2rem;
+	width:100%;
+	overflow-x:auto;
+	overflow-y:hidden;
+	scrollbar-width:none;
+	-ms-overflow-style:none;
+	-webkit-overflow-scrolling:touch;
+	padding:0 0 0.2rem;
+	align-items:center;
+	cursor:grab;
+}
+.nr__schedule-scroll::-webkit-scrollbar {
+	display:none;
+}
+.nr__schedule-scroll.grabbing {
+	cursor:grabbing;
+}
+.nr__schedule-row--short .nr__schedule-scroll {
+	overflow:hidden;
+}
+.nr__schedule-row--short.nr__schedule-row .nr__schedule-pill,
+.nr__schedule-row--short.nr__schedule-row .nr__weather-card {
+	flex:1;
+}
 
 /* ==========================================================================
    최소화 일정 알약(Pill) 버튼 (비활성 행에 표시)
    ========================================================================== */
 .nr__schedule-pill {
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  height:3.2rem;
-  padding:0 1.6rem;
-  border-radius:9999px;
-  border:1px solid var(--border-theme2);
-  background-color:var(--bg-theme8);
-  font-size:1.4rem;
-  font-weight:700;
-  color:var(--text-theme1);
-  white-space:nowrap;
-  flex-shrink:0;
-  cursor:pointer;
-  transition:all 0.2s ease;
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	height:3.2rem;
+	padding:0 1.6rem;
+	border-radius:9999px;
+	border:1px solid var(--border-theme2, var(--nr-fc-border-light));
+	background-color:var(--bg-theme8, var(--nr-fc-bg-subtle));
+	font-size:1.4rem;
+	font-weight:700;
+	color:var(--text-theme1, var(--nr-fc-text-primary));
+	white-space:nowrap;
+	flex-shrink:0;
+	cursor:pointer;
+	transition:all 0.2s ease;
 }
 .nr__schedule-pill:hover {
-  background-color:var(--bg-theme7);
-  border-color:var(--border-theme3);
+	background-color:var(--bg-theme7, var(--nr-fc-bg-hover));
+	border-color:var(--border-theme3, var(--nr-fc-border-muted));
 }
 .nr__schedule-pill.active {
-  background-color:var(--color-primary);
-  color:#fff;
-  border-color:var(--color-primary);
-  box-shadow:0 2px 8px rgba(37, 117, 240, 0.25);
+	background-color:var(--color-primary, var(--nr-fc-primary));
+	color:#fff;
+	border-color:var(--color-primary, var(--nr-fc-primary));
+	box-shadow:0 .2rem .8rem rgba(37, 117, 240, 0.25);
 }
 
 /* ==========================================================================
-   상세 일정 카드 (활성화 행에 표시: 단기 또는 중기)
+   상세 일정 카드 (활성화 행에 표시:단기 또는 중기)
    ========================================================================== */
 .nr__schedule-row .nr__weather-card {
-  display:flex;
-  flex-direction:column;
-  height:9.2rem;
-  min-width:6.4rem;
-  width:6.4rem;
-  flex-shrink:0;
-  border-radius:0.8rem;
-  border:1px solid var(--border-theme2);
-  overflow:hidden;
-  background-color:var(--bg-theme9);
-  cursor:pointer;
-  transition:width 0.25s ease, min-width 0.25s ease, border-color 0.2s ease, background-color 0.2s ease;
+	display:flex;
+	flex-direction:column;
+	height:9.2rem;
+	min-height:9.2rem;
+	min-width:6.4rem;
+	width:6.4rem;
+	padding:0;
+	gap:0;
+	flex-shrink:0;
+	border-radius:0.8rem;
+	border:1px solid var(--border-theme2, var(--nr-fc-border-light));
+	overflow:hidden;
+	background-color:var(--bg-theme9, var(--nr-fc-bg-card));
+	cursor:pointer;
+	transform:none;
+	box-shadow:none;
+	transition:width 0.25s ease, min-width 0.25s ease, border-color 0.2s ease, background-color 0.2s ease;
 }
 .nr__schedule-row .nr__weather-card:hover {
-  border-color:var(--border-theme3);
+	border-color:var(--border-theme3, var(--nr-fc-primary));
+	transform:none;
+	box-shadow:none;
 }
 .nr__schedule-row .nr__weather-card.active {
-  min-width:14.8rem;
-  width:14.8rem;
-  border-color:var(--color-primary);
-  background-color:var(--bg-theme7);
+	min-width:14.8rem;
+	width:14.8rem;
+	border:1px solid var(--color-primary, var(--nr-fc-primary));
+	background-color:var(--bg-theme7, var(--nr-fc-bg-active));
+	transform:none;
+	box-shadow:none;
 }
 .nr__schedule-row .nr__weather-card-header {
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:0.4rem;
-  min-height:2.8rem;
-  height:2.8rem;
-  background-color:var(--bg-theme8);
-  color:var(--text-theme1);
-  font-size:1.4rem;
-  font-weight:700;
-  padding:0 0.4rem;
-  white-space:nowrap;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	gap:0.4rem;
+	width:100%;
+	min-height:2.8rem;
+	height:2.8rem;
+	background-color:var(--bg-theme8, var(--nr-fc-bg-subtle));
+	color:var(--text-theme1, var(--nr-fc-text-primary));
+	font-size:1.4rem;
+	font-weight:700;
+	padding:0 0.4rem;
+	white-space:nowrap;
 }
 .nr__schedule-row .nr__weather-card.active .nr__weather-card-header {
-  background-color:var(--color-primary);
-  color:#fff;
+	background-color:var(--color-primary, var(--nr-fc-primary));
+	color:#fff;
 }
 .nr__schedule-row .nr__weather-card-body {
-  display:flex;
-  width:100%;
-  flex:1;
-  align-items:center;
-  justify-content:center;
-  padding:0.8rem 0.6rem;
+	display:flex;
+	width:100%;
+	flex:1;
+	align-items:center;
+	justify-content:center;
+	padding:0.8rem 0.6rem;
 }
 .nr__schedule-row .nr__weather-card-body-btype {
-  color:var(--text-theme1);
-  font-size:1.6rem;
-  font-weight:700;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+	color:var(--text-theme1, var(--nr-fc-text-primary));
+	font-size:1.6rem;
+	font-weight:700;
+	display:flex;
+	align-items:center;
+	justify-content:center;
 }
 .nr__schedule-row .nr__weather-card-week,
 .nr__schedule-row .nr__weather-card-body-atype {
-  display:none;
+	display:none;
 }
 .nr__schedule-row .nr__weather-card.active .nr__weather-card-week,
 .nr__schedule-row .nr__weather-card.active .nr__weather-card-body-atype {
-  display:flex;
+	display:flex;
 }
 .nr__schedule-row .nr__weather-card.active .nr__weather-card-body-btype {
-  display:none;
+	display:none;
 }
 .nr__schedule-row .nr__weather-card-body-atype {
-  width:100%;
-  gap:0.6rem;
-  justify-content:space-around;
-  align-items:center;
+	width:100%;
+	gap:0.6rem;
+	justify-content:space-around;
+	align-items:center;
 }
 .nr__schedule-row .nr__weather-card-icon {
-  display:flex;
-  flex:1;
-  align-items:center;
-  justify-content:space-around;
-  color:var(--text-theme2);
-  font-size:1.1rem;
-  font-weight:600;
+	display:flex;
+	flex:1;
+	align-items:center;
+	justify-content:space-around;
+	color:var(--text-theme2, var(--nr-fc-text-secondary));
+	font-size:1.1rem;
+	font-weight:600;
 }
 .nr__schedule-row .nr__weather-card-icon-item {
-  display:flex;
-  flex-direction:column;
-  gap:0.2rem;
-  align-items:center;
+	display:flex;
+	flex-direction:column;
+	gap:0.2rem;
+	align-items:center;
 }
 .nr__schedule-row .nr__weather-card-temp {
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  gap:0.6rem;
-  justify-content:center;
-  align-items:center;
-  font-size:1.6rem;
-  font-weight:700;
+	flex:1;
+	display:flex;
+	flex-direction:column;
+	gap:0.6rem;
+	justify-content:center;
+	align-items:center;
+	font-size:1.6rem;
+	font-weight:700;
 }
-.nr__schedule-row .nr__weather-card-temp-max {color:#EE0000;}
-.nr__schedule-row .nr__weather-card-temp-min {color:#3F85D7;}
+.nr__schedule-row .nr__weather-card-temp-max {
+	color:#EE0000;
+}
+.nr__schedule-row .nr__weather-card-temp-min {
+	color:#3F85D7;
+}
 .nr__schedule-row .nr__weather-card-body-atype hr {
-  width:1px;
-  display:block;
-  height:3.6rem;
-  border:0;
-  border-left:1px solid var(--bg-theme10);
-  margin:0;
+	width:1px;
+	display:block;
+	height:3.6rem;
+	border:0;
+	border-left:1px solid var(--bg-theme10, var(--nr-fc-border-light));
+	margin:0;
 }
 
 /* ==========================================================================
-   시간별 / 중기 예보 통합 그리드 컨테이너
+   02. 시간별 예보 컨트롤러 & 드롭다운 (Hourly Forecast Controls & Dropdown)
    ========================================================================== */
+.nr__hourly-header-controls {
+	display:inline-flex;
+	align-items:center;
+	gap:0.8rem;
+	margin-left:auto;
+}
+
+/* View Mode Switcher Icons */
+.nr__hourly-view-switcher {
+	display:inline-flex;
+}
+
+.nr__hourly-view-btn {
+	width:3.8rem;
+	height:3.4rem;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	background:var(--nr-fc-bg-card);
+	border:0.1px solid var(--nr-fc-border-muted);
+	cursor:pointer;
+	color:var(--nr-fc-text-tertiary);
+	transition:all 0.2s ease;
+	border-radius:0.4rem 0 0 0.4rem;
+	position:relative;
+	z-index:0;
+	padding:0;
+}
+
+.nr__hourly-view-btn ~ .nr__hourly-view-btn {
+	border-radius:0;
+	margin-left:-1px;
+}
+
+.nr__hourly-view-btn:last-child {
+	border-radius:0 0.4rem 0.4rem 0;
+}
+
+.nr__hourly-view-btn:hover {
+	background:var(--nr-fc-bg-hover);
+	color:var(--nr-fc-primary);
+}
+
+.nr__hourly-view-btn.active {
+	border:1px solid var(--nr-fc-border-dark);
+	z-index:1;
+}
+
+.nr__hourly-view-btn.active span {
+	color:var(--nr-fc-text-primary);
+}
+
+.nr__hourly-view-btn svg {
+	width:1.8rem;
+	height:1.8rem;
+}
+
+/* Dropdown Component System (nr__drop-*) */
+.nr__drop-wrap,
+.nr__hourly-settings-dropdown {
+	position:relative;
+	display:inline-flex;
+}
+
+.nr__drop-btn,
+.nr__hourly-settings-btn {
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	cursor:pointer;
+}
+
+.nr__drop-btn[aria-expanded="true"] {
+	border-color:var(--nr-fc-primary) !important;
+}
+
+.nr__drop-menu,
+.nr__hourly-settings-menu {
+	position:absolute;
+	top:calc(100% + 0.6rem);
+	right:0;
+	bottom:auto;
+	left:auto;
+	background:var(--nr-fc-bg-card);
+	border:1px solid var(--nr-fc-border-menu);
+	border-radius:0.8rem;
+	box-shadow:0 0.6rem 2rem var(--nr-fc-shadow-menu);
+	min-width:14rem;
+	z-index:100;
+	overflow:hidden;
+	padding:0.6rem;
+	transform:none;
+}
+
+.nr__fixed-header-cell .nr__drop-menu {
+	left:0;
+	right:auto;
+	min-width:22rem;
+	padding:1.2rem;
+	color:var(--nr-fc-text-secondary);
+	font-size:1.3rem;
+	text-align:left;
+}
+
+/* [Bottom-Left Position] */
+.nr__drop-menu[data-position="bottom-left"],
+.nr__drop-menu[data-position="bottom+left"],
+.nr__drop-menu.pos-bottom-left,
+.nr__drop-menu.nr__pos-bottom-left,
+.nr__drop-menu.bottom.left,
+.nr__drop-wrap[data-position="bottom-left"] .nr__drop-menu,
+.nr__drop-wrap[data-position="bottom+left"] .nr__drop-menu,
+.nr__drop-wrap.pos-bottom-left .nr__drop-menu,
+.nr__drop-wrap.nr__pos-bottom-left .nr__drop-menu,
+.nr__drop-wrap.bottom.left .nr__drop-menu {
+	top:calc(100% + 0.6rem);
+	bottom:auto;
+	left:0;
+	right:auto;
+	transform:none;
+}
+
+.nr__hourly-help h4 {
+	font-size:1.4rem;
+	font-weight:700;
+	color:var(--nr-fc-text-primary);
+	margin:0 0 0.8rem;
+}
+
+.nr__hourly-help ul {
+	list-style:none;
+	margin:0;
+	padding:0;
+	display:flex;
+	flex-direction:column;
+	gap:0.4rem;
+}
+
+.nr__hourly-help li {
+	font-size:1.25rem;
+	line-height:1.4;
+	color:var(--nr-fc-text-secondary);
+}
+
+/* ==========================================================================
+   03. 시간별 예보 그리드 & 차트 테이블 (Grid & Chart Table Layout - Mode 1 & Mode 2)
+   - nuri-web forecast.css 기준 100% 동일 적용
+   ========================================================================== */
+
 .nr__hourly-grid-container {
-  display:flex;
-  width:100%;
-  border-top:1px solid var(--border-theme3);
-  border-bottom:1px solid var(--border-theme3);
-  overflow:hidden;
-  position:relative;
-  background:var(--bg-theme1);
+	display:flex;
+	width:100%;
+	/*border-top:0.2rem solid var(--nr-fc-border-dark);*/
+	border-bottom:0.1rem solid var(--nr-fc-border-dark);
+	overflow:hidden;
+	background:var(--nr-fc-bg-card);
+	position:relative;
 }
 
+/* Fixed Left Column */
 .nr__hourly-fixed-column {
-  width:6.4rem;
-  flex-shrink:0;
-  background:var(--bg-theme1);
-  border-right:1px solid var(--border-theme3);
-  z-index:10;
+	width:9rem;
+	flex-shrink:0;
+	background:var(--nr-fc-bg-card);
+	border-right:0.1rem solid var(--nr-fc-border-dark);
+	z-index:10;
+	box-shadow:0.2rem 0 0.6rem rgba(0, 0, 0, 0.03);
 }
 
-.nr__hourly-scroll-viewport {
-  flex:1;
-  overflow-x:auto;
-  overflow-y:hidden;
-  position:relative;
-  -webkit-overflow-scrolling:touch;
-  scrollbar-width:none;
-  -ms-overflow-style:none;
-  cursor:grab;
-  user-select:none;
+.nr__fixed-header-cell + .nr__fixed-row-cell {
+	border-top:0.1rem solid var(--nr-fc-border-dark);
 }
-.nr__hourly-scroll-viewport::-webkit-scrollbar {display:none;}
-.nr__hourly-scroll-viewport.grabbing {cursor:grabbing;}
+
+.nr__fixed-header-cell {
+	height:5.6rem;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	padding:0 1.2rem;
+	font-size:1.4rem;
+	font-weight:700;
+	color:var(--nr-fc-text-secondary);
+	background:var(--nr-fc-bg-card);
+}
+
+.nr__fixed-header-cell .nr__tooltip-wrap {
+	position:relative;
+	display:inline-flex;
+}
+
+.nr__fixed-header-cell .nr__fixed-info-btn,
+.nr__fixed-header-cell .nr__drop-btn {
+	width:2.2rem;
+	height:2.2rem;
+	background:transparent;
+	border:none;
+	padding:0;
+	cursor:pointer;
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+}
+
+.nr__fixed-header-cell .info-icon {
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	width:1.8rem;
+	height:1.8rem;
+	border-radius:50%;
+	border:0.1rem solid var(--nr-fc-border-muted);
+	font-size:1.1rem;
+	color:var(--nr-fc-text-tertiary);
+	font-weight:bold;
+	transition:color 0.15s ease, border-color 0.15s ease;
+}
+
+.nr__fixed-header-cell .nr__fixed-info-btn:hover .info-icon,
+.nr__fixed-header-cell .nr__fixed-info-btn.active .info-icon {
+	border-color:var(--nr-fc-info-icon-hover);
+	color:var(--nr-fc-info-icon-hover);
+}
+
+.nr__fixed-header-cell .nr__tooltip-layer {
+	z-index:100;
+}
+
+.nr__fixed-row-cell {
+	display:flex;
+	align-items:center;
+	justify-content:flex-end;
+	text-align:right;
+	padding:0 .6rem;
+	font-size:1.4rem;
+	line-height:1.2;
+	font-weight:600;
+	color:var(--nr-fc-text-muted);
+	box-sizing:border-box;
+}
+
+/* Custom row heights to match content & chart areas */
+.nr__row-time, .row-time { height:4.6rem; }
+.nr__row-time span{
+	display:flex;
+	padding:0 0.7rem;
+	min-height:1.8rem;
+	border-radius:0.9rem;
+	background-color:#2E7EF6;
+	color:#fff;
+	align-items:center;
+	font-size:1.1rem;
+}
+.nr__row-weather, .row-weather { height:4.7rem; }
+.nr__row-sky, .row-sky { height:4.7rem; }
+.nr__row-minmax-temp, .row-minmax-temp { height:4.4rem; }
+.nr__row-avg-temp, .row-avg-temp { height:4.4rem; }
+.nr__row-temp-chart, .row-temp-chart { height:16.4rem; }
+.nr__row-temp, .row-temp { height:3.8rem; }
+.nr__row-sensory-temp, .row-sensory-temp { height:3.8rem; }
+.nr__row-temp-text, .row-temp-text { height:5.6rem; }
+.nr__row-sensory, .row-sensory { height:4rem; }
+.nr__row-precip, .row-precip { height:2.6rem; }
+.nr__row-snow, .row-snow { height:2.6rem; }
+.nr__row-precip-intensity, .row-precip-intensity { height:2.6rem; }
+.nr__row-precip-intensity.has-both, .row-precip-intensity.has-both { height:5.2rem; }
+.nr__row-precip-bar, .row-precip-bar { height:5.2rem; }
+.nr__row-rain-prob, .row-rain-prob { height:3.4rem; }
+.nr__row-rain-possibility, .row-rain-possibility { height:3.8rem; }
+.nr__row-rain-trend, .row-rain-trend { height:4.8rem; }
+
+.nr__row-rain-prob.has-chart,
+.nr__mode-bar-chart .nr__row-rain-prob {
+	height:10rem;
+}
+.nr__row-wind, .row-wind { height:9.6rem; }
+.nr__mode-list .nr__row-wind { height:6rem; }
+.nr__mode-list.nr__interval-1h .nr__row-wind,
+.nr__interval-1h.nr__mode-list .nr__row-wind { height:7.2rem; }
+.nr__row-wind.has-chart,
+.nr__mode-bar-chart .nr__row-wind {
+	height:9.6rem;
+}
+.nr__interval-3h .nr__row-wind,
+.nr__interval-3h .nr__row-wind.has-chart,
+.nr__interval-3h.nr__mode-bar-chart .nr__row-wind {
+	height:7rem;
+}
+.nr__row-humidity, .row-humidity { height:4rem; }
+.nr__row-humidity.has-chart,
+.nr__mode-bar-chart .nr__row-humidity {
+	height:8rem;
+}
+
+.nr__row-heat, .row-heat { height:3rem; }
+
+/* 기온 & 체감온도 통합 범례 (좌측 고정 셀) */
+.nr__fixed-row-cell.nr__row-temp-chart {
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	align-items:flex-end;
+	gap:0.8rem;
+	padding:.6rem;
+}
+.nr__fixed-row-cell.nr__row-temp-chart .nr__temp-legend-item:nth-child(2) .nr__legend-title {
+	color:var(--nr-fc-text-muted);
+}
+.nr__temp-legend-item {
+	display:flex;
+	flex-direction:column;
+	align-items:flex-end;
+	gap:0.2rem;
+}
+
+.nr__legend-title {
+	font-size:1.4rem;
+	font-weight:700;
+	color:var(--nr-fc-temp-line);
+}
+
+.nr__legend-symbol.symbol-temp {
+	width:2.4rem;
+	height:0.8rem;
+	position:relative;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+}
+
+.nr__legend-symbol.symbol-temp::before {
+	content:'';
+	position:absolute;
+	width:100%;
+	height:0.2rem;
+	background:var(--nr-fc-temp-line);
+}
+
+.nr__legend-symbol.symbol-temp::after {
+	content:'';
+	position:relative;
+	width:0.8rem;
+	height:0.8rem;
+	border-radius:50%;
+	background:var(--nr-fc-bg-card);
+	border:0.2rem solid var(--nr-fc-temp-line);
+	z-index:1;
+}
+
+.nr__legend-symbol.symbol-sensory {
+	width:2.4rem;
+	height:0.8rem;
+	position:relative;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+}
+
+.nr__legend-symbol.symbol-sensory::before {
+	content:'';
+	position:absolute;
+	width:100%;
+	height:0.2rem;
+	border-top:0.2rem dotted var(--nr-fc-sensory-line);
+}
+
+.nr__legend-symbol.symbol-sensory::after {
+	content:'';
+	position:relative;
+	width:0.8rem;
+	height:0.8rem;
+	border-radius:50%;
+	background:var(--nr-fc-bg-card);
+	border:0.2rem solid var(--nr-fc-sensory-line);
+	z-index:1;
+}
+
+/* 적설량 행 스타일 */
+.nr__cell.nr__cell-snow {
+	font-weight:600;
+	background-color:var(--nr-fc-precip-bg);
+	border-bottom:1px solid var(--nr-fc-precip-border);
+	padding:0;
+	font-size:1.3rem;
+}
+
+.nr__cell-snow-value {
+	display:flex;
+	width:100%;
+	height:100%;
+	justify-content:center;
+	align-items:center;
+	color:var(--nr-fc-text-primary);
+	transform:translateX(50%);
+	background-color:var(--nr-fc-precip-bg);
+	border-right:1px solid var(--nr-fc-cell-border-white);
+	position:relative;
+	z-index:1;
+	font-size:1.4rem;
+}
+
+/* 강수강도 행 스타일 */
+.nr__cell.nr__cell-precip-intensity.has-both .nr__intensity-snow {
+	border-top:0.1rem solid var(--nr-fc-intensity-snow-border);
+}
+.nr__cell.nr__cell-temp-chart + .nr__cell.nr__cell-precip-intensity {
+	border-top:0.1rem solid var(--nr-fc-border-muted);
+}
+.nr__cell.nr__cell-precip-intensity {
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	justify-content:center;
+	padding:0;
+	background-color:var(--nr-fc-bg-card);
+	border-bottom:0;
+	font-size:1.3rem;
+	font-weight:600;
+	color:var(--nr-fc-text-primary);
+	box-sizing:border-box;
+}
+
+.nr__cell.nr__cell-precip-intensity.has-both {
+	height:5.2rem;
+}
+.nr__date-group:first-child .nr__hourly-col:first-child .nr__cell.nr__cell-precip-intensity.has-both {
+	position:relative;
+}
+.nr__date-group:first-child .nr__hourly-col:first-child .nr__cell.nr__cell-precip-intensity.has-both::before {
+	content:'';
+	position:absolute;
+	left:0;
+	width:50%;
+	height:.1rem;
+	top:50%;
+  transform:translateY(-50%);
+	background-color:var(--nr-fc-intensity-snow-border);
+}
+
+.nr__cell-precip-intensity .nr__intensity-item {
+	display:flex;
+	width:100%;
+	height:2.6rem;
+	align-items:center;
+	justify-content:center;
+	line-height:1.2;
+	color:var(--nr-fc-text-primary);
+	text-align:center;
+	white-space:nowrap;
+	background-color:var(--nr-fc-bg-card);
+	transform:translateX(50%);
+	font-size:1.4rem;
+}
+
+/* 단기예보 그래프형태:강수량/적설량 막대그래프 스타일 */
+.nr__fixed-row-cell.nr__row-precip-bar {
+	height:5.2rem;
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	align-items:flex-end;
+	text-align:right;
+	font-size:1.3rem;
+	font-weight:600;
+	color:var(--nr-fc-text-muted);
+	line-height:1.3;
+	padding:0 0.6rem;
+	box-sizing:border-box;
+}
+
+.nr__cell.nr__cell-precip-bar {
+	height:5.2rem;
+	display:flex;
+	align-items:flex-end;
+	justify-content:center;
+	padding:0;
+	border-bottom:0.1rem solid var(--nr-fc-primary-accent);
+	box-sizing:border-box;
+}
+
+.nr__precip-bar-group {
+	display:flex;
+	align-items:flex-end;
+	justify-content:center;
+	gap:1.2rem;
+	width:100%;
+	height:100%;
+	padding-bottom:0;
+	box-sizing:border-box;
+	transform:translateX(50%);
+}
+
+.nr__precip-bar-item {
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	justify-content:flex-end;
+	box-sizing:border-box;
+}
+
+.nr__precip-bar-item.is-single {
+	width:2rem;
+}
+
+.nr__precip-bar-item.is-both {
+	width:1.2rem;
+}
+
+.nr__precip-bar-item .nr__bar-val {
+	font-size:1.4rem;
+	font-weight:600;
+	line-height:1.2;
+	color:var(--nr-fc-text-primary);
+	margin-bottom:0.3rem;
+	white-space:nowrap;
+	text-align:center;
+}
+
+.nr__precip-bar-item .nr__bar-pillar {
+	display:block;
+	width:100%;
+	min-height:0.4rem;
+	border-radius:0;
+}
+
+.nr__precip-bar-item.nr__bar-rain .nr__bar-pillar {
+	background-color:var(--nr-fc-precip-bar);
+}
+
+.nr__precip-bar-item.nr__bar-snow .nr__bar-pillar {
+	background-color:var(--nr-fc-snow-bar);
+}
+
+/* Mode 2:강수확률 막대그래프 셀 및 그룹 스타일 */
+.nr__cell.nr__cell-rain-chart {
+	height:10rem;
+	display:flex;
+	align-items:flex-end;
+	justify-content:center;
+	padding:0;
+	box-sizing:border-box;
+}
+
+.nr__cell-rain-chart-group {
+	display:flex;
+	align-items:flex-end;
+	justify-content:center;
+	width:100%;
+	height:100%;
+	box-sizing:border-box;
+	transform:translateX(50%);
+}
+
+.nr__rain-prob-bar-item {
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	justify-content:flex-end;
+	width:2rem;
+	box-sizing:border-box;
+}
+
+.nr__rain-prob-bar-item .nr__bar-val {
+	font-size:1.4rem;
+	font-weight:700;
+	line-height:1.2;
+	color:var(--nr-fc-text-primary);
+	margin-bottom:0.6rem;
+	white-space:nowrap;
+	text-align:center;
+}
+
+.nr__rain-prob-bar-item .nr__bar-pillar {
+	display:block;
+	width:100%;
+	background-color:var(--nr-fc-precip-bar);
+	border-radius:0;
+}
+
+/* 그래프형태 파란 베이스라인 구분선 */
+.nr__mode-bar-chart .nr__cell-rain-chart {
+	border-bottom:0.1rem solid var(--nr-fc-primary-accent);
+}
+
+/* 중기예보 전용 행 스타일 (하늘상태, 강수가능성, 강수가능성 변화추이) */
+/*.nr__tab-mid .nr__cell.nr__cell-rain-possibility {
+	border-bottom:0;
+}*/
+.nr__tab-mid .nr__hourly-chart-layer + .nr__date-group .nr__hourly-col:first-child .nr__cell.nr__cell-rain-possibility {
+	position:relative;
+}
+.nr__tab-mid .nr__hourly-chart-layer + .nr__date-group .nr__hourly-col:first-child .nr__cell.nr__cell-rain-possibility::before {
+	content:"";
+	display:block;
+	width:calc(50% - 0.2rem);
+	left:0;
+	position:absolute;
+	top:0;
+	height:100%;
+	background-color:var(--nr-fc-bg-card);
+	border:0.1rem solid var(--nr-fc-bg-subtle);
+	border-left:0;
+  box-sizing:border-box;
+}
+.nr__cell.nr__cell-rain-possibility {
+	font-weight:600;
+	color:var(--nr-fc-text-primary);
+	/*border-bottom:0;*/
+	padding:0;
+}
+
+.nr__cell-possibility-value {
+	display:flex;
+	width:100%;
+	height:100%;
+	justify-content:center;
+	align-items:center;
+	background-color:var(--nr-fc-bg-subtle);
+	padding:0.2rem;
+	transform:translateX(50%);
+	position:relative;
+	z-index:2;
+}
+.nr__cell-possibility-value:empty {
+	z-index:1;
+}
+.nr__cell-possibility-value > span {
+	background-color:var(--nr-fc-bg-card);
+	border-radius:0.2rem;
+	width:100%;
+	height:100%;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+}
+
+.nr__cell-possibility-value.status-high > span {
+	background-color:var(--nr-fc-possibility-high);
+	color:var(--nr-fc-text-light);
+}
+.nr__cell-possibility-value.status-normal > span {
+	background-color:var(--nr-fc-possibility-normal);
+	color:var(--nr-fc-text-primary);
+}
+.nr__cell-possibility-value.status-low > span {
+	background-color:var(--nr-fc-possibility-low);
+	color:var(--nr-fc-text-primary);
+}
+
+.nr__cell.nr__cell-rain-trend {
+	font-size:1.25rem;
+	font-weight:600;
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	justify-content:center;
+	gap:0.2rem;
+	padding:0;
+}
+
+.nr__trend-arrow {
+	font-size:1.6rem;
+	line-height:1;
+	font-weight:800;
+}
+
+.nr__trend-text {
+	width:4rem;
+	font-size:1.4rem;
+	font-weight:600;
+	line-height:1.2;
+	min-width:2.8rem;
+	background-color:var(--nr-fc-bg-card);
+	padding:0.2rem 0.8rem;
+	border-radius:0.4rem;
+}
+.nr__cell-rain-trend .nr__trend-wrapper {
+	transform:translateX(50%);
+	width:100%;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	flex-direction:column;
+	position:relative;
+	z-index:2;
+}
+.nr__cell-rain-trend.trend-up .nr__trend-arrow {
+	background:url("data:image/svg+xml,%3Csvg width='28' height='28' viewBox='0 0 28 28' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15.167 7.93359L19.3662 12.1338L21 10.5L14 3.5L7 10.5L8.63379 12.1338L12.833 7.93359V18.667H12.834V24.5H15.167V7.93359Z' fill='%23DC143C'/%3E%3C/svg%3E") no-repeat center / 2.8rem;
+	width:2.8rem;
+	height:2.8rem;
+	font-size:0;
+}
+.nr__cell-rain-trend.trend-down .nr__trend-arrow {
+	background:url("data:image/svg+xml,%3Csvg width='28' height='28' viewBox='0 0 28 28' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15.167 20.0674L19.3662 15.8672L21 17.501L14 24.501L7 17.501L8.63379 15.8672L12.833 20.0674V3.50098H15.166V9.33398H15.167V20.0674Z' fill='%23006FE8'/%3E%3C/svg%3E") no-repeat center / 2.8rem;
+	width:2.8rem;
+	height:2.8rem;
+	font-size:0;
+}
+.nr__cell-rain-trend .nr__trend-arrow {
+	background:url("data:image/svg+xml,%3Csvg width='28' height='28' viewBox='0 0 28 28' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.75 17.1616C9.53955 16.2764 10.5205 15.8218 11.5972 15.8218C13.4634 15.8218 15.1143 17.1855 16.9326 17.1855C18.0332 17.1855 18.9902 16.707 19.7319 15.75V18.0469C18.9185 18.9321 17.9614 19.3867 16.8848 19.3867C15.0186 19.3867 13.3438 18.0229 11.5254 18.0229C10.4487 18.0229 9.51562 18.5015 8.75 19.4585V17.1616Z' fill='%2364748b'/%3E%3Cpath d='M8.75 10.1616C9.53955 9.27637 10.5205 8.82178 11.5972 8.82178C13.4634 8.82178 15.1143 10.1855 16.9326 10.1855C18.0332 10.1855 18.9902 9.70703 19.7319 8.75V11.0469C18.9185 11.9321 17.9614 12.3867 16.8848 12.3867C15.0186 12.3867 13.3438 11.0229 11.5254 11.0229C10.4487 11.0229 9.51562 11.5015 8.75 12.4585V10.1616Z' fill='%2364748b'/%3E%3C/svg%3E") no-repeat center / 2.8rem;
+	width:2.8rem;
+	height:2.8rem;
+	font-size:0;
+}
+.nr__cell-rain-trend.trend-up .nr__trend-arrow,
+.nr__cell-rain-trend.trend-up .nr__trend-text {
+	color:#DC143C;
+	background-color:var(--nr-fc-bg-card);
+}
+
+.nr__cell-rain-trend.trend-down .nr__trend-arrow,
+.nr__cell-rain-trend.trend-down .nr__trend-text {
+	color:#006FE8;
+	background-color:var(--nr-fc-bg-card);
+}
+
+.nr__cell-rain-trend.trend-flat .nr__trend-arrow,
+.nr__cell-rain-trend.trend-flat .nr__trend-text {
+	color:var(--nr-fc-text-secondary);
+}
+
+/* 혼합 그래프 모드(선형 차트)에서는 중기예보 변화추이 화살표 숨김 */
+.nr__tab-mid.nr__mode-line-chart .nr__cell-rain-trend .nr__trend-arrow {
+	display:none;
+}
+
+.nr__mode-bar-chart .nr__row-rain-trend {
+	height:7.2rem;
+}
+
+/* 그래프 상세 모드(막대 차트)에서만 변화추이 화살표 노출 */
+.nr__tab-mid.nr__mode-bar-chart .nr__cell-rain-trend .nr__trend-arrow + .nr__trend-text {
+	border-radius:0 0 .6rem .6rem;
+}
+.nr__tab-mid.nr__mode-bar-chart .nr__cell-rain-trend .nr__trend-arrow {
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	background-color:var(--nr-fc-bg-card);
+	height:2.8rem;
+	width:4rem;
+	border-radius:.6rem .6rem 0 0;
+}
+
+/* 중기예보 표 형태(Mode 3) 전용 셀 스타일 (최저/최고기온, 평균기온) */
+.nr__cell.nr__cell-minmax-temp,
+.nr__cell.nr__cell-avg-temp {
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	border-bottom:1px solid var(--nr-fc-border-divider);
+	font-size:1.4rem;
+	font-weight:700;
+	line-height:1;
+}
+
+.nr__cell-minmax-temp .nr__temp-val-min {
+	color:var(--nr-fc-temp-min);
+	font-size:1.4rem;
+	font-weight:700;
+}
+
+.nr__cell-minmax-temp .nr__temp-val-max {
+	color:var(--nr-fc-temp-max);
+	font-size:1.4rem;
+	font-weight:700;
+}
+
+.nr__cell-avg-temp .nr__temp-val-avg {
+	color:var(--nr-fc-text-primary);
+	font-size:1.4rem;
+	font-weight:700;
+}
+
+.nr__mode-list .nr__cell-possibility-value > span:empty {
+	display:block;
+	min-height:2.4rem;
+}
+
+.nr__mode-list .nr__cell-rain-trend .nr__trend-arrow {
+	display:none;
+}
+
+/* 중기예보 마우스오버 단일 팝업 레이어 */
+.nr__mid-hover-layer {
+	position:absolute;
+	z-index:60;
+	pointer-events:auto;
+	box-sizing:border-box;
+	animation:nrFadeIn 0.15s ease-out;
+}
+
+@keyframes nrFadeIn {
+	from {
+		opacity:0;
+		transform:translateY(-4px);
+	}
+	to {
+		opacity:1;
+		transform:translateY(0);
+	}
+}
+
+/* 중기예보 극값 팝업 트윈 카드 */
+.nr__mid-twin-tooltip {
+	position:absolute;
+	display:flex;
+	flex-direction:row;
+	gap:0.6rem;
+	z-index:50;
+	pointer-events:auto;
+	box-sizing:border-box;
+}
+
+.nr__mid-subcard {
+	width:11.2rem;
+	background:var(--nr-fc-bg-card);
+	border-radius:0.6rem;
+	overflow:hidden;
+	box-shadow:0 0.4rem 1.6rem var(--nr-fc-shadow-popup);
+	display:flex;
+	flex-direction:column;
+	box-sizing:border-box;
+}
+
+.nr__mid-subcard.card-temp {
+	border:0.2rem solid var(--nr-fc-subcard-temp);
+}
+
+.nr__mid-subcard.card-temp .nr__subcard-header {
+	background:var(--nr-fc-subcard-temp);
+}
+
+.nr__mid-subcard.card-max {
+	border:0.2rem solid var(--nr-fc-temp-max-alt);
+}
+
+.nr__mid-subcard.card-max .nr__subcard-header {
+	background:var(--nr-fc-temp-max-alt);
+}
+
+.nr__mid-subcard.card-min {
+	border:0.2rem solid var(--nr-fc-temp-min);
+}
+
+.nr__mid-subcard.card-min .nr__subcard-header {
+	background:var(--nr-fc-temp-min);
+}
+
+.nr__subcard-header {
+	font-size:1.3rem;
+	font-weight:700;
+	color:var(--nr-fc-text-light);
+	text-align:center;
+	padding:0.6rem;
+}
+
+.nr__subcard-list {
+	padding:0;
+	margin:0;
+	background:var(--nr-fc-bg-card);
+}
+
+.nr__subcard-row {
+	display:flex;
+	align-items:center;
+	padding:0.4rem 0.8rem;
+	gap:.4rem;
+	min-height:2.4rem;
+	border-bottom:0.1rem solid var(--nr-fc-border-row);
+	font-size:1.25rem;
+}
+
+.nr__subcard-row:last-child {
+	border-bottom:none;
+}
+
+.nr__subcard-label {
+	font-weight:500;
+	color:var(--nr-fc-text-muted);
+}
+.nr__subcard-label span {
+	color:var(--nr-fc-text-primary);
+	font-weight:600;
+}
+
+.nr__subcard-val {
+	font-weight:700;
+}
+
+.card-max .nr__subcard-val {
+	color:var(--nr-fc-temp-max-alt);
+}
+
+.card-min .nr__subcard-val {
+	color:var(--nr-fc-temp-min-alt);
+}
+
+.card-temp .nr__subcard-val {
+	color:var(--nr-fc-temp-line);
+}
+
+.nr__cell.nr__row-wind.has-chart {
+	border-bottom:1px solid var(--nr-fc-border-muted);
+}
+
+.nr__cell.nr__row-rain-prob.has-chart {
+	border-bottom:1px solid var(--nr-fc-primary-accent);
+}
+
+/* Mode 3 (리스트/표 형태) 기온, 체감온도 및 바람 텍스트 셀 전용 스타일 */
+.nr__cell.nr__cell-temp {
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	padding:0.4rem;
+	line-height:1.2;
+}
+
+.nr__cell.nr__cell-temp strong {
+	font-size:1.4rem;
+	font-weight:700;
+	color:var(--nr-fc-text-primary);
+}
+
+.nr__cell.nr__cell-sensory-temp {
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	padding:0.4rem;
+	line-height:1.2;
+}
+
+.nr__cell.nr__cell-sensory-temp strong,
+.nr__cell.nr__cell-sensory-temp span {
+	font-size:1.4rem;
+	font-weight:700;
+	color:var(--nr-fc-text-primary);
+}
+
+.nr__cell.nr__cell-temp-text {
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	justify-content:center;
+	padding:0.6rem 0.4rem;
+	line-height:1.25;
+}
+
+.nr__cell.nr__cell-temp-text strong {
+	font-size:1.5rem;
+	font-weight:700;
+	color:var(--nr-fc-text-primary);
+}
+
+.nr__cell.nr__cell-temp-text .nr__sensory-temp {
+	font-size:1.25rem;
+	font-weight:500;
+	color:var(--nr-fc-text-tertiary);
+	margin-top:0.2rem;
+}
+
+.nr__cell.nr__cell-wind-text {
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	justify-content:center;
+	padding:0.4rem 0.2rem;
+	gap:0.2rem;
+	line-height:1.2;
+}
+
+.nr__cell.nr__cell-wind-text .nr__wind-dir {
+	font-size:1.4rem;
+	font-weight:600;
+	color:var(--nr-fc-text-primary);
+	word-break:keep-all;
+	white-space:pre-wrap;
+	text-align:center;
+	line-height:1.2;
+}
+
+.nr__cell.nr__cell-wind-text .nr__wind-str {
+	font-size:1.4rem;
+	font-weight:600;
+	color:var(--nr-fc-text-primary);
+	word-break:keep-all;
+	white-space:pre-wrap;
+	text-align:center;
+	line-height:1.2;
+}
+
+.nr__cell.nr__cell-wind-text .nr__wind-dir-str {
+	font-size:1.4rem;
+	font-weight:500;
+	color:var(--nr-fc-text-primary);
+	word-break:keep-all;
+	white-space:pre-wrap;
+	text-align:center;
+}
+
+.nr__cell.nr__cell-wind-text .nr__wind-spd {
+	font-size:1.3rem;
+	font-weight:700;
+	color:var(--nr-fc-text-primary);
+	line-height:1.2;
+}
+
+/* Horizontally Scrollable Viewport */
+.nr__hourly-scroll-viewport {
+	flex:1;
+	overflow-x:auto;
+	overflow-y:hidden;
+	position:relative;
+	scrollbar-width:none;
+	-ms-overflow-style:none;
+	-webkit-overflow-scrolling:touch;
+	cursor:grab;
+	user-select:none;
+}
+
+.nr__hourly-scroll-viewport::-webkit-scrollbar {
+	display:none;
+}
+
+.nr__hourly-scroll-viewport.grabbing {
+	cursor:grabbing;
+}
 
 .nr__hourly-dates-wrapper {
-  display:flex;
-  width:max-content;
-  min-width:100%;
-  position:relative;
+	display:flex;
+	width:max-content;
+	min-width:100%;
+	position:relative;
 }
 
+/* Hourly Chart Layers */
+.nr__hourly-chart-layer {
+	position:absolute;
+	left:0;
+	width:max-content;
+	pointer-events:none;
+	z-index:10;
+}
+
+.nr__hourly-chart-layer svg {
+	display:block;
+	height:100%;
+	overflow:visible;
+}
+
+.nr__hourly-chart-layer svg .chart-point-group {
+	pointer-events:all;
+	cursor:pointer;
+}
+
+/* Interactive Chart Hit Target */
+.nr__chart-hit-point {
+	pointer-events:all;
+	cursor:pointer;
+}
+
+.nr__chart-hit-point:hover ~ .chart-point-circle {
+	filter:drop-shadow(0 .2rem .4rem var(--nr-fc-shadow-chart-point));
+}
+
+/* 최저/최고 기온 분위수 툴팁 카드 */
+.nr__forecast-tooltip {
+	position:absolute;
+	width:12.4rem;
+	background:var(--nr-fc-bg-card);
+	border-radius:0.6rem;
+	overflow:hidden;
+	box-shadow:0 0.4rem 1.6rem var(--nr-fc-shadow-popup);
+	z-index:50;
+	pointer-events:none;
+	opacity:0;
+	transform:translateY(0.4rem);
+	transition:opacity 0.18s ease, transform 0.18s ease;
+	box-sizing:border-box;
+	display:flex;
+	flex-direction:column;
+	gap:0;
+}
+
+.nr__forecast-tooltip.show {
+	opacity:1;
+	transform:translateY(0);
+}
+
+.nr__forecast-tooltip.type-max {
+	border:0.2rem solid var(--nr-fc-temp-max-alt);
+}
+
+.nr__forecast-tooltip.type-min {
+	border:0.2rem solid var(--nr-fc-temp-min-alt);
+}
+
+.nr__forecast-tooltip .nr__tooltip-header {
+	font-size:1.4rem;
+	font-weight:700;
+	color:var(--nr-fc-text-light);
+	text-align:center;
+	padding:0.8rem 0.8rem;
+	letter-spacing:-0.02em;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	margin:0;
+}
+
+.nr__forecast-tooltip .nr__tooltip-header.header-max {
+	background:var(--nr-fc-temp-max-alt);
+}
+
+.nr__forecast-tooltip .nr__tooltip-header.header-min {
+	background:var(--nr-fc-temp-min-alt);
+}
+
+.nr__forecast-tooltip .nr__tooltip-list {
+	padding:0;
+	margin:0;
+	background:var(--nr-fc-bg-card);
+}
+
+.nr__forecast-tooltip .nr__tooltip-row {
+	display:flex;
+	align-items:center;
+	min-height:3rem;
+	justify-content:space-between;
+	padding:0 1.4rem;
+	border-bottom:0.1rem solid var(--nr-fc-border-row);
+}
+
+.nr__forecast-tooltip .nr__tooltip-row:last-child {
+	border-bottom:none;
+}
+
+.nr__forecast-tooltip .nr__tt-label {
+	font-size:1.4rem;
+	font-weight:600;
+	color:var(--nr-fc-text-primary);
+}
+
+.nr__forecast-tooltip .nr__tt-unit {
+	font-size:1.2rem;
+	font-weight:400;
+	color:var(--nr-fc-text-muted);
+	margin-left:0.2rem;
+}
+
+.nr__forecast-tooltip .nr__tt-val {
+	font-size:1.4rem;
+	font-weight:700;
+}
+
+.nr__forecast-tooltip .nr__tt-val.val-max {
+	color:var(--nr-fc-temp-max-alt);
+}
+
+.nr__forecast-tooltip .nr__tt-val.val-min {
+	color:var(--nr-fc-temp-min-alt);
+}
+
+/* Individual Date Group Block */
 .nr__date-group {
-  display:flex;
-  flex-direction:column;
-  border-right:1px dotted var(--border-theme7);
-  position:relative;
+	display:flex;
+	flex-direction:column;
+	border-right:0.1rem dotted var(--nr-fc-border-dark);
 }
-.nr__date-group:last-child {border-right:none;}
 
-.nr__hourly-columns-row {display:flex;flex-direction:row;}
+.nr__date-group:last-child {
+	border-right:none;
+}
+
+/* Sticky Date Header Row */
+.nr__date-sticky-header {
+	position:sticky;
+	left:0;
+	z-index:5;
+	display:inline-flex;
+	align-items:center;
+	gap:1.2rem;
+	height:5.6rem;
+	padding:0 1.5rem;
+	background:var(--nr-fc-bg-card);
+	white-space:nowrap;
+	width:fit-content;
+	max-width:100%;
+	box-sizing:border-box;
+}
+
+.nr__badge-type {
+	font-size:1.8rem;
+	font-weight:700;
+	color:var(--nr-fc-text-primary);
+}
+
+.nr__date-sticky-header [data-icon] {
+	background:var(--nr-fc-primary-accent);
+}
+
+.nr__date-pill-icon {
+	width:2.8rem;
+	height:2.8rem;
+	border-radius:50%;
+	background-color:var(--nr-fc-bg-pill-icon);
+	display:flex;
+	align-items:center;
+	justify-content:center;
+}
+
+[data-current="true"] .nr__date-sticky-header .nr__date-pill {
+	background:var(--nr-fc-primary-accent);
+	border:2px solid var(--nr-fc-primary-accent);
+	color:var(--nr-fc-text-light);
+}
+
+[data-current="true"] .nr__date-sticky-header .nr__date-pill-icon {
+	background-color:var(--nr-fc-bg-card);
+}
+
+.nr__date-pill {
+	display:inline-flex;
+	align-items:center;
+	gap:0.6rem;
+	padding:0.4rem 1.4rem 0.4rem 0.4rem;
+	background:var(--nr-fc-bg-card);
+	border:2px solid var(--nr-fc-primary-accent);
+	color:var(--nr-fc-text-primary);
+	font-size:1.4rem;
+	font-weight:700;
+	height:3.6rem;
+	border-radius:1.8rem;
+}
+
+.nr__temp-range {
+	font-size:1.8rem;
+	font-weight:600;
+	color:var(--nr-fc-temp-range);
+}
+
+.nr__min-temp {
+	color:var(--nr-fc-temp-min-alt);
+	font-weight:700;
+}
+
+.nr__max-temp {
+	color:var(--nr-fc-temp-pm);
+	font-weight:700;
+}
+
+.nr__divider {
+	margin:0 0.4rem;
+	color:var(--nr-fc-divider);
+}
+
+.nr__hourly-dates-wrapper [data-length="7"] .nr__temp-range,
+.nr__hourly-dates-wrapper [data-length="6"] .nr__temp-range,
+.nr__hourly-dates-wrapper [data-length="5"] .nr__temp-range,
+.nr__hourly-dates-wrapper [data-length="4"] .nr__temp-range,
+.nr__hourly-dates-wrapper [data-length="3"] .nr__temp-range,
+.nr__hourly-dates-wrapper [data-length="2"] .nr__temp-range,
+.nr__hourly-dates-wrapper [data-length="1"] .nr__temp-range {
+	display:none;
+}
+
+.nr__hourly-dates-wrapper [data-length="4"] .nr__badge-type,
+.nr__hourly-dates-wrapper [data-length="3"] .nr__badge-type,
+.nr__hourly-dates-wrapper [data-length="2"] .nr__badge-type,
+.nr__hourly-dates-wrapper [data-length="1"] .nr__badge-type {
+	display:none;
+}
+
+.nr__hourly-dates-wrapper [data-length="2"] .nr__date-pill,
+.nr__hourly-dates-wrapper [data-length="1"] .nr__date-pill {
+	display:none;
+}
+
+/* Hourly Columns Container */
+.nr__hourly-columns-row {
+	display:flex;
+	flex-direction:row;
+	border-top:1px solid var(--nr-fc-border-dark);
+}
+
+.nr__hourly-col:hover {
+	background-color:var(--nr-fc-bg-col-hover);
+}
+
 .nr__hourly-col {
-  position:relative;
-  width:5.6rem;
-  flex-shrink:0;
-  display:flex;
-  flex-direction:column;
-  box-sizing:border-box;
-  text-align:center;
-}
-.nr__hourly-col > .nr__cell {border-right:1px dotted var(--border-theme7);}
-.nr__hourly-col:last-child > .nr__cell {border-right:none;}
-
-/* 고정 열 셀 기본 */
-.nr__fixed-row-cell {
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:0 0.4rem;
-  font-size:1.3rem;
-  font-weight:600;
-  color:var(--text-theme2);
-  box-sizing:border-box;
-  border-bottom:1px solid var(--border-theme5);
-  white-space:nowrap;
+	width:5.6rem;
+	flex-shrink:0;
+	display:flex;
+	flex-direction:column;
+	border-right:0.1rem dotted var(--nr-fc-border-muted);
+	box-sizing:border-box;
+	text-align:center;
 }
 
-/* 스크롤 열 셀 기본 */
+/* 중기예보 또는 3시간 간격일 때 시간 컬럼 가로 길이를 7.2rem으로 설정 */
+.nr__tab-mid .nr__hourly-col,
+.nr__interval-3h .nr__hourly-col {
+	width:7.2rem;
+}
+
+.nr__hourly-col:last-child {
+	border-right:none;
+}
+
 .nr__cell {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  padding:0.4rem;
-  border-bottom:1px solid var(--border-theme5);
-  font-size:1.4rem;
-  color:var(--text-theme1);
-  font-weight:600;
-  box-sizing:border-box;
-  white-space:nowrap;
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	justify-content:center;
+	padding:0.4rem;
+	border-bottom:0.1rem solid var(--nr-fc-border-subtle);
+	font-size:1.4rem;
+	color:var(--nr-fc-text-secondary);
+	box-sizing:border-box;
 }
 
-/* 시각 행 뱃지 */
-.nr__row-time-box {
-  display:inline-flex;
-  justify-content:center;
-  align-items:center;
-  font-size:1.1rem;
-  font-weight:700;
-  color:#fff;
-  background-color:var(--color-primary);
-  min-height:2.0rem;
-  border-radius:1.0rem;
-  padding:0 0.8rem;
-  line-height:1;
+.nr__cell.nr__cell-time {
+	font-weight:600;
+	font-size:1.4rem;
+	color:var(--nr-fc-text-primary);
 }
 
-/* ==========================================================================
-   공통 행 높이 및 스타일 (단기예보 Image 1)
-   ========================================================================== */
-.nr__row-time {height:4.4rem;}
-.nr__row-weather {height:4.8rem;}
-.nr__row-temp {height:4.2rem;}
-.nr__row-sensory {height:4.0rem;}
-.nr__row-precip {height:4.0rem;}
-.nr__row-snow {height:4.0rem;}
-.nr__row-rain-prob {height:3.8rem;}
-.nr__row-wind {height:9.6rem;}
-.nr__row-humidity {height:4.0rem;}
-.nr__row-heat {height:3.4rem;}
-
-/* 단기예보 기온 텍스트 (챠트선 대신 텍스트) */
-.nr__cell.nr__cell-temp {
-  font-size:1.4rem;
-  font-weight:600;
-  color:var(--text-theme1);
+.nr__date-group:first-child .nr__hourly-col:first-child .nr__cell-weather [data-icon-weather],
+.nr__date-group:first-child .nr__hourly-col:first-child .nr__cell-precip-value,
+.nr__date-group:first-child .nr__hourly-col:first-child .nr__cell-snow-value,
+.nr__date-group:first-child .nr__hourly-col:first-child .nr__cell-rain-prob-value {
+	border-left:1px solid var(--nr-fc-cell-border-white);
 }
 
-/* 날씨 / 하늘상태 배경 */
-.nr__fixed-row-cell.nr__row-weather,
 .nr__cell.nr__cell-weather {
-  background-color:var(--bg-theme11);
-  border-top:1px solid var(--border-theme6);
-  border-bottom:1px solid var(--border-theme6);
-}
-.nr__cell.nr__cell-weather [class*="icon-aspect-"] {
-  width:100%;
-  height:4.4rem;
-  background-size:2.8rem;
-  background-repeat:no-repeat;
-  background-position:center;
+	height:4.7rem;
+	padding:0;
+	background-color:var(--nr-fc-bg-subtle);
+	/*border-top:1px solid var(--nr-fc-border-sky);*/
 }
 
-/* 강수량 / 적설량 배경 */
-.nr__fixed-row-cell.nr__row-precip,
+.nr__cell.nr__cell-weather [data-icon-weather] {
+	width:100%;
+	height:4.7rem;
+	background-size:2.8rem;
+	background-repeat:no-repeat;
+	background-position:center;
+	transform:translateX(50%);
+	background-color:var(--nr-fc-bg-subtle);
+	border-right:1px solid var(--nr-fc-cell-border-white);
+	position:relative;
+	z-index:1;
+}
+
+/* Chart Space Reserved Placeholder */
+.nr__cell.nr__cell-temp-chart {
+	position:relative;
+	justify-content:space-between;
+	padding:1.2rem 0;
+	border-bottom:0;
+}
+
+.nr__cell.nr__cell-sensory {
+	font-weight:600;
+}
+
+.nr__date-group:last-child .nr__hourly-col:last-child .nr__cell-rain-prob-value,
+.nr__date-group:last-child .nr__hourly-col:last-child .nr__cell-precip-value,
+.nr__date-group:last-child .nr__hourly-col:last-child .nr__cell-snow-value {
+	display:none !important;
+}
+
+.nr__date-group:first-child .nr__hourly-col:first-child .nr__cell-precip .nr__cell-rain-prob-value,
+.nr__date-group:first-child .nr__hourly-col:first-child .nr__cell-precip .nr__cell-precip-value {
+	border-left:1px solid var(--nr-fc-cell-border-white);
+}
+
+.nr__hourly-col.nr__empty-col {
+	width:2.7rem;
+}
+
+.nr__cell.nr__cell-snow,
+.nr__cell.nr__cell-precip {
+	font-weight:600;
+	background-color:var(--nr-fc-precip-bg);
+	border-top:1px solid var(--nr-fc-precip-border-top);
+	border-bottom:1px solid var(--nr-fc-precip-border);
+	padding:0;
+}
+
+.nr__cell.nr__cell-precip + .nr__cell.nr__cell-snow {
+	border-top:0;
+}
+
+.nr__cell-rain-prob {
+	padding:0;
+	font-weight:600;
+	background-color:var(--nr-fc-bg-subtle);
+}
+
+.nr__cell-rain-prob-value,
+.nr__cell-precip-value {
+	display:flex;
+	width:100%;
+	height:100%;
+	justify-content:center;
+	align-items:center;
+	transform:translateX(50%);
+	background-color:var(--nr-fc-precip-bg);
+	border-right:1px solid var(--nr-fc-cell-border-white);
+	position:relative;
+	z-index:1;
+	font-size:1.4rem;
+	color:var(--nr-fc-text-primary);
+	font-weight:600;
+}
+
+.nr__cell-rain-prob-value {
+	background-color:var(--nr-fc-bg-subtle);
+}
+
+/*.nr__cell.nr__cell-humidity {
+	border-top:1px solid var(--nr-fc-border-muted);
+}*/
+
+.nr__cell-heat {
+	background-color:var(--nr-fc-bg-subtle);
+}
+
 .nr__cell.nr__cell-precip,
-.nr__fixed-row-cell.nr__row-snow,
-.nr__cell.nr__cell-snow {
-  background-color:var(--bg-theme12);
-  font-size:1.3rem;
-  font-weight:600;
+.nr__cell.nr__cell-rain-prob,
+.nr__cell.nr__cell-humidity,
+.nr__cell.nr__cell-heat {
+	font-size:1.4rem;
+	font-weight:600;
+	color:var(--nr-fc-text-primary);
 }
 
-/* 강수확률 배경 */
-.nr__fixed-row-cell.nr__row-rain-prob,
-.nr__cell.nr__cell-rain-prob {
-  background-color:var(--bg-theme13);
-  font-size:1.3rem;
-  font-weight:600;
+/* Mode 2:Chart Placeholders */
+.nr__mode-bar-chart .nr__cell.has-chart,
+.nr__cell.nr__cell-rain-chart,
+.nr__cell.nr__cell-wind-chart,
+.nr__cell.nr__cell-humidity-chart {
+	position:relative;
+	background-color:transparent;
+	padding:0;
+	box-sizing:border-box;
 }
 
-/* 바람 셀 */
-.nr__fixed-row-cell.nr__row-wind,
+/* Wind Cell with direction arrow */
 .nr__cell.nr__cell-wind {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:0.4rem;
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	justify-content:center;
+	gap:0.8rem;
 }
-.nr__wind-arrow {line-height:1;}
-.nr__wind-strength {font-size:1.3rem;font-weight:600;color:var(--text-theme1);line-height:1.2;}
-.nr__wind-text {font-size:1.3rem;font-weight:600;color:var(--text-theme1);line-height:1.2;}
 
-/* 습도 및 폭염 */
-.nr__cell.nr__cell-humidity {font-size:1.3rem;}
-.nr__cell.nr__cell-heat {font-size:1.3rem;background-color:var(--bg-theme13);border-bottom:0 !important;}
+.nr__cell-wind-wrap {
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	align-items:center;
+}
+
+.nr__wind-arrow {
+	line-height:1;
+}
+
+.nr__wind-strength {
+	font-size:1.4rem;
+	font-weight:600;
+	color:var(--nr-fc-text-primary);
+	line-height:1.2;
+}
+
+.nr__wind-text {
+	font-size:1.4rem;
+	font-weight:600;
+	color:var(--nr-fc-text-primary);
+	line-height:1.2;
+}
+
+.nr__interval-3h .nr__wind-text {
+	display:none;
+}
 
 /* ==========================================================================
-   중기예보 전용 행 높이 및 스타일 (중기예보 Image 2)
+   04. 시간별 예보 리스트 / 표 형태 (List & Table Layout - Mode 3)
    ========================================================================== */
-.nr__row-minmax-temp {height:4.4rem;}
-.nr__row-avg-temp {height:4.2rem;}
-.nr__row-rain-possibility {height:4.4rem;}
-.nr__row-rain-trend {height:4.2rem;}
 
-/* 최저/최고기온 */
-.nr__temp-val {font-size:1.4rem;font-weight:700;}
-.nr__temp-val--min {color:#0070EA;}
-.nr__temp-val--max {color:#EE0000;}
-
-/* 평균기온 */
-.nr__cell-avg-temp {font-size:1.4rem;font-weight:600;color:var(--text-theme1);}
-
-/* 강수가능성 */
-.nr__fixed-row-cell.nr__row-rain-possibility,
-.nr__cell.nr__cell-rain-possibility {
-  background-color:var(--bg-theme13);
-  padding:0.4rem 0.2rem;
-}
-.nr__rain-badge {
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-width:4.6rem;
-  height:2.6rem;
-  padding:0 0.6rem;
-  border-radius:0.4rem;
-  font-size:1.2rem;
-  font-weight:700;
-  line-height:1;
-  white-space:nowrap;
-}
-.nr__rain-badge.is-high {
-  background-color:#1976D2;
-  color:#ffffff;
-}
-.nr__rain-badge.is-mid {
-  background-color:#DBEAFE;
-  color:#1E40AF;
-}
-.nr__rain-badge.is-low {
-  background-color:#F1F5F9;
-  color:#334155;
-}
-.nr__rain-badge.is-none {
-  background-color:#FFFFFF;
-  color:#64748B;
-  border:1px solid #E2E8F0;
+.nr__hourly-list-container {
+	width:100%;
+	background:var(--nr-fc-bg-card);
+	border-top:2px solid var(--nr-fc-border-dark);
+	border-bottom:1px solid var(--nr-fc-border-dark);
+	overflow-x:auto;
+	overflow-y:hidden;
 }
 
-/* 강수가능성 변화추이 */
-.nr__trend-val {font-size:1.3rem;font-weight:700;}
-.nr__trend-val.is-high {color:#EE0000;}
-.nr__trend-val.is-low {color:#0070EA;}
-.nr__trend-val.is-same {color:var(--text-theme1);font-weight:600;}
+.nr__hourly-list-wrapper {
+	display:flex;
+	flex-direction:row;
+	width:max-content;
+	min-width:100%;
+}
 
-/* 고정 열 끝 행 테두리 정리 */
-.nr__fixed-row-cell:last-child,
-.nr__hourly-col > .nr__cell:last-child {
-  border-bottom:none;
+.nr__list-date-block {
+	display:flex;
+	flex-direction:column;
+	flex-shrink:0;
+	width:117rem;
+	border-left:0.1rem solid var(--nr-fc-border-dark);
+	background:var(--nr-fc-bg-card);
+}
+
+.nr__list-date-block:first-child {
+	border-left:none;
+}
+
+.nr__list-date-header {
+	display:flex;
+	align-items:center;
+	gap:1.2rem;
+	height:5.8rem;
+	padding:1rem 1.6rem;
+	background:var(--nr-fc-bg-card);
+	border-bottom:0.1rem solid var(--nr-fc-border-dark);
+	white-space:nowrap;
+	box-sizing:border-box;
+}
+
+.nr__list-date-header .nr__badge-type {
+	font-size:1.8rem;
+	font-weight:700;
+	color:var(--nr-fc-text-primary);
+}
+
+.nr__list-date-header [data-icon] {
+	background:var(--nr-fc-primary-accent);
+}
+
+.nr__list-date-header .nr__date-pill {
+	display:inline-flex;
+	align-items:center;
+	gap:0.6rem;
+	padding:0.4rem 1.4rem 0.4rem 0.4rem;
+	background:var(--nr-fc-bg-card);
+	border:2px solid var(--nr-fc-primary-accent);
+	color:var(--nr-fc-text-primary);
+	font-size:1.4rem;
+	font-weight:700;
+	height:3.6rem;
+	border-radius:1.8rem;
+}
+
+[data-current="true"] .nr__list-date-header .nr__date-pill {
+	background:var(--nr-fc-primary-accent);
+	border:2px solid var(--nr-fc-primary-accent);
+	color:var(--nr-fc-text-light);
+}
+
+[data-current="true"] .nr__list-date-header .nr__date-pill-icon {
+	background-color:var(--nr-fc-bg-card);
+}
+
+.nr__list-date-header .nr__temp-range {
+	font-size:1.8rem;
+	font-weight:600;
+	color:var(--nr-fc-temp-range);
+}
+
+.nr__hourly-list-table {
+	width:100%;
+	border-collapse:collapse;
+	text-align:center;
+	table-layout:fixed;
+}
+
+.nr__hourly-list-table th {
+	background:var(--nr-fc-bg-card);
+	padding:1.2rem 0.6rem;
+	font-size:1.8rem;
+	font-weight:500;
+	border-bottom:0.1rem solid var(--nr-fc-border-light);
+	white-space:nowrap;
+	color:var(--nr-fc-text-secondary);
+}
+
+.nr__hourly-list-table th:nth-child(1) { width:5.5rem; }
+.nr__hourly-list-table th:nth-child(2) { width:10rem; }
+.nr__hourly-list-table th:nth-child(3) { width:11.5rem; }
+.nr__hourly-list-table th:nth-child(4) { width:6.5rem; }
+.nr__hourly-list-table th:nth-child(5) { width:6.5rem; }
+.nr__hourly-list-table th:nth-child(6) { width:7.5rem; }
+.nr__hourly-list-table th:nth-child(7) { width:13.5rem; }
+.nr__hourly-list-table th:nth-child(8) { width:6.5rem; }
+.nr__hourly-list-table th:nth-child(9) { width:7rem; }
+
+.nr__hourly-list-table th:last-child {
+	border-right:none;
+}
+
+.nr__hourly-list-table tr:nth-child(even) {
+	background:var(--nr-fc-bg-subtle);
+}
+
+.nr__hourly-list-table td {
+	padding:1.1rem 0.6rem;
+	font-size:1.4rem;
+	font-weight:500;
+	vertical-align:middle;
+	white-space:nowrap;
+	color:var(--nr-fc-text-secondary);
+}
+
+.nr__hourly-list-table td:last-child {
+	border-right:none;
+}
+
+.nr__hourly-list-table td strong {
+	font-weight:700;
+	color:var(--nr-fc-text-primary);
+}
+
+.nr__hourly-list-table td .nr__sensory-temp {
+	color:var(--nr-fc-text-sensory-sub);
+	font-size:1.2rem;
+	margin-left:0.2rem;
+}
+
+.nr__hourly-list-table tr:hover td {
+	background:var(--nr-fc-bg-hover);
+}
+
+.nr__hourly-list-table .nr__td-weather {
+	display:flex;
+	align-items:center;
+	justify-content:flex-start;
+	padding-left:20%;
+	width:100%;
+	gap:0.6rem;
+}
+
+.nr__hourly-list-table .nr__td-weather [data-icon-weather] {
+	width:2.8rem;
+	height:2.8rem;
+	background-size:contain;
+	background-repeat:no-repeat;
+	background-position:center;
+	flex-shrink:0;
+}
+
+/* ==========================================================================
+   05. 단기예보 조건부 노출 임시 테스트 컨트롤러 패널 (Forecast Test Panel)
+   ========================================================================== */
+
+.nr__forecast-test-panel {
+	margin:1rem auto 0;
+	padding:0.8rem;
+	background:var(--nr-fc-bg-test-panel);
+	border:1px dashed var(--nr-fc-border-test);
+	border-radius:1.2rem;
+	box-sizing:border-box;
+}
+
+.nr__test-panel-header {
+	display:flex;
+	align-items:center;
+	justify-content:space-between;
+	gap:1.2rem;
+	flex-wrap:wrap;
+}
+
+.nr__test-panel-title-wrap {
+	display:flex;
+	align-items:center;
+	gap:0.8rem;
+}
+
+.nr__test-panel-badge {
+	display:inline-block;
+	padding:0.2rem 0.8rem;
+	font-size:1.1rem;
+	font-weight:700;
+	color:var(--nr-fc-badge-blue);
+	background:var(--nr-fc-badge-bg);
+	border:1px solid var(--nr-fc-badge-border);
+	border-radius:2rem;
+	line-height:1.4;
+}
+
+.nr__test-panel-title {
+	font-size:1.4rem;
+	font-weight:700;
+	color:var(--nr-fc-test-title);
+}
+
+.nr__test-reset-btn {
+	padding:0.2rem 1.2rem;
+	font-size:1.2rem;
+	font-weight:600;
+	color:var(--nr-fc-test-btn-text);
+	background:var(--nr-fc-bg-card);
+	border:1px solid var(--nr-fc-test-btn-border);
+	border-radius:0.6rem;
+	cursor:pointer;
+	transition:all 0.15s ease;
+}
+
+.nr__test-reset-btn:hover {
+	background:var(--nr-fc-bg-item-hover);
+	color:var(--nr-fc-test-title-hover);
+	border-color:var(--nr-fc-border-test);
+}
+
+.nr__test-panel-items {
+	display:flex;
+	flex-wrap:wrap;
+	gap:1rem;
+}
+
+.nr__test-checkbox-label {
+	display:inline-flex;
+	align-items:center;
+	gap:0.8rem;
+	padding:0.8rem 1.4rem;
+	background:var(--nr-fc-bg-card);
+	border:1px solid var(--nr-fc-test-btn-border);
+	border-radius:0.8rem;
+	font-size:1.3rem;
+	font-weight:600;
+	color:var(--nr-fc-test-label);
+	cursor:pointer;
+	user-select:none;
+	transition:all 0.15s ease;
+	box-shadow:0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.nr__test-checkbox-label:hover {
+	border-color:var(--nr-fc-badge-blue);
+	color:var(--nr-fc-test-title);
+	background:var(--nr-fc-bg-test-panel);
+}
+
+.nr__test-checkbox-label input[type="checkbox"] {
+	width:1.6rem;
+	height:1.6rem;
+	accent-color:var(--nr-fc-badge-blue);
+	cursor:pointer;
+	margin:0;
+}
+
+.nr__test-checkbox-label:has(input:checked) {
+	background:var(--nr-fc-badge-bg);
+	border-color:var(--nr-fc-badge-blue);
+	color:var(--nr-fc-test-checked);
 }
 
 /* ==========================================================================
@@ -433,6 +2328,12 @@
 #section-hourly[data-forecast-type="mid"] .nr__content-type,
 .is-mid-term .nr__content-type:has(input[name="time"]),
 [data-forecast-type="mid"] .nr__content-type:has(input[name="time"]) {
-  display: none !important;
+	display:none !important;
 }
 
+/* 영문 */
+[lang="en"] {
+  .nr__cell.nr__cell-wind-text .nr__wind-str,
+  .nr__cell.nr__cell-wind-text .nr__wind-dir {font-size:1.2rem}
+  .nr__fixed-row-cell {font-size:1.3rem !important;}
+}

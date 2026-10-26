@@ -6,6 +6,7 @@ import {
   livingIndicesExe,
 } from "./ui-forecast.js";
 import { showToast } from "./ui-toast.js";
+import { applyLanguage } from "./allmenu.js";
 
 /**
  * 날씨 메인 통합 데이터 관리자 (WeatherMainManager)
@@ -27,7 +28,11 @@ export const WeatherMainManager = {
    */
   init: async (options = {}) => {
     const jsonUrl = options.jsonUrl || "../resources/json/weather.json";
-    WeatherMainManager.chartOptions = options.chartOptions || {};
+    WeatherMainManager.chartOptions = {
+      ...options.chartOptions,
+      ...(options.viewMode ? { viewMode: options.viewMode } : {}),
+      ...options.forecastOptions,
+    };
 
     try {
       const response = await fetch(jsonUrl);
@@ -71,6 +76,7 @@ export const WeatherMainManager = {
     locations.forEach((loc, idx) => {
       const cur = loc.today.current;
       const sub = loc.today.subMetrics;
+      const alert = loc.today.specialReport;
       const hour = new Date().getHours();
       const isNight = hour >= 18 || hour < 6;
       let displayIcon = cur.icon;
@@ -98,6 +104,9 @@ export const WeatherMainManager = {
                     </button>
                   </div>
                 </div>
+                <a href="https://www.weather.go.kr/wnuri-map/html/map.html" target="_blank" class="nr__btn-nury">
+                  <span>날씨지도</span>
+                </a>
               </div>
               <div class="nr__summary-weather">
                 <i class="icon-aspect-${displayIcon}" data-size="80" aria-hidden="true"></i>
@@ -132,7 +141,7 @@ export const WeatherMainManager = {
               <!-- 시간당 강수량 -->
               <div class="nr__summary-card nr__summary-card--sub">
                 <div class="nr__summary-sub-head">
-                  <span class="text-13" data-weight="700">시간당<br>강수량</span>
+                  <span class="text-13" data-weight="700">시간당 강수량</span>
                   <span class="nr__summary-icon-circle">
                     <i class="icon-aspect-main4" data-size="18" aria-hidden="true"></i>
                   </span>
@@ -165,9 +174,8 @@ export const WeatherMainManager = {
             <!-- E : 습도 / 강수량 / 바람 상세 카드 -->
 
             <!-- S : 특보 날씨 알림 카드 -->
-            ${
-              alert && alert.active
-                ? `
+            ${alert && alert.active
+          ? `
             <div class="nr__summary-card nr__summary-card--alert">
               <div class="nr__summary-alert-head">
                 <i class="icon-aspect-warning-w" data-size="18" aria-hidden="true"></i>
@@ -178,7 +186,7 @@ export const WeatherMainManager = {
               </p>
             </div>
             `
-                : `
+          : `
             <div class="nr__summary-card nr__summary-card--alert nr__summary-card--alert-none">
               <div class="nr__summary-alert-head">
                 <i class="icon-aspect-warning-w" data-size="18" aria-hidden="true"></i>
@@ -189,7 +197,7 @@ export const WeatherMainManager = {
               </p>
             </div>
             `
-            }
+        }
             <!-- E : 특보 날씨 알림 카드 -->
           </div>
         </div>
@@ -197,6 +205,9 @@ export const WeatherMainManager = {
     });
 
     wrapper.innerHTML = slidesHtml;
+    if (document.documentElement.getAttribute('lang') === 'en') {
+      applyLanguage('en');
+    }
   },
 
   /**
@@ -275,6 +286,10 @@ export const WeatherMainManager = {
 
     // 6. 생활기상지수(자외선, 대기정체, 꽃가루) 업데이트
     WeatherMainManager.renderLivingIndices(loc);
+
+    if (document.documentElement.getAttribute('lang') === 'en') {
+      applyLanguage('en');
+    }
   },
 
   /**
@@ -378,10 +393,13 @@ export const WeatherMainManager = {
         if (WeatherMainManager.data) {
           const loc =
             WeatherMainManager.data.locations[
-              WeatherMainManager.currentLocationIndex
+            WeatherMainManager.currentLocationIndex
             ];
           if (loc) {
             WeatherMainManager.renderPollenList(loc);
+            if (document.documentElement.getAttribute('lang') === 'en') {
+              applyLanguage('en');
+            }
           }
         }
       });

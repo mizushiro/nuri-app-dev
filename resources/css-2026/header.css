@@ -28,7 +28,7 @@ body.is-scrolled .nr__header {-webkit-backdrop-filter:blur(1rem);backdrop-filter
 .nr__header-btn--menu:active {background-color:rgba(255,255,255,.35);transform:scale(.94)}
 
 /* 하단 내비게이션 (GNB 탭) */
-.nr__header-nav {padding:0 1.5rem;/*overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;*/display:flex;justify-content:space-between;align-items:center}
+.nr__header-nav {padding:0 1.5rem;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;width:100vw}
 .nr__header-nav::-webkit-scrollbar {display:none}
 .nr__header-gnb {display:flex;align-items:center;gap:1.6rem;margin:0;padding:0;list-style:none}
 .nr__header-gnb-item {flex-shrink:0}

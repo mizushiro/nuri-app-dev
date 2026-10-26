@@ -49,6 +49,15 @@
         // 2. 저장된 줌 배율 복원
         const savedZoom = sessionStorage.getItem('nr_zoom');
         if (savedZoom) document.body.setAttribute('data-zoom', savedZoom);
+
+        // 3. 저장된 언어 설정 복원
+        const savedLang = sessionStorage.getItem('nr_lang');
+        if (savedLang) {
+          document.documentElement.setAttribute('lang', savedLang);
+          if (savedLang === 'en') {
+            document.title = 'KMA Weather Alert';
+          }
+        }
       } catch (e) { }
     })();
   </script>
@@ -74,7 +83,7 @@
         <div class="nr__main-section-group">
           <!-- S : 정보집약형 -->
           <section class="nr__main-section-box" data-diaplay-item="info-only">
-            <div class="px-20 pb-6 pt-6">
+            <div class="px-15">
               <ul class="nr__allmenu-category-list">
                 <!-- 1. 전국 -->
                 <li class="nr__allmenu-category-item">
@@ -696,6 +705,7 @@
     // 지역 > 오늘날씨정보 > 일주일치정보 통합 날씨 매니저 초기화 및 스와이퍼 연동
     WeatherMainManager.init({
       jsonUrl: '../resources/json/weather.json',
+      viewMode: 'mode3', // 기본 표(테이블) 형태로 시작
     });
 
     // 1. 샘플 데이터 정의

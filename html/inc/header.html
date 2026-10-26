@@ -32,19 +32,22 @@
 			<a href="#weather" class="nr__header-gnb-link">날씨</a>
 		</li>
 		<li class="nr__header-gnb-item">
-			<a href="#alert" class="nr__header-gnb-link">알림</a>
+			<a href="#alert" class="nr__header-gnb-link">관측</a>
 		</li>
 		<li class="nr__header-gnb-item">
-			<a href="#numerical-model" class="nr__header-gnb-link">수치모델</a>
+			<a href="#numerical-model" class="nr__header-gnb-link">예보</a>
 		</li>
 		<li class="nr__header-gnb-item">
-			<a href="#observation" class="nr__header-gnb-link">관측</a>
+			<a href="#observation" class="nr__header-gnb-link">태풍</a>
 		</li>
+    <li class="nr__header-gnb-item">
+      <a href="#observation" class="nr__header-gnb-link">지진</a>
+    </li>
 		<li class="nr__header-gnb-item">
-			<a href="#forecast" class="nr__header-gnb-link">예보</a>
+			<a href="#forecast" class="nr__header-gnb-link">알림</a>
 		</li>
 	</ul>
-    <span class="nr__summary-time text-14" data-weight="500">09.27.(월) 13:30</span>
+    <!-- <span class="nr__summary-time text-14" data-weight="500">09.27.(월) 13:30</span> -->
 </nav>
 
 
@@ -309,9 +312,7 @@
 						<div data-mapsub-area="allmenu_style_3" class="form-fake-group-flex" data-form-style="round-list-type" data-col="auto">
 							<div class="form-fake-button">
 								<input type="radio" class="form-fake-input" id="allmenu_style_3_1" name="allmenu_style_3" value="allmenu_style_3_1" checked>
-								<label for="allmenu_style_3_1" class="form-fake-label" data-form-h="36">
-                  수치모델
-								</label>
+								<label for="allmenu_style_3_1" class="form-fake-label" data-form-h="36">수치모델</label>
 							</div>
 							<div class="form-fake-button">
 								<input type="radio" class="form-fake-input" id="allmenu_style_3_2" name="allmenu_style_3" value="allmenu_style_3_2">
@@ -564,6 +565,18 @@
 					</div>
 				</li>
 
+				<!-- 시간별 예보 모드 (그래프/표) -->
+				<li class="nr__setting-item">
+					<span class="nr__setting-label">시간별 예보 모드</span>
+					<div class="form-element-switch" data-size="30">
+						<input type="checkbox" id="setting_sw_hourly_mode" checked>
+						<label for="setting_sw_hourly_mode" data-label-on="그래프" data-label-off="표">
+							<span class="txt-checked">그래프</span>
+							<span class="txt-uncheck">표</span>
+						</label>
+					</div>
+				</li>
+
 				<!-- 5. 영상 재생 -->
 				<li class="nr__setting-item">
 					<span class="nr__setting-label">영상 재생</span>
@@ -628,7 +641,7 @@
 				<li class="nr__setting-item">
 					<span class="nr__setting-label">큰 글자 모드</span>
 					<div class="form-element-switch" data-size="30">
-						<input type="checkbox" id="setting_sw_8">
+						<input type="checkbox" id="setting_sw_8" checked> 
 						<label for="setting_sw_8" data-label-on="ON" data-label-off="OFF">
 							<span class="txt-checked">ON</span>
 							<span class="txt-uncheck">OFF</span>

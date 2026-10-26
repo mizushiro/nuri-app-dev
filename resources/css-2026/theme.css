@@ -135,6 +135,8 @@
   --air-bad-start:#F19C51;
   --air-bad-end:#F4B163;
 }
+[data-theme="dark"],
+.theme-dark,
 .dark-theme {
   --text-theme1:#fff;
   --text-theme2:#B7B7B7;
@@ -164,7 +166,7 @@
   --bg-theme13:#FFFFFF1A;
   --bg-theme14:#353D50;
   --bg-theme15:#2C364F;
-  --bg-theme16:#FFFFFF40;
+  --bg-theme16:#FFFFFF1A;;
   --bg-theme17:#0B0F19;
 
   --bg-theme18:#0475F433;

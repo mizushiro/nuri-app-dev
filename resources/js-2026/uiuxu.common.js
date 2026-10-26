@@ -20,6 +20,10 @@ import {
   initAllMenu,
   setMapChangeCallback,
   getMapSelectionData,
+  setLanguage,
+  applyLanguage,
+  updateSwitchLabels,
+  updateFooterNav,
 } from "./component/allmenu.js";
 import { initRadarPlayer } from "./component/radarPlayer.js";
 
@@ -30,6 +34,10 @@ export {
   sunMoonExe,
   airQualityExe,
   livingIndicesExe,
+  setLanguage,
+  applyLanguage,
+  updateSwitchLabels,
+  updateFooterNav,
 };
 
 export const UX = {
@@ -81,6 +89,10 @@ export const UX = {
   initRadarPlayer,
   setMapChangeCallback,
   getMapSelectionData,
+  setLanguage,
+  applyLanguage,
+  updateSwitchLabels,
+  updateFooterNav,
   getTimeBasedTheme: (date = new Date()) => {
     const hour = date.getHours();
     // 저녁 6시(18시)부터 익일 아침 6시(06시)까지 나이트모드, 그 외는 라이트모드
@@ -190,7 +202,11 @@ export const UX = {
     const handleScroll = () => {
       const scrollY = window.scrollY || window.pageYOffset;
       const isLargeFont = document.body.dataset.zoom === "2";
-      const changePoint = isLargeFont ? 460 : (window.innerHeight - 260);
+      const rem =
+        parseFloat(getComputedStyle(document.documentElement).fontSize) ||
+        (isLargeFont ? 12 : 10);
+      const changeOffset = isLargeFont ? Math.round(25 * rem) : 260;
+      const changePoint = window.innerHeight - changeOffset;
 
       if (scrollY > 20) {
         document.body.classList.add("is-scrolled");
@@ -205,6 +221,22 @@ export const UX = {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
+
+    if (window.MutationObserver && document.body) {
+      const zoomObserver = new MutationObserver((mutations) => {
+        for (const mutation of mutations) {
+          if (mutation.attributeName === "data-zoom") {
+            handleScroll();
+          }
+        }
+      });
+      zoomObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ["data-zoom"],
+      });
+    }
+
     handleScroll();
   },
   initFooterNav: () => {
