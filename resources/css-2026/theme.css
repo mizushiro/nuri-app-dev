@@ -215,6 +215,7 @@
 .icon-aspect-main-nav3-theme {background-image:url("../images-2026/icon/icon-aspect-main-nav3-light.svg")}
 .icon-aspect-main-nav4-theme {background-image:url("../images-2026/icon/icon-aspect-main-nav4-light.svg")}
 .icon-aspect-main-nav5-theme {background-image:url("../images-2026/icon/icon-aspect-main-nav5-light.svg")}
+.nr__cell-rain-trend .nr__trend-arrow {background-image:url("../images-2026/icon/icon-weather-same-light.svg");}
 
 .night-theme .icon-aspect-help-theme,
 .dark-theme .icon-aspect-help-theme {background-image:url("../images-2026/icon/icon-aspect-help-dark.svg")}
@@ -236,6 +237,8 @@
 .dark-theme .icon-aspect-main-nav4-theme {background-image:url("../images-2026/icon/icon-aspect-main-nav4-dark.svg")}
 .night-theme .icon-aspect-main-nav5-theme,
 .dark-theme .icon-aspect-main-nav5-theme {background-image:url("../images-2026/icon/icon-aspect-main-nav5-dark.svg")}
+.night-theme .nr__cell-rain-trend .nr__trend-arrow,
+.dark-theme .nr__cell-rain-trend .nr__trend-arrow {background-image:url("../images-2026/icon/icon-weather-same-dark.svg");}
 
 /* main-nav 활성(on) 아이콘 */
 .is-active > .icon-aspect-main-nav1-theme,

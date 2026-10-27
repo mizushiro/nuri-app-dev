@@ -1248,19 +1248,21 @@
 	z-index:2;
 }
 .nr__cell-rain-trend.trend-up .nr__trend-arrow {
-	background:url("data:image/svg+xml,%3Csvg width='28' height='28' viewBox='0 0 28 28' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15.167 7.93359L19.3662 12.1338L21 10.5L14 3.5L7 10.5L8.63379 12.1338L12.833 7.93359V18.667H12.834V24.5H15.167V7.93359Z' fill='%23DC143C'/%3E%3C/svg%3E") no-repeat center / 2.8rem;
+	background:url("../images-2026/icon/icon-weather-up.svg") no-repeat center / 2.8rem;
 	width:2.8rem;
 	height:2.8rem;
 	font-size:0;
 }
 .nr__cell-rain-trend.trend-down .nr__trend-arrow {
-	background:url("data:image/svg+xml,%3Csvg width='28' height='28' viewBox='0 0 28 28' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15.167 20.0674L19.3662 15.8672L21 17.501L14 24.501L7 17.501L8.63379 15.8672L12.833 20.0674V3.50098H15.166V9.33398H15.167V20.0674Z' fill='%23006FE8'/%3E%3C/svg%3E") no-repeat center / 2.8rem;
+	background:url("../images-2026/icon/icon-weather-down.svg") no-repeat center / 2.8rem;
 	width:2.8rem;
 	height:2.8rem;
 	font-size:0;
 }
 .nr__cell-rain-trend .nr__trend-arrow {
-	background:url("data:image/svg+xml,%3Csvg width='28' height='28' viewBox='0 0 28 28' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.75 17.1616C9.53955 16.2764 10.5205 15.8218 11.5972 15.8218C13.4634 15.8218 15.1143 17.1855 16.9326 17.1855C18.0332 17.1855 18.9902 16.707 19.7319 15.75V18.0469C18.9185 18.9321 17.9614 19.3867 16.8848 19.3867C15.0186 19.3867 13.3438 18.0229 11.5254 18.0229C10.4487 18.0229 9.51562 18.5015 8.75 19.4585V17.1616Z' fill='%2364748b'/%3E%3Cpath d='M8.75 10.1616C9.53955 9.27637 10.5205 8.82178 11.5972 8.82178C13.4634 8.82178 15.1143 10.1855 16.9326 10.1855C18.0332 10.1855 18.9902 9.70703 19.7319 8.75V11.0469C18.9185 11.9321 17.9614 12.3867 16.8848 12.3867C15.0186 12.3867 13.3438 11.0229 11.5254 11.0229C10.4487 11.0229 9.51562 11.5015 8.75 12.4585V10.1616Z' fill='%2364748b'/%3E%3C/svg%3E") no-repeat center / 2.8rem;
+	background-repeat:no-repeat;
+  background-position:50% 50%;
+  background-size:contain;
 	width:2.8rem;
 	height:2.8rem;
 	font-size:0;

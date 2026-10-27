@@ -24,6 +24,7 @@ import {
   applyLanguage,
   updateSwitchLabels,
   updateFooterNav,
+  updateAlarmMenuVisibility,
 } from "./component/allmenu.js";
 import { initRadarPlayer } from "./component/radarPlayer.js";
 
@@ -38,6 +39,7 @@ export {
   applyLanguage,
   updateSwitchLabels,
   updateFooterNav,
+  updateAlarmMenuVisibility,
 };
 
 export const UX = {
@@ -157,7 +159,7 @@ export const UX = {
     }
 
     if (themeSwitch) {
-      themeSwitch.checked = isLight;
+      themeSwitch.checked = (isNight || isDark);
     }
   },
   initThemeToggle: () => {
@@ -195,8 +197,8 @@ export const UX = {
 
       const themeSwitch = e.target.closest("#setting_sw_9");
       if (themeSwitch) {
-        const isLight = themeSwitch.checked;
-        UX.applyTheme(isLight ? "light" : "dark", true);
+        const isDark = themeSwitch.checked;
+        UX.applyTheme(isDark ? "dark" : "light", true);
         return;
       }
     });

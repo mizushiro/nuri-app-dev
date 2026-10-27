@@ -768,6 +768,23 @@ export const applyLanguage = (lang = 'ko') => {
 };
 
 /**
+ * GNB 알림 메뉴 노출/숨김 상태 갱신
+ * @param {boolean} isEnabled - true: 노출, false: 숨김
+ */
+export const updateAlarmMenuVisibility = (isEnabled) => {
+  const gnbItems = document.querySelectorAll('.nr__header-gnb-item');
+  gnbItems.forEach((item) => {
+    const isAlarm = item.getAttribute('data-gnb-menu') === 'alert' ||
+      item.querySelector('a[href="#forecast"]') ||
+      item.textContent.trim() === '알림' ||
+      item.textContent.trim() === 'Alerts';
+    if (isAlarm) {
+      item.style.display = isEnabled ? '' : 'none';
+    }
+  });
+};
+
+/**
  * 설정 다이얼로그 전역 인스턴스 참조
  */
 let settingDialogInstance = null;
@@ -798,11 +815,11 @@ export const openSettingDialog = (triggerBtn = null) => {
     });
   }
 
-  // 현재 body 테마 상태에 따라 스위치 checked 값 동기화 (light-theme이면 true, dark/night-theme이면 false)
+  // 현재 body 테마 상태에 따라 스위치 checked 값 동기화 (라이트: false, 다크/나이트: true)
   const themeSwitch = dialogEl.querySelector('#setting_sw_9');
   if (themeSwitch) {
-    const isLight = document.body.classList.contains('light-theme') || (!document.body.classList.contains('dark-theme') && !document.body.classList.contains('night-theme'));
-    themeSwitch.checked = isLight;
+    const isDark = document.body.classList.contains('dark-theme') || document.body.classList.contains('night-theme');
+    themeSwitch.checked = isDark;
   }
 
   // 큰글씨 모드 스위치(#setting_sw_8) 동기화 (data-zoom === "2"이면 ON(false), "1"이면 OFF(true))
@@ -822,13 +839,30 @@ export const openSettingDialog = (triggerBtn = null) => {
     hourlyModeSwitch.checked = (currentMode === 'mode3');
   }
 
-  // 언어 설정 스위치(#setting_sw_7) 동기화 (lang === 'en'이면 false(ENG), 'ko'이면 true(한국어))
+  // 언어 설정 스위치(#setting_sw_7) 동기화 (lang === 'en'이면 true(ENG), 'ko'이면 false(한국어))
   const langSwitch = dialogEl.querySelector('#setting_sw_7');
   if (langSwitch) {
     let savedLang = null;
     try { savedLang = sessionStorage.getItem('nr_lang'); } catch (err) {}
     const currentLang = savedLang || document.documentElement.getAttribute('lang') || 'ko';
-    langSwitch.checked = (currentLang !== 'en');
+    langSwitch.checked = (currentLang === 'en');
+  }
+
+  // 알림 메뉴 활성화 스위치(#setting_sw_6) 동기화 (ON(노출): false, OFF(숨김): true)
+  const alarmSwitch = dialogEl.querySelector('#setting_sw_6');
+  if (alarmSwitch) {
+    let savedAlarm = null;
+    try { savedAlarm = sessionStorage.getItem('nr_alarm_menu_enabled'); } catch (err) {}
+    const isAlarmEnabled = (savedAlarm !== null) ? (savedAlarm === 'true') : !alarmSwitch.checked;
+    alarmSwitch.checked = !isAlarmEnabled;
+  }
+
+  // 풍속 단위 설정 스위치(#setting_sw_4) 동기화 (m/s: false, km/h: true)
+  const windSwitch = dialogEl.querySelector('#setting_sw_4');
+  if (windSwitch) {
+    let savedWind = null;
+    try { savedWind = sessionStorage.getItem('nr_wind_unit'); } catch (err) {}
+    windSwitch.checked = (savedWind === 'kmh');
   }
 
   // 지도형 서브 라디오 동기화 (data-maptype-check)
@@ -866,7 +900,26 @@ export const initSettingDialog = () => {
 
   const initialLangSwitch = document.querySelector('#setting_sw_7');
   if (initialLangSwitch) {
-    initialLangSwitch.checked = (initialLang !== 'en');
+    initialLangSwitch.checked = (initialLang === 'en');
+  }
+
+  // 초기 알림 메뉴 노출 여부 반영 (기본값 true(ON), 저장된 세션값 우선)
+  let savedAlarm = null;
+  try { savedAlarm = sessionStorage.getItem('nr_alarm_menu_enabled'); } catch (err) {}
+  const initialAlarmEnabled = (savedAlarm !== null) ? (savedAlarm === 'true') : true;
+  updateAlarmMenuVisibility(initialAlarmEnabled);
+
+  const initialAlarmSwitch = document.querySelector('#setting_sw_6');
+  if (initialAlarmSwitch) {
+    initialAlarmSwitch.checked = !initialAlarmEnabled;
+  }
+
+  // 초기 풍속 단위 스위치 동기화
+  let savedWind = null;
+  try { savedWind = sessionStorage.getItem('nr_wind_unit'); } catch (err) {}
+  const initialWindSwitch = document.querySelector('#setting_sw_4');
+  if (initialWindSwitch && savedWind) {
+    initialWindSwitch.checked = (savedWind === 'kmh');
   }
 
   document.addEventListener('click', (e) => {
@@ -928,12 +981,12 @@ export const initSettingDialog = () => {
     }
   });
 
-  // 4. 스위치(#setting_sw_9) 변경 시 테마 변경 처리 및 셀렉트 동기화 (checked === true : 라이트, checked === false : 다크)
+  // 4. 스위치(#setting_sw_9) 변경 시 테마 변경 처리 및 셀렉트 동기화 (checked === false : 라이트, checked === true : 다크)
   document.addEventListener('change', (e) => {
     const themeSwitch = e.target.closest('#setting_sw_9');
     if (themeSwitch) {
-      const isLight = themeSwitch.checked;
-      const theme = isLight ? 'light' : 'dark';
+      const isDark = themeSwitch.checked;
+      const theme = isDark ? 'dark' : 'light';
       document.body.classList.remove('light-theme', 'night-theme', 'dark-theme');
       document.body.classList.add(`${theme}-theme`);
       try { sessionStorage.setItem('nr_theme', theme); } catch (err) {}
@@ -969,11 +1022,11 @@ export const initSettingDialog = () => {
     }
   });
 
-  // 5-2. 언어설정 스위치(#setting_sw_7) 변경 시 html lang 변경 (checked: 'ko' (한국어), unchecked: 'en' (ENG))
+  // 5-2. 언어설정 스위치(#setting_sw_7) 변경 시 html lang 변경 (checked: 'en' (ENG), unchecked: 'ko' (한국어))
   document.addEventListener('change', (e) => {
     const langSwitch = e.target.closest('#setting_sw_7');
     if (langSwitch) {
-      const isEng = !langSwitch.checked;
+      const isEng = langSwitch.checked;
       setLanguage(isEng ? 'en' : 'ko');
 
       // 세그먼트 버튼이 있는 경우 동기화
@@ -986,6 +1039,25 @@ export const initSettingDialog = () => {
           btn.setAttribute('aria-checked', active ? 'true' : 'false');
         });
       }
+    }
+  });
+
+  // 5-3. 알림 메뉴 활성화 스위치(#setting_sw_6) 변경 시 GNB 알림 메뉴 노출 여부 컨트롤
+  document.addEventListener('change', (e) => {
+    const alarmSwitch = e.target.closest('#setting_sw_6');
+    if (alarmSwitch) {
+      const isEnabled = !alarmSwitch.checked; // unchecked: ON (노출), checked: OFF (숨김)
+      try { sessionStorage.setItem('nr_alarm_menu_enabled', String(isEnabled)); } catch (err) {}
+      updateAlarmMenuVisibility(isEnabled);
+    }
+  });
+
+  // 5-4. 풍속 단위 설정 스위치(#setting_sw_4) 변경 시 저장 (unchecked: m/s, checked: km/h)
+  document.addEventListener('change', (e) => {
+    const windSwitch = e.target.closest('#setting_sw_4');
+    if (windSwitch) {
+      const unit = windSwitch.checked ? 'kmh' : 'ms';
+      try { sessionStorage.setItem('nr_wind_unit', unit); } catch (err) {}
     }
   });
 
@@ -1228,7 +1300,7 @@ export const setLanguage = (lang = 'ko') => {
   try { sessionStorage.setItem('nr_lang', targetLang); } catch (err) {}
   const langSwitch = document.querySelector('#setting_sw_7');
   if (langSwitch) {
-    langSwitch.checked = !isEng;
+    langSwitch.checked = isEng;
   }
   applyLanguage(targetLang);
 };
@@ -1282,4 +1354,5 @@ if (typeof window !== 'undefined') {
   window.initMainI18nObserver = initMainI18nObserver;
   window.updateSwitchLabels = updateSwitchLabels;
   window.updateFooterNav = updateFooterNav;
+  window.updateAlarmMenuVisibility = updateAlarmMenuVisibility;
 }
