@@ -137,6 +137,7 @@ export const I18N_TEXT_MAP = {
 
   // --- 2. 전체 메뉴 카테고리 헤드 ---
   '전국': 'Nationwide',
+  '특보': 'Special Report',
   '영상': 'Imagery',
   '바다': 'Marine',
   '항공': 'Aviation',
@@ -147,6 +148,10 @@ export const I18N_TEXT_MAP = {
   '주요도시': 'Major Cities',
   '지역별 상세관측': 'Regional Observation',
   '과거관측': 'Past Observation',
+  '기상특보': 'Special Weather Report',
+  '기상 특보': 'Special Weather Report',
+  '예비특보': 'Preliminary Special Report',
+  '예비 특보': 'Preliminary Special Report',
   '단기예보': 'Short-term Forecast',
   '중기예보': 'Mid-term Forecast',
   '날씨지도': 'Weather Map',
@@ -245,7 +250,7 @@ export const I18N_TEXT_MAP = {
   // --- 9. 메인 요약 카드 (Summary Swiper) ---
   '시간당\n강수량': 'Hourly\nPrecip',
   '시간당 강수량': 'Hourly Precip',
-  '기상 특보': 'Special Report',
+  '기상 특보': 'Special Weather Report',
   '특보 날씨 알림': 'Special Weather Alert',
   '특보날씨알림': 'Special Weather Alert',
   '현재 발효 중인 기상특보가 없습니다.': 'No active special weather reports.',
@@ -403,6 +408,11 @@ Object.entries(I18N_TEXT_MAP).forEach(([ko, en]) => {
   I18N_REVERSE_MAP[en] = ko;
 });
 // 충돌 방지 명시적 우선순위 오버라이드 (영문 -> 국문 복원 시 'Hourly'는 스위치의 '시간별'로 복원)
+I18N_REVERSE_MAP['Special Report'] = '특보';
+I18N_REVERSE_MAP['Special Weather Report'] = '기상특보';
+I18N_REVERSE_MAP['Special Weather Reports'] = '기상특보';
+I18N_REVERSE_MAP['Preliminary Special Report'] = '예비특보';
+I18N_REVERSE_MAP['Preliminary Report'] = '예비특보';
 I18N_REVERSE_MAP['Hourly'] = '시간별';
 I18N_REVERSE_MAP['Daily'] = '일별';
 I18N_REVERSE_MAP['Hourly Forecast'] = '시간별 예보';
@@ -469,6 +479,10 @@ export const I18N_ARIA_MAP = {
   '지도 확대': 'Zoom In',
   '지도 축소': 'Zoom Out',
   '하단 메뉴': 'Bottom Navigation',
+  '특보': 'Special Report',
+  '기상특보': 'Special Weather Report',
+  '예비특보': 'Preliminary Special Report',
+  '기상특보 (새창 열림)': 'Special Weather Report (Opens in new window)',
 };
 
 export const I18N_ARIA_REVERSE_MAP = {};
