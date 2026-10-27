@@ -72,7 +72,23 @@ export const UX = {
     }
 
     UX.initBodyScroll();
-    UX.initFooterNav();
+    const nrFooter = document.querySelector(".nr__footer");
+    if (nrFooter && !nrFooter.children.length) {
+      loadContent({
+        area: nrFooter,
+        src: "./inc/footer.html",
+        insert: true,
+      })
+        .then(() => {
+          UX.initFooterNav();
+        })
+        .catch((err) => {
+          console.error("Error loading footer content:", err);
+          UX.initFooterNav();
+        });
+    } else {
+      UX.initFooterNav();
+    }
     if (!options.skipForecast) {
       UX.initForecastData(options.forecastOptions);
     }
@@ -247,17 +263,128 @@ export const UX = {
     let isClickScrolling = false;
     let scrollTimer = null;
 
-    footerBtns.forEach((btn, btnIdx) => {
+    // 수집된 섹션 목록
+    const targetMap = new Map();
+    footerBtns.forEach((btn) => {
+      const selector = btn.getAttribute("data-target");
+      if (selector && !targetMap.has(selector)) {
+        const el = document.querySelector(selector);
+        if (el) targetMap.set(selector, el);
+      }
+    });
+
+    let ticking = false;
+    const updateActiveNav = () => {
+      const headerHeight =
+        header && header.offsetHeight > 0 ? header.offsetHeight : 74;
+      const triggerPoint = headerHeight + 110 + 12 + 40;
+      const isBottom =
+        window.innerHeight + window.pageYOffset >=
+        document.documentElement.scrollHeight - 60;
+
+      let activeSelector = null;
+      const entries = Array.from(targetMap.entries());
+
+      if (isBottom && entries.length > 0) {
+        activeSelector = entries[entries.length - 1][0];
+      } else {
+        entries.forEach(([selector, sec]) => {
+          const rect = sec.getBoundingClientRect();
+          if (rect.top <= triggerPoint) {
+            activeSelector = selector;
+          }
+        });
+      }
+
+      // 레이더/위성 라디오 활성화 상태 체크
+      const picture2 = document.getElementById("picture2");
+      const isSatActive = picture2 ? picture2.checked : false;
+
+      footerBtns.forEach((btn) => {
+        const selector = btn.getAttribute("data-target");
+        // 새창 링크(특보 등)이거나 타겟 섹션이 없는 경우 활성화 대상에서 제외
+        if (
+          !selector ||
+          (btn.tagName === "A" && btn.getAttribute("target") === "_blank")
+        ) {
+          btn.classList.remove("is-active");
+          btn.removeAttribute("aria-current");
+          return;
+        }
+
+        let isActive = false;
+        if (selector === activeSelector) {
+          if (selector === "#section-radar") {
+            const radarTab = btn.getAttribute("data-radar-tab");
+            const btnText = btn.querySelector(".nr__footer-text")?.textContent.trim();
+            if (isSatActive) {
+              isActive = radarTab === "picture2" || btnText === "위성";
+            } else {
+              isActive =
+                radarTab === "picture1" ||
+                btnText === "레이더" ||
+                (!radarTab && btnText !== "위성");
+            }
+          } else {
+            isActive = true;
+          }
+        }
+
+        btn.classList.toggle("is-active", isActive);
+        if (isActive) {
+          btn.setAttribute("aria-current", "page");
+        } else {
+          btn.removeAttribute("aria-current");
+        }
+      });
+    };
+
+    window.updateFooterActiveNav = updateActiveNav;
+
+    // 영상 탭(레이더/위성) 라디오 변경 시 푸터 활성화 상태 동기화
+    const pictureRadios = document.querySelectorAll('input[name="picture"]');
+    pictureRadios.forEach((radio) => {
+      radio.addEventListener("change", () => {
+        updateActiveNav();
+      });
+    });
+
+    footerBtns.forEach((btn) => {
+      // 새창 링크(특보 등)는 기본 브라우저 새창 링크 동작 유지
+      if (btn.tagName === "A" && btn.getAttribute("target") === "_blank") {
+        return;
+      }
+
       btn.addEventListener("click", (e) => {
-        e.preventDefault();
         const targetSelector = btn.getAttribute("data-target");
-        const targetSection = targetSelector
-          ? document.querySelector(targetSelector)
-          : null;
+        if (!targetSelector) return;
+
+        const targetSection = document.querySelector(targetSelector);
         if (!targetSection) return;
 
-        footerBtns.forEach((b, idx) => {
-          const isActive = idx === btnIdx;
+        e.preventDefault();
+
+        // 1. 레이더 / 위성 탭 활성화 처리
+        const radarTab = btn.getAttribute("data-radar-tab");
+        const btnText = btn.querySelector(".nr__footer-text")?.textContent.trim();
+
+        if (radarTab === "picture1" || btnText === "레이더") {
+          const pic1 = document.getElementById("picture1");
+          if (pic1) {
+            pic1.checked = true;
+            pic1.dispatchEvent(new Event("change", { bubbles: true }));
+          }
+        } else if (radarTab === "picture2" || btnText === "위성") {
+          const pic2 = document.getElementById("picture2");
+          if (pic2) {
+            pic2.checked = true;
+            pic2.dispatchEvent(new Event("change", { bubbles: true }));
+          }
+        }
+
+        // 2. 푸터 버튼 활성화 즉시 반영
+        footerBtns.forEach((b) => {
+          const isActive = b === btn;
           b.classList.toggle("is-active", isActive);
           if (isActive) {
             b.setAttribute("aria-current", "page");
@@ -266,6 +393,7 @@ export const UX = {
           }
         });
 
+        // 3. 부드러운 스크롤 이동
         isClickScrolling = true;
         clearTimeout(scrollTimer);
 
@@ -292,46 +420,6 @@ export const UX = {
         scrollTimer = setTimeout(unlockScroll, 800);
       });
     });
-
-    const sections = Array.from(footerBtns)
-      .map((btn) => {
-        const selector = btn.getAttribute("data-target");
-        return selector ? document.querySelector(selector) : null;
-      })
-      .filter(Boolean);
-
-    let ticking = false;
-    const updateActiveNav = () => {
-      const headerHeight =
-        header && header.offsetHeight > 0 ? header.offsetHeight : 74;
-      const triggerPoint = headerHeight + 110 + 12 + 40;
-      const isBottom =
-        window.innerHeight + window.pageYOffset >=
-        document.documentElement.scrollHeight - 60;
-
-      let currentActiveIdx = -1;
-
-      if (isBottom) {
-        currentActiveIdx = sections.length - 1;
-      } else {
-        sections.forEach((sec, idx) => {
-          const rect = sec.getBoundingClientRect();
-          if (rect.top <= triggerPoint) {
-            currentActiveIdx = idx;
-          }
-        });
-      }
-
-      footerBtns.forEach((b, idx) => {
-        const isActive = idx === currentActiveIdx;
-        b.classList.toggle("is-active", isActive);
-        if (isActive) {
-          b.setAttribute("aria-current", "page");
-        } else {
-          b.removeAttribute("aria-current");
-        }
-      });
-    };
 
     window.addEventListener(
       "scroll",

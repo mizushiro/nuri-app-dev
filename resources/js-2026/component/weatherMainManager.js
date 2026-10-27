@@ -53,12 +53,98 @@ export const WeatherMainManager = {
       // 4. 즐겨찾기 토글 이벤트 연동
       WeatherMainManager.bindFavoriteEvents();
 
-      // 5. 초기 선택 지역(0번) 데이터 화면 전체 반영
+      // 5. 실시간 시계 자동 갱신 시작 (리소스 최소화)
+      WeatherMainManager.startTimeAutoUpdate();
+
+      // 6. 초기 선택 지역(0번) 데이터 화면 전체 반영
       WeatherMainManager.renderLocation(0);
 
       return json;
     } catch (err) {
       console.error("[WeatherMainManager] 날씨 데이터 로드 오류:", err);
+    }
+  },
+
+  _timeTimeoutId: null,
+  _timeTimerId: null,
+  _isVisibilityBound: false,
+
+  /**
+   * 현재 날짜/요일/시간 포맷팅 (09.27.(월) 13:30 형식)
+   */
+  getFormattedCurrentTime: () => {
+    const now = new Date();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const date = String(now.getDate()).padStart(2, "0");
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+
+    const isEn = document.documentElement.getAttribute("lang") === "en";
+    const daysKo = ["일", "월", "화", "수", "목", "금", "토"];
+    const daysEn = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const dayStr = isEn ? daysEn[now.getDay()] : daysKo[now.getDay()];
+
+    return `${month}.${date}.(${dayStr}) ${hours}:${minutes}`;
+  },
+
+  /**
+   * 화면의 모든 .nr__summary-time 요소 텍스트 갱신 (DOM 변경 최소화)
+   */
+  updateCurrentTime: () => {
+    const formatted = WeatherMainManager.getFormattedCurrentTime();
+    const els = document.querySelectorAll(".nr__summary-time");
+    els.forEach((el) => {
+      if (el.textContent !== formatted) {
+        el.textContent = formatted;
+      }
+    });
+  },
+
+  /**
+   * 리소스 최소화 실시간 시계 타이머
+   * - 다음 분 00초까지 대기(setTimeout) 후 갱신
+   * - 이후 1분 주기(setInterval)로 정밀 갱신 (1초마다 폴링하지 않음)
+   * - visibilitychange 연동: 탭 비활성 시 대기, 복귀 시 즉시 갱신 및 재동기화
+   */
+  startTimeAutoUpdate: () => {
+    if (WeatherMainManager._timeTimeoutId) {
+      clearTimeout(WeatherMainManager._timeTimeoutId);
+      WeatherMainManager._timeTimeoutId = null;
+    }
+    if (WeatherMainManager._timeTimerId) {
+      clearInterval(WeatherMainManager._timeTimerId);
+      WeatherMainManager._timeTimerId = null;
+    }
+
+    const scheduleNextMinute = () => {
+      if (document.hidden) return;
+
+      WeatherMainManager.updateCurrentTime();
+
+      const now = new Date();
+      // 다음 분 00초까지 남은 밀리초 (+30ms 보정)
+      const delay = (60 - now.getSeconds()) * 1000 - now.getMilliseconds() + 30;
+
+      WeatherMainManager._timeTimeoutId = setTimeout(() => {
+        WeatherMainManager.updateCurrentTime();
+
+        WeatherMainManager._timeTimerId = setInterval(() => {
+          if (!document.hidden) {
+            WeatherMainManager.updateCurrentTime();
+          }
+        }, 60000);
+      }, delay);
+    };
+
+    scheduleNextMinute();
+
+    if (!WeatherMainManager._isVisibilityBound) {
+      WeatherMainManager._isVisibilityBound = true;
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) {
+          WeatherMainManager.startTimeAutoUpdate();
+        }
+      });
     }
   },
 
@@ -71,6 +157,8 @@ export const WeatherMainManager = {
       ".nr__summary-swiper .swiper-wrapper",
     );
     if (!wrapper || !Array.isArray(locations)) return;
+
+    const currentTimeStr = WeatherMainManager.getFormattedCurrentTime();
 
     let slidesHtml = "";
     locations.forEach((loc, idx) => {
@@ -90,23 +178,8 @@ export const WeatherMainManager = {
           <div class="nr__main-summary-area">
             <!-- S : 현재 날씨 및 기온 카드 -->
             <div class="nr__summary-card nr__summary-card--main nr__weather-detail-card" data-diaplay-item="info">
-              <div class="nr__summary-card-head">
-                <div class="nr__summary-location">
-                  <i class="icon-aspect-location-w" data-size="16" aria-hidden="true"></i>
-                  <strong class="text-14 nr__loc-name" data-weight="600" data-text-shadow="true">${loc.location.fullName}</strong>
-                  <div class="nr__summary-actions">
-                    <input type="checkbox" id="place_favorites_${loc.id}" class="sr_only nr__fav-checkbox" data-location-id="${loc.id}" ${loc.location.isFavorite ? "checked" : ""}>
-                    <label for="place_favorites_${loc.id}" aria-label="즐겨찾기" class="nr__summary-circle-btn nr__btn-star">
-                      <i class="icon-mask-star" data-size="22" aria-hidden="true"></i>
-                    </label>
-                    <button type="button" class="nr__summary-circle-btn" aria-label="검색">
-                      <i class="icon-aspect-search-w" data-size="16" aria-hidden="true"></i>
-                    </button>
-                  </div>
-                </div>
-                <a href="https://www.weather.go.kr/wnuri-map/html/map.html" target="_blank" class="nr__btn-nury">
-                  <span>날씨지도</span>
-                </a>
+              <div class="nr__summary-time-wrap">
+                <span class="nr__summary-time text-14" data-weight="500" data-text-shadow="true">${currentTimeStr}</span>
               </div>
               <div class="nr__summary-weather">
                 <i class="icon-aspect-${displayIcon}" data-size="80" aria-hidden="true"></i>
@@ -269,6 +342,9 @@ export const WeatherMainManager = {
     const loc = WeatherMainManager.data.locations[index];
     if (!loc) return;
 
+    // 0. 고정 상단 헤드(지역명 및 즐겨찾기) 업데이트
+    WeatherMainManager.renderFixedHead(loc);
+
     // 1. 상단 일시 및 퀵 특보 태그 업데이트
     WeatherMainManager.renderTopMeta(loc);
 
@@ -293,13 +369,36 @@ export const WeatherMainManager = {
   },
 
   /**
+   * 0. 상단 고정 헤드(지역명 및 즐겨찾기) 업데이트
+   */
+  renderFixedHead: (loc) => {
+    const headEl =
+      document.querySelector('[data-diaplay-item="dash"] > .nr__summary-card-head') ||
+      document.querySelector('.nr__summary-card-head');
+    if (!headEl || !loc || !loc.location) return;
+
+    const locNameEl = headEl.querySelector('.nr__loc-name');
+    if (locNameEl) {
+      locNameEl.textContent = loc.location.fullName || '';
+    }
+
+    const favCheckbox = headEl.querySelector('.nr__fav-checkbox');
+    const favLabel = headEl.querySelector('.nr__btn-star');
+    if (favCheckbox) {
+      favCheckbox.id = `place_favorites_${loc.id}`;
+      favCheckbox.dataset.locationId = loc.id;
+      favCheckbox.checked = !!loc.location.isFavorite;
+      if (favLabel) {
+        favLabel.setAttribute('for', `place_favorites_${loc.id}`);
+      }
+    }
+  },
+
+  /**
    * 1. 상단 일시 및 퀵 특보 버튼 업데이트
    */
   renderTopMeta: (loc) => {
-    const timeEl = document.querySelector(".nr__summary-time");
-    if (timeEl && loc.location.updatedAt) {
-      timeEl.textContent = loc.location.updatedAt;
-    }
+    WeatherMainManager.updateCurrentTime();
 
     const alertBtnsContainer = document.querySelector(
       ".nr__summary-alert-btns",

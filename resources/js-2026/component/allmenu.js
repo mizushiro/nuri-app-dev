@@ -681,9 +681,21 @@ export const updateFooterNav = (isEng) => {
   if (footerAir) {
     footerAir.textContent = isEng ? 'Air Quality' : '대기질';
   }
-  const footerRadar = document.querySelector('.nr__footer-btn[data-target="#section-radar"] .nr__footer-text');
+  const footerRadar = document.querySelector('.nr__footer-btn[data-radar-tab="picture1"] .nr__footer-text');
   if (footerRadar) {
-    footerRadar.textContent = isEng ? 'Radar & Satellite' : '레이더 · 위성';
+    footerRadar.textContent = isEng ? 'Radar' : '레이더';
+  }
+  const footerSat = document.querySelector('.nr__footer-btn[data-radar-tab="picture2"] .nr__footer-text');
+  if (footerSat) {
+    footerSat.textContent = isEng ? 'Satellite' : '위성';
+  }
+  const footerSpecial = document.querySelector('.nr__footer-btn[href*="weather.go.kr"] .nr__footer-text, .nr__footer-btn[aria-label*="특보"] .nr__footer-text');
+  if (footerSpecial) {
+    footerSpecial.textContent = isEng ? 'Special Report' : '특보';
+  }
+  const footerCombined = document.querySelector('.nr__footer-btn[data-target="#section-radar"]:not([data-radar-tab]) .nr__footer-text');
+  if (footerCombined) {
+    footerCombined.textContent = isEng ? 'Radar & Satellite' : '레이더 · 위성';
   }
 };
 

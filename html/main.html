@@ -68,6 +68,27 @@
     <main>
       <!-- 대시보드형 & 정보집약형 -->
       <div data-diaplay-item="dash">
+        <!-- S : 상단 고정 헤드 영역 (지역명 및 유틸 버튼) -->
+        <div class="nr__summary-card-head">
+          <div class="nr__summary-location">
+            <i class="icon-aspect-location-w" data-size="16" aria-hidden="true"></i>
+            <strong class="text-14 nr__loc-name" data-weight="600" data-text-shadow="true">서울특별시 서초구 방배동</strong>
+            <div class="nr__summary-actions">
+              <input type="checkbox" id="place_favorites_main" class="sr_only nr__fav-checkbox" data-location-id="loc-seoul-seocho" checked>
+              <label for="place_favorites_main" aria-label="즐겨찾기" class="nr__summary-circle-btn nr__btn-star">
+                <i class="icon-mask-star" data-size="22" aria-hidden="true"></i>
+              </label>
+              <button type="button" class="nr__summary-circle-btn" aria-label="검색">
+                <i class="icon-aspect-search-w" data-size="16" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <a href="https://www.weather.go.kr/wnuri-map/html/map.html" target="_blank" class="nr__btn-nury">
+            <i class="icon-mask-style3" aria-hidden="true" data-size="18"></i>
+            <span>날씨지도</span>
+          </a>
+        </div>
+        <!-- E : 상단 고정 헤드 영역 -->
         <div class="nr__main-summary-sticky">
           <div class="nr__main-summary-area">
             <div class="nr__summary-swiper">
@@ -667,26 +688,32 @@
           <li class="nr__footer-item">
             <button type="button" class="nr__footer-btn" data-target="#section-hourly">
               <i class="icon-aspect-main-nav1-theme" data-size="28" aria-hidden="true"></i>
-              <span class="nr__footer-text">시간별예보</span>
+              <span class="nr__footer-text text-12">시간별예보</span>
             </button>
           </li>
           <li class="nr__footer-item">
             <button type="button" class="nr__footer-btn" data-target="#section-daily">
               <i class="icon-aspect-main-nav2-theme" data-size="28" aria-hidden="true"></i>
-              <span class="nr__footer-text">일별예보</span>
+              <span class="nr__footer-text text-12">일별예보</span>
             </button>
           </li>
           <li class="nr__footer-item">
-            <button type="button" class="nr__footer-btn" data-target="#section-air">
+            <button type="button" class="nr__footer-btn" data-target="#section-radar" data-radar-tab="picture1">
               <i class="icon-aspect-main-nav3-theme" data-size="28" aria-hidden="true"></i>
-              <span class="nr__footer-text">대기질</span>
+              <span class="nr__footer-text text-12">레이더</span>
             </button>
           </li>
           <li class="nr__footer-item">
-            <button type="button" class="nr__footer-btn" data-target="#section-radar">
+            <button type="button" class="nr__footer-btn" data-target="#section-radar" data-radar-tab="picture2">
               <i class="icon-aspect-main-nav4-theme" data-size="28" aria-hidden="true"></i>
-              <span class="nr__footer-text">레이더 · 위성</span>
+              <span class="nr__footer-text text-12">위성</span>
             </button>
+          </li>
+          <li class="nr__footer-item">
+            <a href="https://www.weather.go.kr/w/weather/warning/status.do" target="_blank" rel="noopener noreferrer" class="nr__footer-btn" aria-label="기상특보 (새창 열림)">
+              <i class="icon-aspect-main-nav5-theme" data-size="28" aria-hidden="true"></i>
+              <span class="nr__footer-text text-12">특보</span>
+            </a>
           </li>
         </ul>
       </nav>

@@ -26,6 +26,38 @@ export const initRadarPlayer = () => {
 
   if (!playBtn || !timelineFill || !timeElem) return;
 
+  // 레이더 / 위성 라디오 탭 전환 제어
+  const pictureRadios = radarSection.querySelectorAll('input[name="picture"]');
+  const subHeaderTitle = radarSection.querySelector(".nr__radar-sub-header .ui-flex");
+  const mapImg = radarSection.querySelector(".nr__radar-map-img");
+
+  const updateRadarView = () => {
+    const isSat = document.getElementById("picture2")?.checked;
+    if (subHeaderTitle) {
+      if (isSat) {
+        subHeaderTitle.innerHTML = `
+          <span class="text-14" data-weight="600" data-text-color="theme1">위성</span>
+          <span class="text-14" data-weight="700" data-text-color="blue">천리안 2A호</span>
+        `;
+      } else {
+        subHeaderTitle.innerHTML = `
+          <span class="text-14" data-weight="600" data-text-color="theme1">레이더</span>
+          <span class="text-14" data-weight="700" data-text-color="blue">강수예측</span>
+        `;
+      }
+    }
+    if (mapImg) {
+      mapImg.alt = isSat ? "기상위성 영상 지도" : "강수예측 레이더 영상 지도";
+    }
+    if (typeof window.updateFooterActiveNav === "function") {
+      window.updateFooterActiveNav();
+    }
+  };
+
+  pictureRadios.forEach((radio) => {
+    radio.addEventListener("change", updateRadarView);
+  });
+
   // 기준 시간 및 범위 설정 (HTML 시간 기준으로 0% = 14:10, 10분 단위, 총 120분)
   const baseTimeStr = timeElem.getAttribute("datetime") || "2026-08-03T14:10";
   const startTimestamp = new Date(baseTimeStr).getTime();
