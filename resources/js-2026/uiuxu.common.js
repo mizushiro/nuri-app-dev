@@ -298,8 +298,10 @@ export const UX = {
         });
       }
 
-      // 레이더/위성 라디오 활성화 상태 체크
+      // 낙뢰/레이더/위성 라디오 활성화 상태 체크 (낙뢰는 푸터 스크롤 활성화 없음)
+      const picture0 = document.getElementById("picture0");
       const picture2 = document.getElementById("picture2");
+      const isLightningActive = picture0 ? picture0.checked : false;
       const isSatActive = picture2 ? picture2.checked : false;
 
       footerBtns.forEach((btn) => {
@@ -319,7 +321,9 @@ export const UX = {
           if (selector === "#section-radar") {
             const radarTab = btn.getAttribute("data-radar-tab");
             const btnText = btn.querySelector(".nr__footer-text")?.textContent.trim();
-            if (isSatActive) {
+            if (isLightningActive) {
+              isActive = false;
+            } else if (isSatActive) {
               isActive = radarTab === "picture2" || btnText === "위성";
             } else {
               isActive =

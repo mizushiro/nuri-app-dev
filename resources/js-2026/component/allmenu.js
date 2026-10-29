@@ -275,6 +275,8 @@ export const I18N_TEXT_MAP = {
   '최고': 'Max',
   '평균기온': 'Avg Temp',
   '강수예측': 'Precip Forecast',
+  '낙뢰영상': 'Lightning Imagery',
+  '천리안 2A호': 'GK2A',
 
   // --- 12. 일출일몰 · 월출월몰 ---
   '일출': 'Sunrise',
@@ -492,6 +494,8 @@ Object.entries(I18N_ARIA_MAP).forEach(([ko, en]) => {
 
 export const I18N_ALT_MAP = {
   '강수예측 레이더 영상 지도': 'Precipitation Forecast Radar Map',
+  '기상위성 영상 지도': 'Weather Satellite Map',
+  '낙뢰 영상 지도': 'Lightning Map',
 };
 
 export const I18N_ALT_REVERSE_MAP = {};

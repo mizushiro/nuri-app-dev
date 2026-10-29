@@ -26,15 +26,21 @@ export const initRadarPlayer = () => {
 
   if (!playBtn || !timelineFill || !timeElem) return;
 
-  // 레이더 / 위성 라디오 탭 전환 제어
+  // 낙뢰 / 레이더 / 위성 라디오 탭 전환 제어
   const pictureRadios = radarSection.querySelectorAll('input[name="picture"]');
   const subHeaderTitle = radarSection.querySelector(".nr__radar-sub-header .ui-flex");
   const mapImg = radarSection.querySelector(".nr__radar-map-img");
 
   const updateRadarView = () => {
+    const isLightning = document.getElementById("picture0")?.checked;
     const isSat = document.getElementById("picture2")?.checked;
     if (subHeaderTitle) {
-      if (isSat) {
+      if (isLightning) {
+        subHeaderTitle.innerHTML = `
+          <span class="text-14" data-weight="600" data-text-color="theme1">레이더</span>
+          <span class="text-14" data-weight="700" data-text-color="blue">낙뢰영상</span>
+        `;
+      } else if (isSat) {
         subHeaderTitle.innerHTML = `
           <span class="text-14" data-weight="600" data-text-color="theme1">위성</span>
           <span class="text-14" data-weight="700" data-text-color="blue">천리안 2A호</span>
@@ -47,7 +53,11 @@ export const initRadarPlayer = () => {
       }
     }
     if (mapImg) {
-      mapImg.alt = isSat ? "기상위성 영상 지도" : "강수예측 레이더 영상 지도";
+      mapImg.alt = isLightning
+        ? "낙뢰 영상 지도"
+        : isSat
+          ? "기상위성 영상 지도"
+          : "강수예측 레이더 영상 지도";
     }
     if (typeof window.updateFooterActiveNav === "function") {
       window.updateFooterActiveNav();
