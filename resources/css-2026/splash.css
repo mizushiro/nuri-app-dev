@@ -1,0 +1,190 @@
+@charset "utf-8";
+
+/* ==========================================================================
+   Nuri-App Splash Screen Styles (2026)
+   기상청 날씨알리미 스플래시 화면 스타일
+   ========================================================================== */
+html {
+  font-size:10px;
+}
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f6fb;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD 산돌고딕 Neo', 'Malgun Gothic', sans-serif;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 화면 전환 시 부드러운 페이드아웃 효과 */
+body.nr-splash-exit .nr-splash-wrap {
+  opacity: 0;
+  transform: scale(0.985);
+  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1), transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 스플래시 메인 래퍼 (모바일 화면 비율 유지 및 센터링) */
+.nr-splash-wrap {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0 auto;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+  padding: max(3.6rem, env(safe-area-inset-top, 3.6rem)) 2.4rem max(4.4rem, calc(env(safe-area-inset-bottom, 0px) + 2.4rem));
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: pointer;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* 모바일 뷰포트 대응 */
+@media (max-width: 480px) {
+  html, body {
+    background-color: #ffffff;
+  }
+  .nr-splash-wrap {
+    max-width: 100%;
+    box-shadow: none;
+  }
+}
+
+/* 상하 유연 스페이서 (황금비율 광학적 중앙 배치) */
+.nr-splash__spacer--top {
+  flex: 1;
+  min-height:2.4rem;
+}
+
+.nr-splash__spacer--bottom {
+  flex: 1.28;
+  min-height: 2.4rem;
+}
+
+/* 중앙 영역: 앱 아이콘 + 슬로건 */
+.nr-splash__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  z-index: 2;
+}
+
+/* 날씨알리미 원형 말풍선 아이콘 */
+.nr-splash__icon-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: nrSplashPopIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.nr-splash__icon {
+  width: 16.4rem;
+  height: 16.4rem;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.nr-splash-wrap:active .nr-splash__icon {
+  transform: scale(0.97);
+}
+
+/* 슬로건 이미지 ("하늘을 친구처럼, 국민을 하늘처럼") */
+.nr-splash__slogan-box {
+  margin-top: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: nrSplashFadeUp 0.8s 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.nr-splash__slogan {
+  width: 25.3rem;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* 하단 영역: 기상청 로고 + 저작권 */
+.nr-splash__bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  z-index: 2;
+  /* animation: nrSplashFadeIn 0.8s 0.38s ease both; */
+}
+
+/* 기상청 날씨알리미 로고 */
+.nr-splash__logo-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nr-splash__logo {
+  width: 14.8rem;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* 카피라이트 텍스트 */
+.nr-splash__copy {
+  margin: 0.8rem 0 0;
+  padding: 0;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #8E95A3;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+/* 진입 애니메이션 키프레임 */
+@keyframes nrSplashPopIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.86) translateY(1.4rem);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes nrSplashFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(1.2rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes nrSplashFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

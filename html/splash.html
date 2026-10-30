@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport"
+    content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="author" content="기상청" />
+  <meta name="description" content="기상청 날씨알리미 - 하늘을 친구처럼, 국민을 하늘처럼" />
+
+  <title>기상청 날씨알리미</title>
+
+  <!-- 기본 스타일 및 폰트 -->
+  <link rel="stylesheet" href="../resources/css-2026/ui.base.css">
+  <link rel="stylesheet" href="../resources/css-2026/splash.css">
+</head>
+
+<body>
+  <!-- S : 스플래시 화면 -->
+  <div class="nr-splash-wrap" id="splashWrap" role="banner" aria-label="기상청 날씨알리미 스플래시 화면">
+    <!-- 상단 여백 (광학적 중앙 밸런스) -->
+    <div class="nr-splash__spacer--top" aria-hidden="true"></div>
+
+    <!-- 중앙 브랜드 콘텐츠 영역 (아이콘 + 슬로건) -->
+    <main class="nr-splash__center">
+      <div class="nr-splash__icon-box">
+        <img src="../resources/images-2026/splash/icon.png" alt="기상청 날씨알리미 아이콘" class="nr-splash__icon">
+      </div>
+      <div class="nr-splash__slogan-box">
+        <img src="../resources/images-2026/splash/slogan.png" alt="하늘을 친구처럼, 국민을 하늘처럼" class="nr-splash__slogan">
+      </div>
+    </main>
+
+    <!-- 하단 여백 (광학적 중앙 밸런스) -->
+    <div class="nr-splash__spacer--bottom" aria-hidden="true"></div>
+
+    <!-- 하단 브랜드 로고 및 저작권 영역 -->
+    <footer class="nr-splash__bottom">
+      <div class="nr-splash__logo-box">
+        <img src="../resources/images-2026/splash/logo.png" alt="기상청 날씨알리미 로고" class="nr-splash__logo">
+      </div>
+      <p class="nr-splash__copy">Copyright © KMA. All Rights RESERVED.</p>
+    </footer>
+  </div>
+  <!-- E : 스플래시 화면 -->
+
+  <script>
+    (function () {
+      // const splashWrap = document.getElementById('splashWrap');
+      // const urlParams = new URLSearchParams(window.location.search);
+      // const isStay = urlParams.has('stay') || urlParams.has('preview');
+      // let isNavigating = false;
+
+      // 메인 페이지(main.html)로 부드러운 전환
+      // function goToMain() {
+      //   if (isNavigating) return;
+      //   isNavigating = true;
+      //   document.body.classList.add('nr-splash-exit');
+
+      //   setTimeout(function () {
+      //     window.location.href = 'main.html';
+      //   }, 350);
+      // }
+
+      // // 화면 클릭/터치 시 즉시 메인 페이지로 이동
+      // splashWrap.addEventListener('click', function () {
+      //   goToMain();
+      // });
+
+      // // 스페이스바 또는 엔터 키 입력 시 이동
+      // window.addEventListener('keydown', function (e) {
+      //   if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
+      //     goToMain();
+      //   }
+      // });
+
+      // ?stay 또는 ?preview 파라미터가 없으면 2.4초 후 자동 메인 화면 전환
+      // if (!isStay) {
+      //   setTimeout(function () {
+      //     goToMain();
+      //   }, 2400);
+      // }
+    })();
+  </script>
+</body>
+
+</html>
